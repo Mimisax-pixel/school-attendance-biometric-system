@@ -1,5 +1,5 @@
-import React from "react";
-import { BookOpen, LayoutDashboard, User, CheckCircle } from "lucide-react";
+import React from 'react'
+import { BookOpen, LayoutDashboard, User, CheckCircle } from 'lucide-react'
 
 const Grades = () => {
   return (
@@ -15,9 +15,7 @@ const Grades = () => {
                 className="w-12 h-12 rounded-full"
               />
               <div>
-                <h2 className="text-gray-900 font-semibold text-lg">
-                  Sarah
-                </h2>
+                <h2 className="text-gray-900 font-semibold text-lg">Sarah</h2>
                 <p className="text-sm text-gray-500">Student</p>
               </div>
             </div>
@@ -93,11 +91,17 @@ const Grades = () => {
               </thead>
               <tbody>
                 {[
-                  ["CSC101", "Introduction to Programming", 3, "A", "Fall 2023"],
-                  ["MAT101", "Calculus I", 4, "B", "Fall 2023"],
-                  ["ENG101", "English Composition", 3, "A", "Fall 2023"],
-                  ["PHY101", "Physics I", 4, "C", "Spring 2024"],
-                  ["CSC201", "Data Structures", 3, "A", "Spring 2024"],
+                  [
+                    'CSC101',
+                    'Introduction to Programming',
+                    3,
+                    'A',
+                    'Fall 2023',
+                  ],
+                  ['MAT101', 'Calculus I', 4, 'B', 'Fall 2023'],
+                  ['ENG101', 'English Composition', 3, 'A', 'Fall 2023'],
+                  ['PHY101', 'Physics I', 4, 'C', 'Spring 2024'],
+                  ['CSC201', 'Data Structures', 3, 'A', 'Spring 2024'],
                 ].map(([code, title, credits, grade, sem]) => (
                   <tr key={code} className="border-t">
                     <td className="py-3 px-6">{code}</td>
@@ -130,11 +134,11 @@ const Grades = () => {
               </thead>
               <tbody>
                 {[
-                  ["CSC101", "Introduction to Programming", 30, 28, "93%"],
-                  ["MAT101", "Calculus I", 40, 35, "88%"],
-                  ["ENG101", "English Composition", 30, 29, "97%"],
-                  ["PHY101", "Physics I", 40, 32, "80%"],
-                  ["CSC201", "Data Structures", 30, 27, "90%"],
+                  ['CSC101', 'Introduction to Programming', 30, 28, '93%'],
+                  ['MAT101', 'Calculus I', 40, 35, '88%'],
+                  ['ENG101', 'English Composition', 30, 29, '97%'],
+                  ['PHY101', 'Physics I', 40, 32, '80%'],
+                  ['CSC201', 'Data Structures', 30, 27, '90%'],
                 ].map(([code, title, total, attended, rate]) => (
                   <tr key={code} className="border-t">
                     <td className="py-3 px-6">{code}</td>
@@ -166,11 +170,11 @@ const Grades = () => {
               </thead>
               <tbody>
                 {[
-                  ["CSC202", "Algorithms", 3, "Dr. Smith"],
-                  ["MAT201", "Calculus II", 4, "Dr. Johnson"],
-                  ["ENG201", "Technical Writing", 3, "Prof. Williams"],
-                  ["PHY201", "Physics II", 4, "Dr. Brown"],
-                  ["CSC301", "Operating Systems", 3, "Dr. Davis"],
+                  ['CSC202', 'Algorithms', 3, 'Dr. Smith'],
+                  ['MAT201', 'Calculus II', 4, 'Dr. Johnson'],
+                  ['ENG201', 'Technical Writing', 3, 'Prof. Williams'],
+                  ['PHY201', 'Physics II', 4, 'Dr. Brown'],
+                  ['CSC301', 'Operating Systems', 3, 'Dr. Davis'],
                 ].map(([code, title, credits, instructor]) => (
                   <tr key={code} className="border-t">
                     <td className="py-3 px-6">{code}</td>
@@ -185,7 +189,7 @@ const Grades = () => {
         </section>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default Grades;
+export default Grades
