@@ -1,4 +1,3 @@
-import React from 'react'
 import { BookOpen, LayoutDashboard, User, CheckCircle } from 'lucide-react'
 
 const Grades = () => {
