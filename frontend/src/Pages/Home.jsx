@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const App = () => {
   const [role, setRole] = useState('')
@@ -13,18 +14,18 @@ const App = () => {
             Portal
           </h1>
           <nav className="space-x-6 text-gray-600 font-medium">
-            <a href="#" className="hover:text-blue-700">
+            <Link to="#" className="hover:text-blue-700">
               Home
-            </a>
-            <a href="#" className="hover:text-blue-700">
+            </Link>
+            <Link to="#" className="hover:text-blue-700">
               About
-            </a>
-            <a href="#" className="hover:text-blue-700">
+            </Link>
+            <Link to="/adminDashboard" className="hover:text-blue-700">
               Login Portals
-            </a>
-            <a href="#" className="hover:text-blue-700">
+            </Link>
+            <Link to="#" className="hover:text-blue-700">
               Contact
-            </a>
+            </Link>
           </nav>
         </div>
       </header>
@@ -69,14 +70,14 @@ const App = () => {
           <div
             className={`transition-all duration-500 ease-in-out transform ${
               role
-                ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 -translate-y-5 scale-95 pointer-events-none'
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 -translate-y-5 scale-95 pointer-events-none"
             }`}
           >
             {role && (
               <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
                 <div className="text-blue-600 text-4xl mb-3">
-                  {role === 'admin' ? '🔐' : '🎓'}
+                  {role === "admin" ? "🔐" : "🎓"}
                 </div>
                 <h4 className="text-lg font-semibold mb-4 capitalize">
                   {role} Login
@@ -85,11 +86,11 @@ const App = () => {
                 <input
                   type="text"
                   placeholder={
-                    role === 'admin'
-                      ? 'Admin ID'
-                      : role === 'lecturer'
-                      ? 'Staff ID'
-                      : 'Matriculation No.'
+                    role === "admin"
+                      ? "Admin ID"
+                      : role === "lecturer"
+                      ? "Staff ID"
+                      : "Matriculation No."
                   }
                   className="w-full mb-3 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
@@ -187,7 +188,7 @@ const App = () => {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
 export default App

@@ -5,6 +5,9 @@ import Home from "./Pages/Home";
 import AlertsPage from "./Pages/Admin/AlertsPage";
 import Attendance from "./Pages/Admin/Attendance";
 import StudentsGrades from "./Pages/Students/StudentsGrades";
+import AdminDashboard from "./Pages/AdminDashboard";
+import BiometricAttendance from "./Pages/BiometricAttendance";
+import CourseManagement from "./Pages/CourseManagement";
 
 function App() {
   return (
@@ -14,6 +17,9 @@ function App() {
         <Route path="/alerts" element={<AlertsPage />} />
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/grades" element={<StudentsGrades />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
+        <Route path="/biometricAttendance" element={<BiometricAttendance />} />
+        <Route path="/courseManagement" element={<CourseManagement />} />
       </Routes>
     </Router>
   );
