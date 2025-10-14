@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const App = () => {
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState('')
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-800">
@@ -13,18 +14,18 @@ const App = () => {
             Portal
           </h1>
           <nav className="space-x-6 text-gray-600 font-medium">
-            <a href="#" className="hover:text-blue-700">
+            <Link to="#" className="hover:text-blue-700">
               Home
-            </a>
-            <a href="#" className="hover:text-blue-700">
+            </Link>
+            <Link to="#" className="hover:text-blue-700">
               About
-            </a>
-            <a href="#" className="hover:text-blue-700">
+            </Link>
+            <Link to="/adminDashboard" className="hover:text-blue-700">
               Login Portals
-            </a>
-            <a href="#" className="hover:text-blue-700">
+            </Link>
+            <Link to="#" className="hover:text-blue-700">
               Contact
-            </a>
+            </Link>
           </nav>
         </div>
       </header>
@@ -188,6 +189,6 @@ const App = () => {
       </footer>
     </div>
   );
-};
+}
 
-export default App;
+export default App
