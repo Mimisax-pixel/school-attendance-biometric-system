@@ -4,8 +4,8 @@ import LecturerNav from './LecturerNav';
 
 const LecturerAttendance = () => {
   return (
-    <div className="container mx-auto ml-[300px] py-10">
-      <LecturerNav/>
+    <div className="container mx-auto lg:ml-[300px] py-10">
+      <LecturerNav />
       <LecturesSearchbar />
       <div className=" px-20 lg:px-20 flex flex-col gap-10 md:flex-row justify-between pb-20">
         <div className="pt-20">
