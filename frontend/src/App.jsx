@@ -9,10 +9,6 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import BiometricAttendance from "./Pages/BiometricAttendance";
 import CourseManagement from "./Pages/CourseManagement";
 import Lecturers from "./Pages/Lecturers";
-import Index from "./Components/Index";
-import AlertsPage from "./Components/Admin/AlertsPage";
-import Attendance from "./Components/Admin/Attendance";
-import StudentsGrades from "./Components/Students/StudentsGrades";
 import StudentRegForm from "./Components/Admin/StudentRegForm";
 
 function App() {
