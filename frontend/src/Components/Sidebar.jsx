@@ -54,6 +54,13 @@ const Sidebar = () => {
           <span>Attendance</span>
         </Link>
         <Link
+          to="/lecturers"
+          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
+        >
+          <CalendarCheck size={20} />
+          <span>Lecturers</span>
+        </Link>
+        <Link
           to="/adminDashboard"
           className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
         >
@@ -61,7 +68,7 @@ const Sidebar = () => {
           <span>Reports</span>
         </Link>
       </div>
-      <div className="flex space-x-3 mt-[25em]">
+      <div className="flex space-x-3 mt-[20em]">
         <SearchCheckIcon />
         <p>Help & Support</p>
       </div>

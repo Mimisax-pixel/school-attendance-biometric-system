@@ -8,6 +8,7 @@ import StudentsGrades from "./Pages/Students/StudentsGrades";
 import AdminDashboard from "./Pages/AdminDashboard";
 import BiometricAttendance from "./Pages/BiometricAttendance";
 import CourseManagement from "./Pages/CourseManagement";
+import Lecturers from "./Pages/Lecturers";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path="/biometricAttendance" element={<BiometricAttendance />} />
         <Route path="/courseManagement" element={<CourseManagement />} />
+        <Route path="/biometricAttendance" element={<BiometricAttendance />} />
+        <Route path="/lecturers" element={<Lecturers/>} />
       </Routes>
     </Router>
   );
