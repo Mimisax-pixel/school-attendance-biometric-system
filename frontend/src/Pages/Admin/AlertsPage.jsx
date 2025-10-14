@@ -219,7 +219,7 @@ export default function AlertsPage() {
                   >
                     <option value="allStudents">All Students</option>
                     <option value="enrolledStudents">Enrolled Students</option>
-                    <option value="instructors">Instructors</option>
+                    <option value="instructors">Cordinators</option>
                   </select>
                 </div>
               </div>
