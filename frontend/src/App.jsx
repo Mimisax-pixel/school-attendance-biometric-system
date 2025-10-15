@@ -9,7 +9,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import BiometricAttendance from "./Pages/BiometricAttendance";
 import CourseManagement from "./Pages/CourseManagement";
 import Lecturers from "./Pages/Lecturers";
-import StudentRegForm from "./Components/Admin/StudentRegForm";
+import StudentRegForm from "./Pages/Admin/StudentRegForm";
 
 function App() {
   return (

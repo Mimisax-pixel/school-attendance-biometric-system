@@ -4,7 +4,7 @@ import axios from "axios";
 const StudentRegForm = () => {
   const [formData, setFormData] = useState({
     fullname: "",
-    matric: "",
+    matricNumber: "",
     email: "",
     phone: "",
     department: "",
@@ -12,7 +12,7 @@ const StudentRegForm = () => {
     programme: "",
     course: "",
     semester: "",
-    fingerprintTemplate: "",
+    biometricData: "",
   });
   const [status, setStatus] = useState("Ready");
   const [fingerprintImage, setFingerprintImage] = useState("");
@@ -56,7 +56,7 @@ const StudentRegForm = () => {
           if (data.template) {
             setFormData((prev) => ({
               ...prev,
-              fingerprintTemplate: data.template,
+              biometricData: data.template,
             }));
             setStatus("✅ Fingerprint enrollment completed!");
           }
@@ -94,6 +94,8 @@ const StudentRegForm = () => {
               type="text"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
               id="fullname"
+              value={formData.fullname}
+              onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
             />
           </div>
           <div className="w-5/12 shrink-0 grow-0">
@@ -102,6 +104,8 @@ const StudentRegForm = () => {
               type="text"
               id="matric"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.matricNumber}
+              onChange={(e) => setFormData({ ...formData, matricNumber: e.target.value })}
             />
           </div>
           <div className="w-5/12 shrink-0 grow-0">
@@ -110,6 +114,8 @@ const StudentRegForm = () => {
               type="text"
               id="email"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
           <div className="w-5/12 shrink-0 grow-0">
@@ -118,6 +124,8 @@ const StudentRegForm = () => {
               type="text"
               id="phone"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             />
           </div>
           <div className="w-5/12 shrink-0 grow-0">
@@ -126,6 +134,8 @@ const StudentRegForm = () => {
               type="text"
               id="department"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.department}
+              onChange={(e) => setFormData({ ...formData, department: e.target.value })}
             />
           </div>
           <div className="w-5/12 shrink-0 grow-0">
@@ -134,36 +144,44 @@ const StudentRegForm = () => {
               type="text"
               id="level"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.level}
+              onChange={(e) => setFormData({ ...formData, level: e.target.value })}
             />
           </div>
-          <div className="w-11/12 shrink-0 grow-0">
+          {/* <div className="w-11/12 shrink-0 grow-0">
             <label htmlFor="level">Select programme</label>
             <input
               type="text"
               id="selectProgramme"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.programme}
+              onChange={(e) => setFormData({ ...formData, programme: e.target.value })}
             />
-          </div>
-          <div className="w-11/12 shrink-0 grow-0">
+          </div> */}
+          {/* <div className="w-11/12 shrink-0 grow-0">
             <label htmlFor="level">Course registered</label>
             <input
               type="text"
               id="course"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.course}
+              onChange={(e) => setFormData({ ...formData, course: e.target.value })}
             />
-          </div>
-          <div className="w-11/12 shrink-0 grow-0">
+          </div> */}
+          {/* <div className="w-11/12 shrink-0 grow-0">
             <label htmlFor="level">Semester</label>
             <input
               type="text"
               id="semester"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-0 box-border p-3"
+              value={formData.semester}
+              onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
             />
-          </div>
+          </div> */}
 
           {/* form inputs same as before */}
           <div className="w-11/12">
-            <h3>Biometric Enrollment</h3>
+            <h3 className="font-semibold text-3xl mb-6">Biometric Enrollment</h3>
             <div className="bg-slate-100 rounded p-3 text-center border-2 border-gray-300">
               <img
                 id="fingerprintImage"
