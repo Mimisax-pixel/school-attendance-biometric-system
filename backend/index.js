@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import Student from "./routes/students/register.js";
 import loginStudent from "./routes/students/login.js";
+import cookieParser from 'cookie-parser';
+import dashboardRoutes from './routes/students/dashboard.js';
 
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECTION_STRING).then(() => {
@@ -11,6 +13,8 @@ mongoose.connect(process.env.DB_CONNECTION_STRING).then(() => {
 }).catch((err) => {
   console.error("Error connecting to MongoDB", err);
 })
+
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,9 +24,11 @@ let apiVersion = '/api/v1';
 
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(apiVersion, Student);
 app.use(apiVersion, loginStudent);
+app.use(apiVersion, dashboardRoutes);
 
 // Basic route to check server status
 

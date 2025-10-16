@@ -1,88 +1,54 @@
-# 📚 School Attendance Biometric System API
+# 🏫 School Attendance Biometric System API
 
 ## Overview
-This project provides a robust backend API for a school attendance biometric system, built with Node.js and Express. It leverages Mongoose for elegant MongoDB object modeling, facilitating secure student registration, authentication, and the groundwork for biometric-based attendance tracking.
+This is a robust backend API for a school attendance system, leveraging Node.js with Express.js for building RESTful services and Mongoose as an ODM for MongoDB. It provides functionalities for student registration, secure authentication using JSON Web Tokens (JWT), and access to student-specific dashboard data.
 
 ## Features
-*   **Student Registration**: Seamlessly register new students with comprehensive personal and academic details.
-*   **Student Authentication**: Secure student login using matriculation number, email, or phone number, protected by JWT.
-*   **Biometric Data Integration**: Stores biometric identifiers for future attendance verification mechanisms.
-*   **Flexible Data Model**: Designed with Mongoose schemas for students and classes, allowing for extensible data management.
-*   **JWT-based Authorization**: Implements JSON Web Tokens for secure session management and protecting API routes.
-*   **CORS Enabled**: Configured to handle cross-origin requests, ensuring frontend integration.
-*   **Environment Configuration**: Utilizes `.env` files for secure and flexible environment variable management.
+- **Node.js**: Asynchronous JavaScript runtime for efficient server-side operations.
+- **Express.js**: Fast, unopinionated, minimalist web framework for building the API.
+- **Mongoose**: Elegant MongoDB object modeling for Node.js, managing data schemas and interactions.
+- **MongoDB**: NoSQL database for flexible and scalable data storage.
+- **JSON Web Tokens (JWT)**: Secure, stateless authentication mechanism for API requests.
+- **CORS**: Middleware to enable Cross-Origin Resource Sharing.
+- **Cookie-parser**: Middleware for parsing and managing cookies.
+- **Dotenv**: Environment variable management for secure configuration.
 
 ## Getting Started
 
-To get this API up and running on your local machine, follow these steps.
-
 ### Installation
+To get this project up and running on your local machine, follow these steps:
 
 1.  **Clone the Repository**:
     ```bash
     git clone https://github.com/Mimisax-pixel/school-attendance-biometric-system.git
+    ```
+2.  **Navigate to the Backend Directory**:
+    ```bash
     cd school-attendance-biometric-system/backend
     ```
-
-2.  **Install Dependencies**:
-    Navigate into the `backend` directory and install the required Node.js packages.
+3.  **Install Dependencies**:
     ```bash
     npm install
     ```
 
-3.  **Set Up Environment Variables**:
-    Create a `.env` file in the `backend` directory and configure the necessary variables. An example is provided in the Environment Variables section.
-
-4.  **Start the Server**:
-    You can start the server in development mode (with `nodemon` for auto-restarts) or production mode.
-    ```bash
-    # For development (with hot-reloading)
-    npm run dev
-
-    # For production
-    npm start
-    ```
-    The API will be available at `http://localhost:5000` (or your specified `PORT`).
-
 ### Environment Variables
-Create a `.env` file in the root of the `backend` directory with the following variables:
+Create a `.env` file in the `backend` directory and add the following environment variables:
 
-| Variable                | Example Value                                  | Description                                           |
-| :---------------------- | :--------------------------------------------- | :---------------------------------------------------- |
-| `PORT`                  | `5000`                                         | The port on which the Express server will run.        |
-| `DB_CONNECTION_STRING`  | `mongodb://localhost:27017/school_attendance`  | Connection string for your MongoDB database.          |
-| `JWT_SECRET`            | `your_super_secret_jwt_key_here`               | A secret key used to sign and verify JWTs. Keep this secure. |
-
-## Usage
-Once the server is running, you can interact with the API using tools like Postman, Insomnia, or by integrating it with a frontend application.
-
-To make requests:
-
-1.  **Start the API** as described in the Installation section.
-2.  **Use an API Client** (e.g., Postman) to send HTTP requests to the defined endpoints.
-3.  Ensure your requests include the correct headers (e.g., `Content-Type: application/json` for POST requests).
-
-## Technologies Used
-
-| Technology | Description                                          | Link                                                   |
-| :--------- | :--------------------------------------------------- | :----------------------------------------------------- |
-| Node.js    | JavaScript runtime for server-side execution.        | [nodejs.org](https://nodejs.org/)                      |
-| Express.js | Fast, unopinionated, minimalist web framework for Node.js. | [expressjs.com](https://expressjs.com/)                |
-| Mongoose   | MongoDB object data modeling (ODM) for Node.js.      | [mongoosejs.com](https://mongoosejs.com/)              |
-| MongoDB    | NoSQL document database.                             | [mongodb.com](https://www.mongodb.com/)                |
-| JSON Web Token | For secure, stateless authentication.              | [jwt.io](https://jwt.io/)                              |
-| CORS       | Middleware to enable Cross-Origin Resource Sharing.  | [github.com/expressjs/cors](https://github.com/expressjs/cors) |
-| Dotenv     | Loads environment variables from a `.env` file.      | [github.com/motdotla/dotenv](https://github.com/motdotla/dotenv) |
-| Nodemon    | Utility that monitors for changes in your source and automatically restarts your server. | [nodemon.io](https://nodemon.io/) |
+-   `PORT`: The port number on which the server will run.
+    -   `Example`: `PORT=5000`
+-   `DB_CONNECTION_STRING`: Your MongoDB connection string.
+    -   `Example`: `DB_CONNECTION_STRING=mongodb://localhost:27017/attendance_db`
+-   `JWT_SECRET`: A secret key used for signing and verifying JWTs.
+    -   `Example`: `JWT_SECRET=supersecretkeythatisatleast32characterslong`
 
 ## API Documentation
 
 ### Base URL
-The base URL for all API endpoints is `http://localhost:[PORT]/api/v1`. Replace `[PORT]` with the port your server is running on (e.g., `5000`).
+`/api/v1`
 
 ### Endpoints
 
-#### POST /register/student
+#### POST /api/v1/register/student
 Registers a new student in the system.
 
 **Request**:
@@ -92,96 +58,162 @@ Registers a new student in the system.
   "email": "jane.doe@example.com",
   "phone": "09012345678",
   "department": "Computer Science",
-  "level": "300",
-  "matricNumber": "CST/18/0001",
-  "biometricData": "fingerprint_hash_data_string",
-  "password": "securepassword123" 
+  "level": "200",
+  "matricNumber": "CST/20/0001",
+  "password": "securePassword123",
+  "biometricData": "fingerprint_hash_string_example"
 }
 ```
-**Note**: `password` is optional and defaults to "password123" if not provided. `biometricData` is also optional and defaults to "biometric_placeholder" if not provided, but it's required by the schema eventually.
-
 **Response**:
 ```json
 {
   "message": "Student registered successfully",
   "student": {
-    "fullname": "Jane Doe",
-    "email": "jane.doe@example.com",
-    "phone": "09012345678",
-    "department": "Computer Science",
-    "level": "300",
-    "matricNumber": "CST/18/0001",
-    "biometricData": "fingerprint_hash_data_string",
-    "password": "securepassword123",
-    "_id": "65e23f8c8d3e2a001a1b2c3d",
-    "attendance": [],
-    "createdAt": "2024-03-01T12:00:00.000Z",
-    "__v": 0
+    "id": "65b7d9e2a4f0b2c1d3e4f5a6",
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com"
   }
 }
 ```
-
 **Errors**:
-- `400 Bad Request`: Missing required fields (email, phone, department, level, matricNumber), or a student with the provided email, phone, matric number, or biometric data already exists.
-- `500 Server Error`: An unexpected server-side error occurred during registration.
+-   `400 Bad Request`: All fields are required (if `email`, `phone`, `password`, `department`, `level`, `matricNumber` are missing).
+-   `400 Bad Request`: Student with provided email, phone, matric number, or biometric data already exists.
+-   `500 Internal Server Error`: Server error during registration.
 
-#### POST /login/student
-Authenticates a student using their matriculation number, email, or phone number, along with their password.
+#### POST /api/v1/login/student
+Authenticates a student and issues a JWT token as a cookie.
 
 **Request**:
 ```json
 {
-  "matricNumber": "CST/18/0001", 
-  "password": "securepassword123"
+  "matricNumber": "CST/20/0001",
+  "password": "securePassword123"
 }
 ```
-**Note**: `matricNumber` can be replaced with `email` or `phone` to identify the student.
+*Note: `matricNumber` can also be the student's email or phone number.*
 
 **Response**:
 ```json
 {
   "message": "Login successful",
   "student": {
+    "id": "65b7d9e2a4f0b2c1d3e4f5a6",
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com"
+  }
+}
+```
+*A `token` cookie will be set in the response headers.*
+
+**Errors**:
+-   `400 Bad Request`: matricnumber and password are required.
+-   `404 Not Found`: Student not found.
+-   `401 Unauthorized`: Invalid password.
+-   `500 Internal Server Error`: Server error during login.
+
+#### POST /api/v1/auth/student/check
+Checks if the current session is authenticated based on the presence and validity of the JWT token cookie.
+
+**Request**:
+*(Requires a valid `token` cookie to be sent with the request)*
+*(No request body needed)*
+
+**Response**:
+```json
+{
+  "message": "Authenticated",
+  "isauthenticated": true
+}
+```
+**Errors**:
+-   `401 Unauthorized`: No token provided, authorization denied.
+-   `401 Unauthorized`: Token is not valid.
+
+#### GET /api/v1/student/dashboard
+Retrieves the authenticated student's dashboard data, excluding sensitive information like password and biometric data.
+
+**Request**:
+*(Requires a valid `token` cookie to be sent with the request)*
+*(No request body needed)*
+
+**Response**:
+```json
+{
+  "student": {
+    "_id": "65b7d9e2a4f0b2c1d3e4f5a6",
     "fullname": "Jane Doe",
     "email": "jane.doe@example.com",
     "phone": "09012345678",
     "department": "Computer Science",
-    "level": "300",
-    "matricNumber": "CST/18/0001",
-    "biometricData": "fingerprint_hash_data_string",
-    "password": "securepassword123",
-    "_id": "65e23f8c8d3e2a001a1b2c3d",
+    "level": "200",
+    "matricNumber": "CST/20/0001",
+    "courses": [],
+    "programmes": [],
     "attendance": [],
-    "createdAt": "2024-03-01T12:00:00.000Z",
+    "grades": [],
+    "createdAt": "2024-01-29T10:00:00.000Z",
     "__v": 0
   }
 }
 ```
-A `token` cookie containing the JWT will also be set upon successful login.
-
 **Errors**:
-- `400 Bad Request`: `matricNumber` (or equivalent identifier) and `password` are required.
-- `404 Not Found`: Student not found with the provided identifier.
-- `401 Unauthorized`: Invalid password.
-- `500 Server Error`: An unexpected server-side error occurred during login.
-
-## License
-This project is licensed under the ISC License.
-
-## Author Info
-
-Connect with me:
-
-*   **LinkedIn**: [Your LinkedIn Profile](https://www.linkedin.com/in/yourusername)
-*   **Twitter**: [Your Twitter Profile](https://twitter.com/yourusername)
+-   `401 Unauthorized`: No token provided, authorization denied.
+-   `401 Unauthorized`: Token is not valid.
+-   `404 Not Found`: Student data not found.
+-   `500 Internal Server Error`: Server error.
 
 ---
-[![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Express.js](https://img.shields.io/badge/Express.js-5.x-blue?logo=express&logoColor=white)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-4.x%2B-green?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Mongoose](https://img.shields.io/badge/Mongoose-8.x-red?logo=mongoose&logoColor=white)](https://mongoosejs.com/)
-[![JWT](https://img.shields.io/badge/JSON%20Web%20Token-Auth-blueviolet?logo=json-web-tokens&logoColor=white)](https://jwt.io/)
-[![CORS](https://img.shields.io/badge/CORS-Enabled-orange)](https://github.com/expressjs/cors)
-[![Project Status](https://img.shields.io/badge/Status-Developing-yellowgreen)](https://github.com/Mimisax-pixel/school-attendance-biometric-system)
 
+## Usage
+Once the server is running, you can interact with the API endpoints using tools like Postman, Insomnia, or cURL.
+
+1.  **Start the Server**:
+    To run the server in development mode (with `nodemon` for auto-restarts):
+    ```bash
+    npm run dev
+    ```
+    Or, for a production-like environment:
+    ```bash
+    npm start
+    ```
+    The server will typically run on `http://localhost:5000` (or your configured `PORT`).
+
+2.  **Register a Student**:
+    Send a `POST` request to `http://localhost:5000/api/v1/register/student` with the required student data in the request body (as shown in the API documentation).
+
+3.  **Log In a Student**:
+    Send a `POST` request to `http://localhost:5000/api/v1/login/student` with the student's credentials. Upon successful login, the server will set an `httpOnly` cookie named `token` in your client's browser (or HTTP client).
+
+4.  **Access Protected Routes**:
+    For endpoints like `/api/v1/student/dashboard` or `/api/v1/auth/student/check`, ensure that the `token` cookie obtained during login is sent with subsequent requests. Most HTTP clients/browsers handle cookies automatically.
+
+## Technologies Used
+
+| Technology         | Description                                                                     | Link                                                              |
+| :----------------- | :------------------------------------------------------------------------------ | :---------------------------------------------------------------- |
+| **Node.js**        | JavaScript runtime built on Chrome's V8 JavaScript engine.                      | [https://nodejs.org/](https://nodejs.org/)                        |
+| **Express.js**     | A minimalist web framework for Node.js.                                         | [https://expressjs.com/](https://expressjs.com/)                  |
+| **Mongoose**       | MongoDB object modeling tool designed to work in an asynchronous environment.   | [https://mongoosejs.com/](https://mongoosejs.com/)                |
+| **MongoDB**        | A document-oriented NoSQL database.                                             | [https://www.mongodb.com/](https://www.mongodb.com/)              |
+| **JSON Web Token** | An open standard for securely transmitting information between parties as a JSON object. | [https://jwt.io/](https://jwt.io/)                                |
+| **CORS**           | Node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options. | [https://www.npmjs.com/package/cors](https://www.npmjs.com/package/cors) |
+| **Dotenv**         | Loads environment variables from a `.env` file.                                 | [https://www.npmjs.com/package/dotenv](https://www.npmjs.com/package/dotenv) |
+
+## License
+This project is developed under standard copyright. For licensing details, please contact the author.
+
+## Author Info
+**Mimisax-pixel**
+
+-   LinkedIn: [@mimisax-pixel](https://www.linkedin.com/in/mimisax-pixel) *(Placeholder, replace with actual link)*
+-   Twitter: [@mimisax-pixel_dev](https://twitter.com/mimisax-pixel_dev) *(Placeholder, replace with actual link)*
+
+---
+
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green?style=flat-square&logo=node.js)](https://nodejs.org/en/)
+[![Express.js](https://img.shields.io/badge/Express.js-5.x-blue?style=flat-square&logo=express)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.x-green?style=flat-square&logo=mongodb)](https://www.mongodb.com/)
+[![Mongoose](https://img.shields.io/badge/Mongoose-8.x-red?style=flat-square&logo=mongoose)](https://mongoosejs.com/)
+[![JWT](https://img.shields.io/badge/Auth-JWT-orange?style=flat-square&logo=json-web-tokens)](https://jwt.io/)
+[![License: Custom](https://img.shields.io/badge/License-Custom-lightgrey.svg)](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
 [![Readme was generated by Dokugen](https://img.shields.io/badge/Readme%20was%20generated%20by-Dokugen-brightgreen)](https://www.npmjs.com/package/dokugen)
