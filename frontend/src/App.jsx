@@ -9,6 +9,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import BiometricAttendance from "./Pages/BiometricAttendance";
 import CourseManagement from "./Pages/CourseManagement";
 import Lecturers from "./Pages/Lecturers";
+import AdministrativeLog from "./Pages/AdministrativeLog";
 import StudentRegForm from "./Pages/Admin/StudentRegForm";
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
         <Route path="/biometricAttendance" element={<BiometricAttendance />} />
         <Route path="/courseManagement" element={<CourseManagement />} />
         <Route path="/biometricAttendance" element={<BiometricAttendance />} />
+        <Route path="/lecturers" element={<Lecturers />} />
+        <Route path="/administrativeLog" element={<AdministrativeLog />} />
         <Route path="/lecturers" element={<Lecturers/>} />
         <Route path="/admin/register/student" element={<StudentRegForm/>}></Route>
       </Routes>

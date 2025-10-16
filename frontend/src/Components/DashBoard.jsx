@@ -2,7 +2,7 @@ import React from "react";
 
 const Dashboard = () => {
   return (
-    <div className="ml-[300px] p-6 bg-gray-50 flex-1 overflow-auto pt-10">
+    <div className="lg:ml-[300px] p-6 bg-gray-50 flex-1 overflow-auto pt-10">
       <h2 className="text-4xl font-bold mb-6">Admin Dashboard</h2>
 
       <div className="grid grid-cols-4 gap-6 mb-8">

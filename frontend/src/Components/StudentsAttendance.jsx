@@ -15,10 +15,10 @@ const StudentsAttendance = () => {
           <a href="#" className="text-blue-600 font-medium">
             Attendance
           </a>
-          <a href="#" className="hover:text-black">
+          <a href="/administrativeLog" className="hover:text-black">
             Performance
           </a>
-          <a href="#" className="hover:text-black">
+          <a href="" className="hover:text-black">
             Reports
           </a>
         </nav>
