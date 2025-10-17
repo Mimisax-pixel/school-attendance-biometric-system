@@ -2,7 +2,11 @@ import mongoose, { mongo } from "mongoose";
 
 let attendanceSchema = new mongoose.Schema({
   courseTitle: String,
-  courseCode: String,
+  courseCode: {
+    type: String,
+    unique: true,
+    required: [true, "Course code is required"],
+  },
   timestamp: { type: Date, default: Date.now },
   status: String, // e.g., "present", "absent", "late"
   attendedclasses: Number,
