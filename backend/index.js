@@ -6,6 +6,10 @@ import Student from "./routes/students/register.js";
 import loginStudent from "./routes/students/login.js";
 import cookieParser from 'cookie-parser';
 import dashboardRoutes from './routes/students/dashboard.js';
+import adminRoutes from './routes/admin/register.js';
+import admindashboard from "./routes/admin/dashboard.js"
+import courseRouter from "./routes/admin/courses.js"
+
 
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECTION_STRING).then(() => {
@@ -15,10 +19,10 @@ mongoose.connect(process.env.DB_CONNECTION_STRING).then(() => {
 })
 
 
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 let apiVersion = '/api/v1';
+
 
 // Middleware
 
@@ -29,6 +33,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(apiVersion, Student);
 app.use(apiVersion, loginStudent);
 app.use(apiVersion, dashboardRoutes);
+app.use(apiVersion, adminRoutes);
+app.use(apiVersion, admindashboard)
+app.use(apiVersion, courseRouter)
 
 // Basic route to check server status
 
