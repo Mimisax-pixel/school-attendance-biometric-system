@@ -4,7 +4,6 @@ let attendanceSchema = new mongoose.Schema({
   courseId: String,
   courseCode: String,
   status: String, 
-  attendedclasses: Number,
   studentId: String,
   level: String,
   department: String,
@@ -58,10 +57,10 @@ let studentSchema = new mongoose.Schema({
   },
   biometricData: {
     type: String,
-    // unique: true,rs
+    // unique: true,
     required: [true, "Biometric data is required"],
-    // unique: true,rs
   },
+  rateOfClassesAttended: Number,
   createdAt: { type: Date, default: Date.now },
 });
 export let attendance = new mongoose.model("Attendance", attendanceSchema);

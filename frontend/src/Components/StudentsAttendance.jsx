@@ -2,8 +2,8 @@ import React from 'react'
 
 const StudentsAttendance = () => {
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
-      <header className="bg-white shadow flex items-center justify-between px-6 py-4">
+    <div className="min-h-screen w-9/12 bg-gray-100 font-sans">
+      {/* <header className="bg-white shadow flex items-center justify-between px-6 py-4">
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 bg-blue-600 rounded"></div>
           <span className="font-bold text-lg">EduTrack</span>
@@ -28,7 +28,7 @@ const StudentsAttendance = () => {
           </button>
           <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
         </div>
-      </header>
+      </header> */}
 
       <main className="p-8">
         <h1 className="text-2xl font-semibold mb-6">Biometric Attendance</h1>
