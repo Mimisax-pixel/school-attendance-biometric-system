@@ -1,82 +1,92 @@
-# School Attendance Biometric System API 📚
+# **School Attendance Biometric System API** 🔐
 
 ## Overview
-This project is a robust backend API for a School Attendance Biometric System, built with Node.js, Express, and Mongoose. It facilitates student and administrative operations, including user authentication, student registration, course management, and comprehensive dashboard analytics.
+This project provides a robust backend API for a school attendance and management system. Built with **Node.js**, **Express.js**, and **MongoDB (Mongoose)**, it features comprehensive user authentication (Admin, Lecturer, Student), secure role-based access control, and modules for managing students, lecturers, and courses, with provisions for biometric attendance tracking.
 
 ## Features
-✨ Seamless User Authentication: Secure login and registration for both students and administrators using JWT.
-⚙️ Biometric Integration Ready: Designed to support biometric data for enhanced attendance tracking.
-📊 Dynamic Dashboards: Provides insightful data for students (personal info) and administrators (total students, lecturers, courses, attendance averages).
-📚 Course Management: CRUD operations for courses, enabling administrators to manage course details efficiently.
-🔒 Role-Based Access Control: Middleware ensures appropriate access levels for authenticated student and admin users.
-💾 MongoDB Integration: Utilizes Mongoose for flexible and scalable data persistence.
-
-## Technologies Used
-
-| Technology         | Description                                                                  | Version   | Link                                                 |
-| :----------------- | :--------------------------------------------------------------------------- | :-------- | :--------------------------------------------------- |
-| **Node.js**        | JavaScript runtime for server-side development.                              | ^20.x     | [nodejs.org](https://nodejs.org/en/)                 |
-| **Express.js**     | Fast, unopinionated, minimalist web framework for Node.js.                   | ^5.1.0    | [expressjs.com](https://expressjs.com/)              |
-| **Mongoose**       | MongoDB object modeling for Node.js.                                         | ^8.19.1   | [mongoosejs.com](https://mongoosejs.com/)            |
-| **MongoDB**        | NoSQL database for flexible data storage.                                    | ^6.20.0   | [mongodb.com](https://www.mongodb.com/)              |
-| **JSON Web Tokens**| For secure authentication and authorization.                                 | ^9.0.2    | [jwt.io](https://jwt.io/)                            |
-| **Dotenv**         | Loads environment variables from a `.env` file.                              | ^17.2.3   | [npmjs.com/package/dotenv](https://www.npmjs.com/package/dotenv) |
-| **CORS**           | Middleware to enable Cross-Origin Resource Sharing.                          | ^2.8.5    | [npmjs.com/package/cors](https://www.npmjs.com/package/cors) |
-| **Cookie Parser**  | Middleware for parsing HTTP request cookies.                                 | ^1.4.7    | [npmjs.com/package/cookie-parser](https://www.npmjs.com/package/cookie-parser) |
-| **Nodemon**        | Utility that monitors for changes in your source and automatically restarts your server. | ^3.x      | [npmjs.com/package/nodemon](https://www.npmjs.com/package/nodemon) |
-
+- **User Authentication**: Secure login and registration flows for students, lecturers, and administrators.
+- **Role-Based Access Control**: Middleware ensures that users can only access endpoints and data relevant to their assigned roles.
+- **Student Management**: Facilitates the registration of new students, retrieval of student records, and tracking of attendance rates.
+- **Course Management**: Allows administrators to add, view, edit, and delete courses, including details like course title, code, department, and credit units.
+- **Lecturer Management**: Provides functionality for registering new lecturers and assigning them to specific departments and courses.
+- **Admin Dashboard**: Offers a centralized overview with key statistics, including total students, lecturers, courses, and attendance analytics broken down by academic level.
+- **Biometric Integration Placeholder**: Designed with a structure to easily integrate actual biometric data for streamlined attendance recording.
 
 ## Getting Started
 
 ### Installation
-To get a local copy up and running, follow these simple steps.
+To set up and run the project locally, follow these steps:
 
 1.  **Clone the Repository**:
     ```bash
     git clone https://github.com/Mimisax-pixel/school-attendance-biometric-system.git
+    ```
+2.  **Navigate to the Backend Directory**:
+    ```bash
     cd school-attendance-biometric-system/backend
     ```
-2.  **Install Dependencies**:
+3.  **Install Dependencies**:
     ```bash
     npm install
     ```
-3.  **Set up Environment Variables**:
-    Create a `.env` file in the `backend` directory and add the required variables as specified below.
+4.  **Create `.env` File**:
+    Create a `.env` file in the `backend` directory based on the environment variables section below.
 
 ### Environment Variables
-All required environment variables must be defined in a `.env` file in the root of the `backend` directory.
+The following environment variables are required to run the application:
 
--   `DB_CONNECTION_STRING`: MongoDB connection string.
-    -   Example: `DB_CONNECTION_STRING=mongodb+srv://user:password@cluster.mongodb.net/school_attendance?retryWrites=true&w=majority`
--   `PORT`: The port the server will run on.
-    -   Example: `PORT=5000`
--   `JWT_SECRET`: A secret key for signing JWT tokens.
-    -   Example: `JWT_SECRET=your_super_secret_jwt_key_here`
+-   `PORT`: The port number the server will listen on (e.g., `5000`).
+-   `DB_CONNECTION_STRING`: Your MongoDB connection URI (e.g., `mongodb+srv://user:password@cluster.mongodb.net/dbname`).
+-   `JWT_SECRET`: A strong secret key for signing JWT tokens (e.g., `supersecretjwtkey123`).
+
+**Example `.env` file:**
+```
+PORT=5000
+DB_CONNECTION_STRING=mongodb+srv://user:password@cluster.abcde.mongodb.net/school_attendance?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_jwt_key_here
+```
 
 ## Usage
-To start the server, navigate to the `backend` directory and run one of the following commands:
 
-**Development Mode (with Nodemon for auto-restarts):**
-```bash
-npm run dev
-```
+After completing the installation and setting up your environment variables, you can start the server:
 
-**Production Mode:**
-```bash
-npm start
-```
-The API will then be accessible at `http://localhost:<PORT>` (e.g., `http://localhost:5000`).
+1.  **Start the Server in Development Mode**:
+    ```bash
+    npm run dev
+    ```
+    The server will start on the `PORT` specified in your `.env` file (defaulting to 5000).
+
+2.  **Access the API**:
+    The API will be available at `http://localhost:[PORT]/api/v1`. You can then use tools like Postman, Insomnia, or your frontend application to interact with the documented endpoints below.
+
+**Authentication Flow**:
+*   **Students, Lecturers, and Admins** register and log in via their respective endpoints.
+*   Upon successful login, a JWT token is issued as an `httpOnly` cookie.
+*   This cookie must be sent with subsequent authenticated requests (e.g., to dashboard or protected resource endpoints).
+*   Role-based access control ensures that only authorized users can perform certain actions. For instance, only an admin can register new lecturers or manage courses.
+
+## Technologies Used
+
+| Technology    | Description                                       |
+| :------------ | :------------------------------------------------ |
+| **Node.js**   | A JavaScript runtime built on Chrome's V8 engine. |
+| **Express.js**| A fast, unopinionated, minimalist web framework for Node.js. |
+| **Mongoose**  | An elegant MongoDB object modeling for Node.js. |
+| **MongoDB**   | A NoSQL, document-oriented database.             |
+| **JWT**       | JSON Web Tokens for secure authentication.       |
+| **Dotenv**    | Loads environment variables from a `.env` file.  |
+| **CORS**      | Middleware for enabling Cross-Origin Resource Sharing. |
+| **Cookie-parser** | Parse Cookie header and populate `req.cookies`. |
 
 ## API Documentation
 
 ### Base URL
-`https://your-domain.com/api/v1` (replace `your-domain.com` with `localhost:<PORT>` for local development)
+`http://localhost:[PORT]/api/v1`
 
 ### Endpoints
 
 #### `POST /api/v1/register/student`
 Registers a new student.
-
 **Request**:
 ```json
 {
@@ -85,67 +95,56 @@ Registers a new student.
   "phone": "09012345678",
   "department": "Computer Science",
   "level": "200",
-  "matricNumber": "CST/2020/001",
-  "password": "securepassword123",
-  "biometricData": "fingerprint_hash_string_or_image_data"
+  "matricNumber": "CST/20/001",
+  "password": "SecurePassword123",
+  "biometricData": "fingerprint_hash_string_or_id" 
 }
 ```
-
 **Response**:
 ```json
 {
   "message": "Student registered successfully",
   "student": {
-    "id": "60c72b2f9b1e8b0015f8a3b1",
+    "id": "60e1b1b0e2d1d2001c8c8c8c",
     "name": "Jane Doe",
     "email": "jane.doe@example.com"
   }
 }
 ```
-
 **Errors**:
--   `400 Bad Request`: All fields are required.
--   `400 Bad Request`: Student with provided email, phone, matric number, or biometric data already exists.
--   `500 Internal Server Error`: Server error.
+- `400 Bad Request`: All fields are required. Student with provided email, phone, matric number, or biometric data already exists.
+- `500 Internal Server Error`: Server error during registration.
 
 #### `POST /api/v1/login/student`
 Authenticates a student and issues a JWT token.
-
 **Request**:
 ```json
 {
-  "matricNumber": "CST/2020/001",
-  "password": "securepassword123"
+  "matricNumber": "CST/20/001",
+  "password": "SecurePassword123"
 }
 ```
-*(Note: `matricNumber` can also be `email` or `phone`)*
-
 **Response**:
 ```json
 {
   "message": "Login successful",
   "student": {
-    "id": "60c72b2f9b1e8b0015f8a3b1",
+    "id": "60e1b1b0e2d1d2001c8c8c8c",
     "name": "Jane Doe",
     "email": "jane.doe@example.com"
   },
   "role": "student"
 }
 ```
-*(Sets `token` cookie)*
-
 **Errors**:
--   `400 Bad Request`: matricnumber and password are required.
--   `404 Not Found`: Student not found.
--   `401 Unauthorized`: Invalid password.
--   `500 Internal Server Error`: Server error.
+- `400 Bad Request`: Matric number/email/phone and password are required.
+- `401 Unauthorized`: Invalid password.
+- `404 Not Found`: Student not found.
+- `500 Internal Server Error`: Server error during login.
 
 #### `GET /api/v1/auth/student/check`
-Checks if the student's JWT token is valid and active.
-
-**Request**:
-*(Requires valid JWT token in cookie)*
-
+Checks if the student is authenticated (requires JWT cookie).
+**Request**: (No body)
 **Response**:
 ```json
 {
@@ -153,323 +152,363 @@ Checks if the student's JWT token is valid and active.
   "isauthenticated": true
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
 
 #### `GET /api/v1/auth/student/dashboard`
-Retrieves dashboard data for the authenticated student.
-
-**Request**:
-*(Requires valid JWT token in cookie)*
-
+Retrieves authenticated student's dashboard data (requires JWT cookie).
+**Request**: (No body)
 **Response**:
 ```json
 {
   "student": {
-    "_id": "60c72b2f9b1e8b0015f8a3b1",
+    "_id": "60e1b1b0e2d1d2001c8c8c8c",
     "fullname": "Jane Doe",
     "email": "jane.doe@example.com",
     "phone": "09012345678",
     "department": "Computer Science",
     "level": "200",
-    "matricNumber": "CST/2020/001",
+    "matricNumber": "CST/20/001",
     "courses": [],
     "programmes": [],
-    "createdAt": "2023-01-01T12:00:00.000Z"
+    "createdAt": "2023-01-01T00:00:00.000Z",
+    "__v": 0
   }
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
--   `404 Not Found`: Student not data not found.
--   `500 Internal Server Error`: Server error.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `404 Not Found`: Student data not found.
+- `500 Internal Server Error`: Server error.
 
 #### `POST /api/v1/register/admin`
-Registers a new administrator.
-
+Registers a new admin user.
 **Request**:
 ```json
 {
   "fullname": "Admin User",
   "email": "admin@example.com",
-  "password": "adminsecurepassword",
+  "password": "AdminSecurePassword",
   "securityquestion": "What is your favorite color?",
   "securityanswer": "Blue"
 }
 ```
-
 **Response**:
 ```json
 {
   "message": "Admin registered successfully",
-  "adminId": "60c72b2f9b1e8b0015f8a3b2"
+  "adminId": "60e1b1b0e2d1d2001c8c8c8d"
 }
 ```
-
 **Errors**:
--   `400 Bad Request`: Admin with this email already exists.
--   `500 Internal Server Error`: Server error.
+- `400 Bad Request`: Admin with this email already exists.
+- `500 Internal Server Error`: Server error.
 
 #### `POST /api/v1/login/admin`
-Authenticates an administrator and issues a JWT token.
-
+Authenticates an admin user and issues a JWT token.
 **Request**:
 ```json
 {
   "email": "admin@example.com",
-  "password": "adminsecurepassword"
+  "password": "AdminSecurePassword"
 }
 ```
-
 **Response**:
 ```json
 {
   "message": "Admin logged in successfully",
   "isauthenticated": true,
-  "adminId": "60c72b2f9b1e8b0015f8a3b2",
+  "adminId": "60e1b1b0e2d1d2001c8c8c8d",
   "role": "admin"
 }
 ```
-*(Sets `token` cookie)*
-
 **Errors**:
--   `404 Not Found`: Admin not found.
--   `401 Unauthorized`: Incorrect password.
--   `500 Internal Server Error`: Server error.
+- `401 Unauthorized`: Incorrect password.
+- `404 Not Found`: Admin not found.
+- `500 Internal Server Error`: Server error.
 
 #### `GET /api/v1/auth/admin/dashboard`
-Retrieves comprehensive dashboard analytics for administrators.
-
-**Request**:
-*(Requires valid admin JWT token in cookie)*
-
+Retrieves administrative dashboard statistics (requires JWT cookie, role: admin).
+**Request**: (No body)
 **Response**:
 ```json
 {
   "status": "success",
-  "totalStudents": 150,
-  "totalLecturers": 20,
-  "totalCourses": 30,
+  "totalStudents": 1500,
+  "totalLecturers": 50,
+  "totalCourses": 120,
   "totalAttendaceRecordsAverage": [
-    { "level": 100, "average": 75.5 },
-    { "level": 200, "average": 82.1 },
-    { "level": 300, "average": 68.9 }
+    { "level": 100, "average": 85.5 },
+    { "level": 200, "average": 78.2 },
+    { "level": 300, "average": 91.0 },
+    { "level": 400, "average": 70.1 }
   ],
-  "totalClassesHeld": 1200,
+  "totalClassesHeld": 2500,
   "totalCoursesHeldAverage": [
-    { "level": 100, "total": 300 },
-    { "level": 200, "total": 450 },
-    { "level": 300, "total": 280 }
+    { "level": 100, "total": 600 },
+    { "level": 200, "total": 700 },
+    { "level": 300, "total": 800 },
+    { "level": 400, "total": 400 }
   ]
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
--   `500 Internal Server Error`: Server error.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `500 Internal Server Error`: Server error.
+
+#### `POST /api/v1/lecturer/register`
+Registers a new lecturer (requires JWT cookie, role: admin).
+**Request**:
+```json
+{
+  "email": "lecturer@example.com",
+  "password": "LecturerPass123",
+  "fullName": "Dr. John Smith",
+  "department": "Computer Science"
+}
+```
+**Response**:
+```json
+{
+  "message": "Lecturer registered successfully"
+}
+```
+**Errors**:
+- `400 Bad Request`: Missing required fields: email, password, fullName, and department are required.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `409 Conflict`: Lecturer already exists with this email.
+- `500 Internal Server Error`: Failed to register lecturer.
+
+#### `POST /api/v1/lecturer/login`
+Authenticates a lecturer and issues a JWT token.
+**Request**:
+```json
+{
+  "email": "lecturer@example.com",
+  "password": "LecturerPass123"
+}
+```
+**Response**:
+```json
+{
+  "message": "Logged in successfully",
+  "user": {
+    "id": "60e1b1b0e2d1d2001c8c8c8e",
+    "email": "lecturer@example.com",
+    "name": "Dr. John Smith",
+    "department": "Computer Science"
+  },
+  "role": "lecturer"
+}
+```
+**Errors**:
+- `400 Bad Request`: Please provide both email and password.
+- `401 Unauthorized`: Invalid login credentials.
+- `500 Internal Server Error`: Failed to process login request or error during login process.
 
 #### `GET /api/v1/courses`
-Retrieves all courses.
-
-**Request**:
-*(Requires valid admin JWT token in cookie)*
-
+Retrieves all courses (requires JWT cookie).
+**Request**: (No body)
 **Response**:
 ```json
 {
   "status": "success",
   "courses": [
     {
-      "_id": "60c72b2f9b1e8b0015f8a3b3",
+      "_id": "60e1b1b0e2d1d2001c8c8c8f",
       "courseTitle": "Introduction to Programming",
-      "courseCode": "CSC101",
+      "courseCode": "CST101",
       "department": "Computer Science",
       "creditunits": 3,
       "level": "100",
       "semester": "Harmattan",
-      "createdAt": "2023-01-01T12:00:00.000Z",
+      "createdAt": "2023-01-01T00:00:00.000Z",
       "numberOfclassesheld": []
     }
   ]
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
--   `500 Internal Server Error`: Something went wrong.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `500 Internal Server Error`: Something went wrong.
 
 #### `GET /api/v1/courses/:course_code`
-Retrieves a specific course by its code.
-
-**Request**:
-*(Requires valid admin JWT token in cookie)*
-
-**Path Parameters**:
--   `course_code`: The unique code of the course (e.g., `CSC101`).
-
+Retrieves a specific course by its code (requires JWT cookie).
+**Request**: (Path parameter `course_code`)
 **Response**:
 ```json
 {
   "status": "success",
   "courses": [
     {
-      "_id": "60c72b2f9b1e8b0015f8a3b3",
+      "_id": "60e1b1b0e2d1d2001c8c8c8f",
       "courseTitle": "Introduction to Programming",
-      "courseCode": "CSC101",
+      "courseCode": "CST101",
       "department": "Computer Science",
       "creditunits": 3,
       "level": "100",
       "semester": "Harmattan",
-      "createdAt": "2023-01-01T12:00:00.000Z",
+      "createdAt": "2023-01-01T00:00:00.000Z",
       "numberOfclassesheld": []
     }
   ]
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
--   `500 Internal Server Error`: Something went wrong.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `500 Internal Server Error`: Something went wrong.
 
 #### `POST /api/v1/course`
-Adds a new course to the system.
-
+Adds a new course (requires JWT cookie, role: admin or lecturer).
 **Request**:
-*(Requires valid admin JWT token in cookie)*
 ```json
 {
   "courseTitle": "Data Structures and Algorithms",
-  "courseCode": "CSC205",
+  "courseCode": "CST202",
   "department": "Computer Science",
   "creditunits": 4,
   "level": "200",
   "semester": "Rain",
-  "lecturerId": "60c72b2f9b1e8b0015f8a3b9"
+  "lecturerId": "60e1b1b0e2d1d2001c8c8c8e"
 }
 ```
-
 **Response**:
 ```json
 {
   "message": "courses registered successfully",
   "addNewCourse": {
     "courseTitle": "Data Structures and Algorithms",
-    "courseCode": "CSC205",
+    "courseCode": "CST202",
     "department": "Computer Science",
     "creditunits": 4,
     "level": "200",
     "semester": "Rain",
-    "lecturerId": "60c72b2f9b1e8b0015f8a3b9",
-    "createdAt": "2023-01-01T12:00:00.000Z",
-    "numberOfclassesheld": [],
-    "_id": "60c72b2f9b1e8b0015f8a3ba"
+    "lecturerId": "60e1b1b0e2d1d2001c8c8c8e",
+    "_id": "60e1b1b0e2d1d2001c8c8c90",
+    "createdAt": "2023-01-01T00:00:00.000Z",
+    "numberOfclassesheld": []
   }
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
--   `500 Internal Server Error`: failed to save coourse credentials.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `500 Internal Server Error`: Failed to save course credentials.
 
 #### `PATCH /api/v1/courses/edit`
-Updates an existing course.
-
+Updates an existing course (requires JWT cookie, role: admin or lecturer).
 **Request**:
-*(Requires valid admin JWT token in cookie)*
 ```json
 {
-  "course_code": "CSC101",
+  "course_code": "CST202",
   "updatedCourseInfo": {
-    "courseTitle": "Introduction to Programming (Revised)",
-    "creditunits": 4
+    "courseTitle": "Advanced Data Structures",
+    "creditunits": 5
   }
 }
 ```
-
 **Response**:
 ```json
 {
   "status": "success",
   "message": "Course updated successfully",
   "course": {
-    "_id": "60c72b2f9b1e8b0015f8a3b3",
-    "courseTitle": "Introduction to Programming (Revised)",
-    "courseCode": "CSC101",
+    "_id": "60e1b1b0e2d1d2001c8c8c90",
+    "courseTitle": "Advanced Data Structures",
+    "courseCode": "CST202",
     "department": "Computer Science",
-    "creditunits": 4,
-    "level": "100",
-    "semester": "Harmattan",
-    "createdAt": "2023-01-01T12:00:00.000Z",
+    "creditunits": 5,
+    "level": "200",
+    "semester": "Rain",
+    "lecturerId": "60e1b1b0e2d1d2001c8c8c8e",
+    "createdAt": "2023-01-01T00:00:00.000Z",
     "numberOfclassesheld": []
   }
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
--   `400 Bad Request`: Course code and updated course information are required.
--   `404 Not Found`: Course not found.
--   `500 Internal Server Error`: Something went wrong.
+- `400 Bad Request`: Course code and updated course information are required.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `404 Not Found`: Course not found.
+- `500 Internal Server Error`: Something went wrong.
 
 #### `DELETE /api/v1/courses/:courseid`
-Deletes a course by its course code.
-
-**Request**:
-*(Requires valid admin JWT token in cookie)*
-
-**Path Parameters**:
--   `courseid`: The `courseCode` of the course to be deleted (e.g., `CSC101`).
-
+Deletes a course by its course code (requires JWT cookie, role: admin or lecturer).
+**Request**: (Path parameter `courseid` which maps to `courseCode`)
 **Response**:
 ```json
 {
   "status": "success",
-  "message": "Course with code CSC101 has been deleted successfully"
+  "message": "Course with code CST202 has been deleted successfully"
 }
 ```
-
 **Errors**:
--   `401 Unauthorized`: No token provided, authorization denied.
--   `401 Unauthorized`: Token is not valid.
--   `400 Bad Request`: Course code is required to delete a course.
--   `404 Not Found`: Course not found.
--   `500 Internal Server Error`: Something went wrong.
+- `400 Bad Request`: Course code is required to delete a course.
+- `401 Unauthorized`: No token provided, authorization denied, or token is not valid.
+- `404 Not Found`: Course not found.
+- `500 Internal Server Error`: Something went wrong.
+
+#### `GET /api/v1/attendance-records`
+Retrieves student records with optional filtering and pagination.
+**Request**: (Query parameters: `studentId`, `page`, `department`, `level`, `limit`)
+**Example Query**: `/api/v1/attendance-records?department=Computer%20Science&level=200&page=0&limit=10`
+**Response**:
+```json
+{
+  "total": 50,
+  "page": 0,
+  "limit": 10,
+  "results": [
+    {
+      "_id": "60e1b1b0e2d1d2001c8c8c8c",
+      "fullname": "Jane Doe",
+      "matricNumber": "CST/20/001",
+      "department": "Computer Science",
+      "rateOfClassesAttended": 85
+    },
+    {
+      "_id": "60e1b1b0e2d1d2001c8c8c91",
+      "fullname": "John Mark",
+      "matricNumber": "CST/20/002",
+      "department": "Computer Science",
+      "rateOfClassesAttended": 75
+    }
+  ]
+}
+```
+**Errors**:
+- `500 Internal Server Error`: Internal server error.
 
 ## Contributing
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-To contribute:
-1.  ✨ Fork the project.
-2.  ⚙️ Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
-3.  ✏️ Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
-4.  ⬆️ Push to the Branch (`git push origin feature/AmazingFeature`).
-5.  🤝 Open a Pull Request.
+We welcome contributions to enhance this School Attendance Biometric System! To contribute:
+
+-   ⭐ **Fork the repository**.
+-   🌿 **Create a new branch** for your feature or bug fix (`git checkout -b feature/your-feature-name`).
+-   ✍️ **Make your changes** and ensure your code adheres to the project's style.
+-   🧪 **Write and run tests** (if applicable) to ensure functionality.
+-   ➕ **Commit your changes** with clear and concise messages.
+-   ⬆️ **Push your branch** to your forked repository.
+-   🤝 **Open a Pull Request** to the `main` branch of the original repository.
+
+Please ensure your pull request clearly describes the problem it solves or the feature it adds.
 
 ## License
-Distributed under the MIT License. See `LICENSE` for more information. (Note: No LICENSE file was found in the provided directory structure, so this is a placeholder for standard practice.)
+
+This project is licensed under the MIT License.
 
 ## Author Info
 
--   **Name**: [Your Name]
+-   **Name**: [Your Name Here]
 -   **LinkedIn**: [Your LinkedIn Profile]
 -   **Twitter**: [Your Twitter Handle]
 
 ---
 
-### Badges
-[![Node.js](https://img.shields.io/badge/Node.js-18.x-green?style=flat&logo=node.js)](https://nodejs.org/)
-[![Express.js](https://img.shields.io/badge/Express.js-5.x-blue?style=flat&logo=express)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-4.x-brightgreen?style=flat&logo=mongodb)](https://www.mongodb.com/)
-[![Mongoose](https://img.shields.io/badge/Mongoose-8.x-red?style=flat&logo=mongoose)](https://mongoosejs.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-5.x-blue?logo=express&logoColor=white)](https://expressjs.com/)
+[![Mongoose](https://img.shields.io/badge/Mongoose-8.x-red?logo=mongodb&logoColor=white)](https://mongoosejs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.x-4EA94B?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![JWT](https://img.shields.io/badge/JWT-Authentication-purple?logo=json-web-tokens&logoColor=white)](https://jwt.io/)
+[![CORS](https://img.shields.io/badge/CORS-Middleware-orange)](https://www.npmjs.com/package/cors)
+[![Dotenv](https://img.shields.io/badge/Dotenv-Config-yellowgreen)](https://www.npmjs.com/package/dotenv)
 [![Readme was generated by Dokugen](https://img.shields.io/badge/Readme%20was%20generated%20by-Dokugen-brightgreen)](https://www.npmjs.com/package/dokugen)
