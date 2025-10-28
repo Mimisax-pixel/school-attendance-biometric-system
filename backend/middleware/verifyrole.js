@@ -9,7 +9,9 @@ const isRole = (routerole) => {
 
     // If there's no authenticated user attached, respond 401 (unauthenticated)
     if (!user || typeof user.role !== "string") {
-      return res.status(401).json({ error: "Authentication required" });
+      return res
+        .status(401)
+        .json({ status: "failed", error: "Authentication required" });
     }
 
     const { role } = user;
@@ -18,7 +20,9 @@ const isRole = (routerole) => {
     }
 
     // Authenticated but not allowed
-    return res.status(403).json({ error: "Forbidden: insufficient role" });
+    return res
+      .status(403)
+      .json({ status: "failed", error: "Forbidden: insufficient role" });
   };
 };
 

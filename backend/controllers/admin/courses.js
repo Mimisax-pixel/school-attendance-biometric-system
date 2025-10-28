@@ -36,12 +36,14 @@ export async function addNewCourse(req, res) {
     });
     await addNewCourse.save();
     res.send({
+      status: "success",
       message: "courses registered successfully",
       addNewCourse,
     });
   } catch (err) {
     console.log(err);
     res.send({
+      status: "failed",
       message: "failed to save coourse credentials",
       eror: err.message,
     });
@@ -54,6 +56,7 @@ export async function editCourses(req, res) {
 
     if (!course_code || !updatedCourseInfo) {
       return res.status(400).json({
+        status: "failed",
         message: "Course code and updated course information are required",
       });
     }
@@ -66,6 +69,7 @@ export async function editCourses(req, res) {
 
     if (!course) {
       return res.status(404).json({
+        status: "failed",
         message: "Course not found",
       });
     }
@@ -91,6 +95,7 @@ export async function deleteCourse(req, res) {
 
     if (!course_code) {
       return res.status(400).json({
+        status: "failed",
         message: "Course code is required to delete a course",
       });
     }
@@ -99,6 +104,7 @@ export async function deleteCourse(req, res) {
 
     if (!course) {
       return res.status(404).json({
+        status: "failed",
         message: "Course not found",
       });
     }
