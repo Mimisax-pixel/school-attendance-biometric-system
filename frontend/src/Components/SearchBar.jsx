@@ -1,7 +1,5 @@
-import React from "react";
-import { useState } from "react";
-import { ChevronDown, MoreVertical, MoreVerticalIcon, Search, TrendingDownIcon } from "lucide-react"; // Import the icon from lucide-react
-
+import React, { useState } from "react";
+import { ChevronDown, MoreVerticalIcon, Search } from "lucide-react";
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
@@ -12,31 +10,35 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="flex items-center justify-between px-20 lg:px-20 py-20 relative">
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-4 px-4 sm:px-6 md:px-10 lg:px-20 py-6 lg:py-10 w-full">
+      
+      {/* Search Input */}
       <form
         onSubmit={handleSubmit}
-        className="flex items-center w-full max-w-[1100px]"
+        className="flex items-center w-full lg:max-w-[700px] relative"
       >
-        <button
-          type="submit"
-          className="px-4 py-2  text-white rounded-r-md  flex items-center justify-center absolute right-[-1]"
-        >
-          <Search size={16} className=" text-gray-500 text-xl" />
-        </button>
         <input
           type="text"
           placeholder="Search by course code or title..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 px-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-gray-500 text-lg"
+          className="flex-1 px-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-gray-600 text-base sm:text-lg"
         />
+        <button
+          type="submit"
+          className="absolute right-3 flex items-center justify-center text-gray-500 hover:text-blue-600"
+        >
+          <Search size={20} />
+        </button>
       </form>
-      <div className="border border-gray-300  flex items-center rounded-xl">
-        <MoreVerticalIcon className="ml-4"/>
-        <button className="flex-1 px-8 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-[#32333B] font-medium text-lg">
+
+      {/* Dropdown */}
+      <div className="flex items-center border border-gray-300 rounded-xl w-full sm:w-auto justify-between sm:justify-start">
+        <MoreVerticalIcon className="ml-4 text-gray-600" />
+        <button className="flex-1 sm:flex-none px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-[#32333B] font-medium text-base sm:text-lg">
           Department
         </button>
-        <ChevronDown className="mr-4"/>
+        <ChevronDown className="mr-4 text-gray-600" />
       </div>
     </div>
   );

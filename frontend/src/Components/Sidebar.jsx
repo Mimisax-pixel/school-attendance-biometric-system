@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart2,
@@ -8,71 +8,88 @@ import {
   LayoutDashboard,
   SearchCheckIcon,
   Users,
+  Menu,
+  X,
 } from "lucide-react";
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { to: "/adminDashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/adminDashboard", icon: Users, label: "Students" },
+    { to: "/adminDashboard", icon: Building2, label: "Departments" },
+    { to: "/courseManagement", icon: BookOpen, label: "Courses" },
+    { to: "/biometricAttendance", icon: CalendarCheck, label: "Attendance" },
+    { to: "/lecturers", icon: CalendarCheck, label: "Lecturers" },
+    { to: "/adminDashboard", icon: BarChart2, label: "Reports" },
+  ];
+
   return (
-    <div className="fixed top-0 left-0 w-[300px] h-screen bg-gray-50 text-black p-10 overflow-y-auto">
-      <h2 className="text-xl font-bold text-[#0E3668]">📚Futa</h2>
-      <h3 className="font-semibold text-gray-500 text-xl mb-6">
-        Academics Pro
-      </h3>
-      <div className="space-y-4">
-        <Link
-          to="/adminDashboard"
-          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
+    <>
+      {/* ===== MOBILE HEADER ===== */}
+      <header className="flex items-center justify-between px-4 py-3 bg-white shadow-md md:hidden fixed top-0 left-0 w-full z-30">
+        <h2 className="text-lg font-bold text-[#0E3668]">📚 Futa</h2>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="text-gray-700 hover:text-blue-600"
         >
-          <LayoutDashboard size={20} />
-          <span>Dashboard</span>
-        </Link>
-        <Link
-          to="/adminDashboard"
-          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
-        >
-          <Users size={20} />
-          <span>Student</span>
-        </Link>
-        <Link
-          to="/adminDashboard"
-          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
-        >
-          <Building2 size={20} />
-          <span>Departments</span>
-        </Link>
-        <Link
-          to="/courseManagement"
-          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
-        >
-          <BookOpen size={20} />
-          <span>Courses</span>
-        </Link>
-        <Link
-          to="/biometricAttendance"
-          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
-        >
-          <CalendarCheck size={20} />
-          <span>Attendance</span>
-        </Link>
-        <Link
-          to="/lecturers"
-          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
-        >
-          <CalendarCheck size={20} />
-          <span>Lecturers</span>
-        </Link>
-        <Link
-          to="/adminDashboard"
-          className="flex items-center space-x-3 p-2 rounded cursor-pointer transition-colors duration-200 text-xl font-bold hover:bg-blue-500 hover:text-white"
-        >
-          <BarChart2 size={20} />
-          <span>Reports</span>
-        </Link>
-      </div>
-      <div className="flex space-x-3 mt-[20em]">
-        <SearchCheckIcon />
-        <p>Help & Support</p>
-      </div>
-    </div>
+          <Menu size={28} />
+        </button>
+      </header>
+
+      {/* ===== OVERLAY (Mobile Only) ===== */}
+      {isOpen && (
+        <div
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 bg-black bg-opacity-40 z-40 md:hidden"
+        ></div>
+      )}
+
+      {/* ===== SIDEBAR ===== */}
+      <aside
+        className={`fixed top-0 left-0 h-screen w-[260px] bg-gray-50 p-6 z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+          md:translate-x-0 md:static md:w-[280px]`}
+      >
+        {/* Header + Close button (mobile only) */}
+        <div className="flex items-center justify-between mb-6 md:mb-10">
+          <div>
+            <h2 className="text-xl font-bold text-[#0E3668]">📚 Futa</h2>
+            <h3 className="font-semibold text-gray-500 text-sm md:text-base">
+              Academics Pro
+            </h3>
+          </div>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="text-gray-500 hover:text-red-600 md:hidden"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="space-y-3">
+          {navItems.map(({ to, icon: Icon, label }) => (
+            <Link
+              key={label}
+              to={to}
+              onClick={() => setIsOpen(false)} // close sidebar on mobile tap
+              className="flex items-center space-x-3 p-2 rounded-lg cursor-pointer text-gray-700 text-base font-semibold transition-colors duration-200 hover:bg-blue-500 hover:text-white"
+            >
+              <Icon size={20} />
+              <span>{label}</span>
+            </Link>
+          ))}
+        </nav>
+
+        {/* Help Section */}
+        <div className="flex items-center space-x-3 mt-20 md:mt-40 text-gray-700">
+          <SearchCheckIcon />
+          <p className="font-medium">Help & Support</p>
+        </div>
+      </aside>
+    </>
   );
 };
 

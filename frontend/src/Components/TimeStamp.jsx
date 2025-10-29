@@ -1,14 +1,18 @@
-import React from 'react'
-import AdministrativeSearchbar from './AdministrativeSearchbar';
+import React from "react";
+import AdministrativeSearchbar from "./AdministrativeSearchbar";
 
 const TimeStamp = () => {
   return (
-    <div className="container mx-auto lg:ml-[300px] py-10">
+    <div className="container mx-auto lg:ml-[300px] py-10 px-4 sm:px-6 lg:px-20">
+      {/* Searchbar */}
       <AdministrativeSearchbar />
-      <div className=" px-20 lg:px-20 flex flex-col gap-10 md:flex-row justify-between pb-20">
-        <div className="pt-20">
-          <p className="mb-10 font-semibold text-gray-500 text-lg">TIMESTAMP</p>
-          <div className="space-y-[72px] text-[#32333B] font-medium w-[98px] leading-4">
+
+      {/* Logs Section */}
+      <div className="flex flex-col lg:flex-row flex-wrap gap-10 justify-between pb-20 pt-10">
+        {/* TIMESTAMP */}
+        <div className="flex-1 min-w-[150px]">
+          <p className="mb-6 font-semibold text-gray-500 text-lg">TIMESTAMP</p>
+          <div className="space-y-6 text-[#32333B] font-medium text-sm sm:text-base leading-5">
             <p>2023-10-27 14-30-15</p>
             <p>2023-10-27 14-25-40</p>
             <p>2023-10-27 14-20-05</p>
@@ -17,56 +21,66 @@ const TimeStamp = () => {
             <p>2023-10-27 13-15-58</p>
           </div>
         </div>
-        <div className="pt-20">
-          <p className="mb-10 font-semibold text-lg text-gray-500">USER</p>
-          <div className="space-y-[81px] text-[#32333B] font-medium ">
+
+        {/* USER */}
+        <div className="flex-1 min-w-[150px]">
+          <p className="mb-6 font-semibold text-gray-500 text-lg">USER</p>
+          <div className="space-y-6 text-[#32333B] font-medium text-sm sm:text-base">
             <p>Adim</p>
-            <p>Dr.Adekunle</p>
-            <p>Prof.Chidinma</p>
+            <p>Dr. Adekunle</p>
+            <p>Prof. Chidinma</p>
             <p>Admin</p>
-            <p>Dr.Adekunle</p>
+            <p>Dr. Adekunle</p>
             <p>Adim</p>
           </div>
         </div>
-        <div className="pt-20">
-          <p className="mb-10 font-semibold text-lg text-gray-500">ACTION</p>
-          <div className="space-y-[64px] text-[#32333B] font-medium flex flex-col">
-            <button className="text-green-700 bg-green-200 p-2 rounded-lg">
+
+        {/* ACTION */}
+        <div className="flex-1 min-w-[160px]">
+          <p className="mb-6 font-semibold text-gray-500 text-lg">ACTION</p>
+          <div className="space-y-4 flex flex-col">
+            <button className="text-green-700 bg-green-200 px-3 py-2 rounded-lg text-sm sm:text-base">
               User Login
             </button>
-            <button className="text-blue-700 bg-blue-200 p-2 rounded-2xl">
+            <button className="text-blue-700 bg-blue-200 px-3 py-2 rounded-lg text-sm sm:text-base">
               Data Modification
             </button>
-            <button className="text-blue-700 bg-blue-200 p-2 rounded-2xl">
+            <button className="text-blue-700 bg-blue-200 px-3 py-2 rounded-lg text-sm sm:text-base">
               Report Generation
             </button>
-            <button className="text-yellow-700 bg-yellow-200 p-2 rounded-2xl">
-              Sytem Configuration
+            <button className="text-yellow-700 bg-yellow-200 px-3 py-2 rounded-lg text-sm sm:text-base">
+              System Configuration
             </button>
-            <button className="text-green-700 bg-green-200 p-2 rounded-lg">
+            <button className="text-green-700 bg-green-200 px-3 py-2 rounded-lg text-sm sm:text-base">
               User Login
             </button>
-            <button className="text-red-800 bg-red-200 p-2 rounded-lg">
+            <button className="text-red-800 bg-red-200 px-3 py-2 rounded-lg text-sm sm:text-base">
               Failed Login
             </button>
           </div>
         </div>
-        <div className="pt-20">
-          <p className="mb-10 font-semibold text-lg text-gray-500">DETAILS</p>
-          <div className="space-y-[84px] font-semibold w-[380px] leading-4">
+
+        {/* DETAILS */}
+        <div className="flex-1 min-w-[250px]">
+          <p className="mb-6 font-semibold text-gray-500 text-lg">DETAILS</p>
+          <div className="space-y-6 font-semibold text-sm sm:text-base leading-5">
             <p>Successful login</p>
-            <p>Update student 'Oluwaseun' (CSC/18/1234) Performance record</p>
-            <p>Generated attendance Report for 'CSC 401' for October 2023</p>
-            <p>Modifield attendance alert threshold for 75%</p>
-            <p>Successful Login</p>
-            <p>Failed Login attempt user 'Admin'</p>
+            <p>
+              Updated student ‘Oluwaseun’ (CSC/18/1234) performance record
+            </p>
+            <p>Generated attendance report for ‘CSC 401’ (October 2023)</p>
+            <p>Modified attendance alert threshold for 75%</p>
+            <p>Successful login</p>
+            <p>Failed login attempt by user ‘Admin’</p>
           </div>
         </div>
-        <div className="pt-20">
-          <p className="mb-10 font-semibold text-lg text-gray-400">
+
+        {/* IP ADDRESS */}
+        <div className="flex-1 min-w-[180px]">
+          <p className="mb-6 font-semibold text-gray-500 text-lg">
             IP ADDRESS
           </p>
-          <div className="space-y-[81px] font-semibold">
+          <div className="space-y-6 font-semibold text-sm sm:text-base">
             <p>192.168.1.101</p>
             <p>203.0.113.45</p>
             <p>198.51.100.22</p>
@@ -76,15 +90,23 @@ const TimeStamp = () => {
           </div>
         </div>
       </div>
-      <div className="mt-[15rem] flex items-center justify-between  px-20 lg:px-20">
-        <p>Showing 1 to 5 of 20 Courses</p>
-        <div className="flex items-center gap-4">
-          <p>Previous</p>
-          <p>Next</p>
+
+      {/* Pagination */}
+      <div className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-600">
+        <p className="text-center sm:text-left">
+          Showing 1 to 5 of 20 Courses
+        </p>
+        <div className="flex items-center gap-3">
+          <button className="px-3 py-1 border rounded hover:bg-gray-100">
+            Previous
+          </button>
+          <button className="px-3 py-1 border rounded hover:bg-gray-100">
+            Next
+          </button>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default TimeStamp
+export default TimeStamp;

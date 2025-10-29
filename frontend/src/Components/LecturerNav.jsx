@@ -1,16 +1,19 @@
-import React from 'react'
+import React from "react";
 
 const LecturerNav = () => {
   return (
-    <div className="flex items-center justify-between px-20 lg:px-20">
-      <p className="font-bold text-3xl">
-       LECTURER
+    <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 px-4 sm:px-8 md:px-16 lg:px-20 py-4 sm:py-6">
+      {/* Title */}
+      <p className="font-bold text-2xl sm:text-3xl text-center sm:text-left text-[#0E3668]">
+        LECTURER
       </p>
-      <button className="text-white bg-[#1173D4] py-2 px-4 rounded-lg">
+
+      {/* Button */}
+      <button className="text-white bg-[#1173D4] py-2 px-6 rounded-lg text-sm sm:text-base md:text-lg font-medium hover:bg-blue-600 transition-colors">
         + Add new Course
       </button>
     </div>
   );
-}
+};
 
-export default LecturerNav
+export default LecturerNav;
