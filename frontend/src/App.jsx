@@ -21,13 +21,16 @@ function App() {
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/grades" element={<StudentsGrades />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
-        <Route path="/biometricAttendance" element={<BiometricAttendance />} />
+        {/* <Route path="/biometricAttendance" element={<BiometricAttendance />} /> */}
         <Route path="/courseManagement" element={<CourseManagement />} />
         <Route path="/biometricAttendance" element={<BiometricAttendance />} />
         <Route path="/lecturers" element={<Lecturers />} />
         <Route path="/administrativeLog" element={<AdministrativeLog />} />
-        <Route path="/lecturers" element={<Lecturers/>} />
-        <Route path="/admin/register/student" element={<StudentRegForm/>}></Route>
+        {/* <Route path="/lecturers" element={<Lecturers />} /> */}
+        <Route
+          path="/admin/register/student"
+          element={<StudentRegForm />}
+        ></Route>
       </Routes>
     </Router>
   );

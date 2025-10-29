@@ -1,3 +1,5 @@
+import React from 'react'
+import { BookOpen, LayoutDashboard, User, CheckCircle } from 'lucide-react'
 import React, { useState } from "react";
 import { BookOpen, LayoutDashboard, User, CheckCircle, Menu, X } from "lucide-react";
 

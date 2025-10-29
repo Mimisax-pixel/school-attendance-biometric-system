@@ -31,9 +31,13 @@ export default async function loginStudent(req, res) {
       return res.status(401).json({ message: "Invalid password" });
     }
     // Successful login
-    let token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    let token = jwt.sign(
+      { id: student._id, role: "student" },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -45,6 +49,7 @@ export default async function loginStudent(req, res) {
         name: student.name,
         email: student.email,
       },
+      role: "student",
     });
   } catch (error) {
     console.error("Error during student login:", error);

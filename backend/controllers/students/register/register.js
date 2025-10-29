@@ -35,6 +35,7 @@ const registerStudent = async (req, res) => {
       $or: [{ email }, { phone }, { matricNumber }, { biometricData }],
     });
     if (existingStudent) {
+      console.log("Existing student found:", existingStudent);
       return res.status(400).json({
         message:
           "Student with provided email, phone, matric number, or biometric data already exists",
@@ -49,9 +50,11 @@ const registerStudent = async (req, res) => {
       department,
       level,
       matricNumber,
-      biometricData: biometric,
+      biometricData: biometric + email,
     });
     await newStudent.save();
+    console.log("student registered successfully");
+
     res.status(201).json({
       message: "Student registered successfully",
       student: {
