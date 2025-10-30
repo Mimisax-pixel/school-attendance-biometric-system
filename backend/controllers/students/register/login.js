@@ -9,10 +9,10 @@ export default async function loginStudent(req, res) {
     // Allow login with email or phone as well
     if (!identifier) {
       if (!identifier || !password) {
-        return res
-          .status(400),
+        return res.status(400).json({
           status: "failed",
-          .json({ message: "matricnumber and password are required" });
+          message: "matricnumber and password are required",
+        });
       }
     }
     // Find student by email, phone, or matric number
