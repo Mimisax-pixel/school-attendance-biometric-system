@@ -11,6 +11,7 @@ const registerLecturer = async (req, res) => {
     // Validate required fields
     if (!email || !password || !fullName || !department) {
       return res.status(400).json({
+        status: "failed",
         error:
           "Missing required fields: email, password, fullName, and department are required",
       });
@@ -21,6 +22,7 @@ const registerLecturer = async (req, res) => {
 
     if (existingLecturer) {
       return res.status(409).json({
+        status: "failed",
         error: "Lecturer already exists with this email",
       });
     }
@@ -37,11 +39,13 @@ const registerLecturer = async (req, res) => {
 
     // Return success response with lecturer data
     return res.status(201).json({
+      status: "success",
       message: "Lecturer registered successfully",
     });
   } catch (error) {
     console.error("Error registering lecturer:");
     return res.status(500).json({
+      status: "failed",
       error: "Failed to register lecturer",
     });
   }

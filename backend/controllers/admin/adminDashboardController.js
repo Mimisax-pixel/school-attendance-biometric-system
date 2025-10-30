@@ -84,7 +84,13 @@ const adminDashboardController = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in adminDashboardController:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({
+        status: "failed",
+        message: "Server error",
+        error: error.message,
+      });
   }
 };
 

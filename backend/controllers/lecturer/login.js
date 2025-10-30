@@ -8,6 +8,7 @@ const loginLecturer = async (req, res) => {
     // Input validation
     if (!email || !password) {
       return res.status(400).json({
+        status: "failed",
         error: "Please provide both email and password",
       });
     }
@@ -17,6 +18,7 @@ const loginLecturer = async (req, res) => {
 
     if (!lecturer) {
       return res.status(401).json({
+        status: "failed",
         error: "Invalid login credentials",
       });
     }
@@ -27,6 +29,7 @@ const loginLecturer = async (req, res) => {
 
       if (!match) {
         return res.status(401).json({
+          status: "failed",
           error: "Invalid login credentials",
         });
       }
@@ -56,24 +59,27 @@ const loginLecturer = async (req, res) => {
 
       // Return success without sending token in body
       return res.status(200).json({
+        status: "success",
         message: "Logged in successfully",
         user: {
           id: lecturer._id,
           email: lecturer.contact,
           name: lecturer.name,
           department: lecturer.department,
-          },
-          role: "lecturer"
+        },
+        role: "lecturer",
       });
     } catch (error) {
       console.error("Password comparison error:", error);
       return res.status(500).json({
+        status: "failed",
         error: "Error during login process",
       });
     }
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({
+      status: "failed",
       error: "Failed to process login request",
     });
   }
