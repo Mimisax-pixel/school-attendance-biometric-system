@@ -15,7 +15,6 @@ import { Menu } from "lucide-react";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   const gradeData = [
@@ -36,32 +35,34 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex bg-gray-50 min-h-screen overflow-x-hidden">
+    <div className="flex bg-gray-50 min-h-screen overflow-x-hidden w-full">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Content */}
       <div
-        className={`flex-1 transition-all duration-300 ${
+        className={`flex-1 transition-all duration-300 w-full ${
           sidebarOpen ? "ml-64" : "ml-0 lg:ml-64"
         }`}
       >
-        {/* Top Bar (Mobile) */}
-        <div className="flex items-center justify-between px-4 py-4 bg-white shadow-md lg:hidden">
-          <button onClick={toggleSidebar}>
+        {/* Mobile Navbar */}
+        <div className="flex items-center justify-between px-4 py-3 bg-white shadow-md lg:hidden sticky top-0 z-40 w-full">
+          {/* <button onClick={toggleSidebar}>
             <Menu size={24} className="text-[#0A496D]" />
-          </button>
-          <h1 className="text-xl font-bold text-[#0A496D]">Admin Dashboard</h1>
+          </button> */}
+          <h1 className="text-lg sm:text-xl font-bold text-[#0A496D]">
+            Admin Dashboard
+          </h1>
         </div>
 
         {/* Main Dashboard */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 py-10">
+        <div className="w-full px-3 sm:px-5 md:px-8 lg:px-10 py-8 sm:py-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-[#0A496D] hidden lg:block">
             Admin Dashboard
           </h2>
 
           {/* Stat Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 w-full mb-10">
             {[
               { label: "Total Students", value: "1,200" },
               { label: "Teachers", value: "150" },
@@ -70,9 +71,9 @@ const Dashboard = () => {
             ].map((stat, i) => (
               <div
                 key={i}
-                className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition"
+                className="bg-white w-full p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 flex flex-col justify-center items-start"
               >
-                <h3 className="font-semibold text-gray-500 text-base sm:text-lg">
+                <h3 className="font-semibold text-gray-500 text-sm sm:text-base">
                   {stat.label}
                 </h3>
                 <p className="text-2xl sm:text-3xl font-bold text-[#0A496D] mt-2">
@@ -82,19 +83,19 @@ const Dashboard = () => {
             ))}
           </div>
 
-          {/* Performance Charts */}
-          <div className="space-y-6">
-            <h3 className="text-xl sm:text-2xl font-bold text-[#0A496D]">
+          {/* Charts Section */}
+          <div className="w-full space-y-6">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#0A496D]">
               Performance Trends
             </h3>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 w-full">
               {/* Line Chart */}
-              <div className="bg-white p-6 rounded-xl shadow-md">
+              <div className="bg-white w-full p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
                 <h3 className="font-semibold mb-4 text-gray-700 text-sm sm:text-base">
                   Average Grade Over Time
                 </h3>
-                <div className="h-64 sm:h-72">
+                <div className="h-64 sm:h-72 md:h-80 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={gradeData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
@@ -114,11 +115,11 @@ const Dashboard = () => {
               </div>
 
               {/* Bar Chart */}
-              <div className="bg-white p-6 rounded-xl shadow-md">
+              <div className="bg-white w-full p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
                 <h3 className="font-semibold mb-4 text-gray-700 text-sm sm:text-base">
                   Attendance by Department
                 </h3>
-                <div className="h-64 sm:h-72">
+                <div className="h-64 sm:h-72 md:h-80 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={attendanceData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
