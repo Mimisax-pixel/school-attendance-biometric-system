@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 const isAuthenticated = (req, res, next) => {
   const token = req.cookies.token;
+  console.log("hit");
   if (!token) {
     return res.status(401).json({
       status: "success",
@@ -15,13 +16,11 @@ const isAuthenticated = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    res
-      .status(401)
-      .json({
-        status: "failed",
-        message: "Token is not valid",
-        authenticated: false,
-      });
+    res.status(401).json({
+      status: "failed",
+      message: "Token is not valid",
+      authenticated: false,
+    });
   }
 };
 

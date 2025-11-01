@@ -1,10 +1,52 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const App = () => {
-  const [role, setRole] = useState('')
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [role, setRole] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [logindetails, setLoginDetails] = useState({});
+  const [submit, setSubmit] = useState(false);
+  const Email = useRef("");
+  const password = useRef("");
+  const navigate = useNavigate();
+
+  function handleUserInput(ref) {
+    let obj = { ...logindetails };
+    let fieldName = ref.current.id;
+    obj[fieldName] = ref.current.value;
+    setLoginDetails(obj);
+    // console.log(ref.current.value);
+    console.log(logindetails);
+  }
+  async function loginStudent() {
+    try {
+      setSubmit(true);
+      let res = await axios.post(
+        "http://localhost:5000/api/v1/login/student",
+        logindetails,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.status === "success") {
+        setLoginDetails({});
+        Email.current.value = "";
+        password.current.value = "";
+        alert(res.data.status);
+        setSubmit(false);
+        console.log(res);
+        navigate("/adminDashboard");
+      } else {
+        setSubmit(false)
+        alert("failed to login")
+      }
+    } catch (err) {
+      console.log("server error,", err);
+      setSubmit(false);
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-800">
@@ -32,7 +74,7 @@ const App = () => {
                 strokeLinejoin="round"
                 strokeWidth={2}
                 d={
-                  menuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'
+                  menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
                 }
               />
             </svg>
@@ -41,7 +83,7 @@ const App = () => {
           {/* NAV LINKS */}
           <nav
             className={`${
-              menuOpen ? 'block' : 'hidden'
+              menuOpen ? "block" : "hidden"
             } absolute md:static top-full left-0 w-full md:w-auto bg-white md:flex md:space-x-6 text-gray-600 font-medium shadow-md md:shadow-none`}
           >
             <Link
@@ -107,12 +149,12 @@ const App = () => {
                 <span>
                   {role
                     ? role.charAt(0).toUpperCase() + role.slice(1)
-                    : '-- Select Role --'}
+                    : "-- Select Role --"}
                 </span>
 
                 <svg
                   className={`w-5 h-5 text-gray-500 transform transition-transform duration-300 ${
-                    dropdownOpen ? 'rotate-180' : 'rotate-0'
+                    dropdownOpen ? "rotate-180" : "rotate-0"
                   }`}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -131,12 +173,12 @@ const App = () => {
               {/* Dropdown menu */}
               {dropdownOpen && (
                 <div className="absolute left-0 mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10 animate-fadeIn">
-                  {['admin', 'lecturer', 'student'].map((r) => (
+                  {["admin", "lecturer", "student"].map((r) => (
                     <button
                       key={r}
                       onClick={() => {
-                        setRole(r)
-                        setDropdownOpen(false)
+                        setRole(r);
+                        setDropdownOpen(false);
                       }}
                       className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"
                     >
@@ -152,14 +194,14 @@ const App = () => {
           <div
             className={`transition-all duration-500 ease-in-out transform ${
               role
-                ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 -translate-y-5 scale-95 pointer-events-none'
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 -translate-y-5 scale-95 pointer-events-none"
             }`}
           >
             {role && (
               <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto w-full">
                 <div className="text-blue-600 text-4xl mb-3">
-                  {role === 'admin' ? '🔐' : '🎓'}
+                  {role === "admin" ? "🔐" : "🎓"}
                 </div>
                 <h4 className="text-lg font-semibold mb-4 capitalize">
                   {role} Login
@@ -168,21 +210,36 @@ const App = () => {
                 <input
                   type="text"
                   placeholder={
-                    role === 'admin'
-                      ? 'Admin ID'
-                      : role === 'lecturer'
-                      ? 'Staff ID'
-                      : 'Matriculation No.'
+                    role === "admin"
+                      ? "Admin ID"
+                      : role === "lecturer"
+                      ? "Staff ID"
+                      : "Matriculation No."
                   }
+                  id="email"
+                  ref={Email}
+                  onChange={() => {
+                    handleUserInput(Email);
+                  }}
+                  value={Email.current.value}
                   className="w-full mb-3 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
                 <input
                   type="password"
                   placeholder="Password"
                   className="w-full mb-4 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  id="password"
+                  ref={password}
+                  onChange={() => {
+                    handleUserInput(password);
+                  }}
                 />
-                <button className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 transition">
-                  Sign In
+                <button
+                  className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 transition"
+                  onClick={loginStudent}
+                  disabled={submit}
+                >
+                  {submit ? "Loading..." : "Sign in"}
                 </button>
                 <p className="text-sm text-blue-600 mt-2 cursor-pointer hover:underline">
                   Forgot Password?
@@ -270,7 +327,7 @@ const App = () => {
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

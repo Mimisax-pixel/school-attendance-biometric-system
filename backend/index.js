@@ -12,6 +12,7 @@ import courseRouter from "./routes/admin/courses.js";
 import StudentsRecords from "./routes/admin/students.js";
 import Lecturer from "./routes/admin/lecturers.js";
 import LecturerLogin from "./routes/lecturers/login.js";
+import lecturerCourses from "./routes/lecturers/courses.js"
 
 dotenv.config();
 mongoose
@@ -30,8 +31,13 @@ let apiVersion = "/api/v1";
 // Middleware
 
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // your frontend origin
+    credentials: true, // allow cookies to be sent
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(apiVersion, Student);
 app.use(apiVersion, loginStudent);
@@ -42,6 +48,7 @@ app.use(apiVersion, courseRouter);
 app.use(apiVersion, StudentsRecords);
 app.use(apiVersion, Lecturer);
 app.use(apiVersion, LecturerLogin);
+app.use(apiVersion, lecturerCourses);
 
 // Basic route to check server status
 

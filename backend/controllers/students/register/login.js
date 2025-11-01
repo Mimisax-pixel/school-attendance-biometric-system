@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 export default async function loginStudent(req, res) {
   try {
-    const { matricNumber, password } = req.body;
-    let identifier = matricNumber;
+    const { email, password } = req.body;
+    let identifier = email;
     // Allow login with email or phone as well
     if (!identifier) {
       if (!identifier || !password) {

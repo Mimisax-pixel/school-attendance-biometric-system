@@ -5,7 +5,9 @@ const router = express.Router();
 
 // Student login
 router.post("/login/student", loginStudent);
-router.get("/auth/check", isAuthenticated, (req, res) => {
+router.get("/auth/verify", isAuthenticated, (req, res) => {
+  console.log("route visited");
+  
   res
     .status(200)
     .json({

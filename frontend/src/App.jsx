@@ -11,21 +11,28 @@ import CourseManagement from "./Pages/CourseManagement";
 import Lecturers from "./Pages/Lecturers";
 import AdministrativeLog from "./Pages/AdministrativeLog";
 import StudentRegForm from "./Pages/Admin/StudentRegForm";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/alerts" element={<AlertsPage />} />
-        <Route path="/attendance" element={<Attendance />} />
-        <Route path="/grades" element={<StudentsGrades />} />
-        <Route path="/adminDashboard" element={<AdminDashboard />} />
-        {/* <Route path="/biometricAttendance" element={<BiometricAttendance />} /> */}
-        <Route path="/courseManagement" element={<CourseManagement />} />
-        <Route path="/biometricAttendance" element={<BiometricAttendance />} />
-        <Route path="/lecturers" element={<Lecturers />} />
-        <Route path="/administrativeLog" element={<AdministrativeLog />} />
+        <Route element={<ProtectedRoute/>}>
+          <Route path="/alerts" element={<AlertsPage />} />
+          <Route path="/attendance" element={<Attendance />} />
+          <Route path="/grades" element={<StudentsGrades />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
+          {/* <Route path="/biometricAttendance" element={<BiometricAttendance />} /> */}
+          <Route path="/courseManagement" element={<CourseManagement />} />
+          <Route
+            path="/biometricAttendance"
+            element={<BiometricAttendance />}
+          />
+          <Route path="/lecturers" element={<Lecturers />} />
+          <Route path="/administrativeLog" element={<AdministrativeLog />} />
+        </Route>
+
         {/* <Route path="/lecturers" element={<Lecturers />} /> */}
         <Route
           path="/admin/register/student"
