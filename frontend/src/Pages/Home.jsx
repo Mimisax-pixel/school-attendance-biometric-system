@@ -48,6 +48,8 @@ const App = () => {
     }
   }
 
+
+  
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-800">
       {/* NAVBAR */}
