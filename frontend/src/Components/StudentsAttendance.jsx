@@ -1,73 +1,73 @@
-import React, { useState } from "react";
-import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
+import React, { useState } from 'react'
+import { Menu, X, ChevronDown, ChevronUp } from 'lucide-react'
 
 const StudentsAttendance = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [expanded, setExpanded] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [expanded, setExpanded] = useState(null)
 
   const students = [
     {
-      name: "Sophia Clark",
-      id: "2021001",
-      course: "Computer Science",
-      rate: "85%",
-      date: "2024-03-15 08:00",
+      name: 'Lawrence Ikara',
+      id: '2021001',
+      course: 'Cybersecurity',
+      rate: '85%',
+      date: '2024-03-15 08:00',
     },
     {
-      name: "Ethan Miller",
-      id: "2021002",
-      course: "Electrical Engineering",
-      rate: "92%",
-      date: "2024-03-15 08:45",
+      name: 'Victor Luke',
+      id: '2021002',
+      course: 'Electrical Engineering',
+      rate: '92%',
+      date: '2024-03-15 08:45',
     },
     {
-      name: "Olivia Davis",
-      id: "2021003",
-      course: "Mechanical Engineering",
-      rate: "78%",
-      date: "2024-03-15 09:15",
+      name: 'David Okwong',
+      id: '2021003',
+      course: 'Mechanical Engineering',
+      rate: '78%',
+      date: '2024-03-15 09:15',
     },
     {
-      name: "Liam Wilson",
-      id: "2021004",
-      course: "Civil Engineering",
-      rate: "90%",
-      date: "2024-03-15 08:30",
+      name: 'Liam Wilson',
+      id: '2021004',
+      course: 'Civil Engineering',
+      rate: '90%',
+      date: '2024-03-15 08:30',
     },
     {
-      name: "Ava Martinez",
-      id: "2021005",
-      course: "Chemical Engineering",
-      rate: "88%",
-      date: "2024-03-15 09:05",
+      name: 'Miracle Okon',
+      id: '2021005',
+      course: 'Chemical Engineering',
+      rate: '88%',
+      date: '2024-03-15 09:05',
     },
     {
-      name: "Noah Anderson",
-      id: "2021006",
-      course: "Biomedical Engineering",
-      rate: "82%",
-      date: "2024-03-15 08:50",
+      name: 'Noah Anderson',
+      id: '2021006',
+      course: 'Biomedical Engineering',
+      rate: '82%',
+      date: '2024-03-15 08:50',
     },
     {
-      name: "Isabella Thomas",
-      id: "2021007",
-      course: "Aerospace Engineering",
-      rate: "95%",
-      date: "2024-03-15 08:20",
+      name: 'Isabella Thomas',
+      id: '2021007',
+      course: 'Aerospace Engineering',
+      rate: '95%',
+      date: '2024-03-15 08:20',
     },
-  ];
+  ]
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
+    <div className="min-h-screen w-full bg-gray-100 font-sans overflow-x-hidden">
       {/* Header */}
-      <header className="bg-white shadow px-4 sm:px-6 md:px-10 py-4 flex items-center justify-between">
+      <header className="w-full bg-white shadow px-4 sm:px-6 md:px-10 lg:px-16 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 bg-blue-600 rounded"></div>
           <span className="font-bold text-lg sm:text-xl">EduTrack</span>
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex space-x-6 text-sm text-gray-600">
+        <nav className="hidden md:flex space-x-8 text-sm text-gray-600">
           <a href="/adminDashboard" className="hover:text-black">
             Dashboard
           </a>
@@ -84,7 +84,7 @@ const StudentsAttendance = () => {
 
         {/* Right Icons */}
         <div className="flex items-center space-x-4">
-          <button className="text-gray-600">
+          <button className="text-gray-600 hover:text-gray-800">
             <i className="far fa-bell"></i>
           </button>
           <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
@@ -118,34 +118,34 @@ const StudentsAttendance = () => {
       )}
 
       {/* Main */}
-      <main className="p-4 sm:p-6 md:p-10">
-        <h1 className="text-xl sm:text-2xl font-semibold mb-6">
+      <main className="w-full px-4 sm:px-6 md:px-10 lg:px-16 py-8">
+        <h1 className="text-xl sm:text-2xl font-semibold mb-6 text-gray-800">
           Biometric Attendance
         </h1>
 
         {/* Filter/Search */}
-        <div className="bg-white p-4 rounded-lg shadow mb-6 flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
+        <div className="w-full bg-white p-4 rounded-xl shadow flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
           <input
-            className="flex-1 border rounded px-3 py-2 text-sm w-full"
+            className="flex-1 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-200 w-full"
             placeholder="Search by student name or ID..."
           />
-          <select className="border rounded px-3 py-2 text-sm w-full sm:w-auto">
+          <select className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto">
             <option>All Date Ranges</option>
           </select>
-          <select className="border rounded px-3 py-2 text-sm w-full sm:w-auto">
+          <select className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto">
             <option>All Courses</option>
           </select>
-          <select className="border rounded px-3 py-2 text-sm w-full sm:w-auto">
+          <select className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto">
             <option>All Students</option>
           </select>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded text-sm w-full sm:w-auto">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto hover:bg-blue-700 transition">
             Export Report
           </button>
         </div>
 
         {/* Desktop Table */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg shadow text-sm">
+        <div className="hidden md:block w-full mt-6 overflow-x-auto">
+          <table className="min-w-full bg-white rounded-xl shadow text-sm">
             <thead>
               <tr className="text-left text-gray-600 border-b">
                 <th className="p-4">STUDENT NAME</th>
@@ -157,7 +157,7 @@ const StudentsAttendance = () => {
             </thead>
             <tbody>
               {students.map((s, i) => (
-                <tr key={i} className="border-b last:border-0">
+                <tr key={i} className="border-b last:border-0 hover:bg-gray-50">
                   <td className="p-4">{s.name}</td>
                   <td className="p-4">{s.id}</td>
                   <td className="p-4">{s.course}</td>
@@ -178,14 +178,14 @@ const StudentsAttendance = () => {
         </div>
 
         {/* Mobile Collapsible View */}
-        <div className="md:hidden space-y-4">
+        <div className="md:hidden space-y-4 mt-6">
           {students.map((s, i) => (
             <div key={i} className="bg-white rounded-lg shadow p-4">
               <div
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => setExpanded(expanded === i ? null : i)}
               >
-                <h3 className="font-semibold">{s.name}</h3>
+                <h3 className="font-semibold text-gray-800">{s.name}</h3>
                 {expanded === i ? (
                   <ChevronUp size={18} className="text-gray-500" />
                 ) : (
@@ -212,7 +212,7 @@ const StudentsAttendance = () => {
                     <span>{s.rate}</span>
                   </p>
                   <p>
-                    <span className="font-semibold">Last Check-In:</span>{" "}
+                    <span className="font-semibold">Last Check-In:</span>{' '}
                     {s.date}
                   </p>
                 </div>
@@ -222,17 +222,21 @@ const StudentsAttendance = () => {
         </div>
 
         {/* Pagination */}
-        <div className="flex flex-col sm:flex-row justify-between text-xs text-gray-500 mt-4 gap-2 sm:gap-0">
+        <div className="flex flex-col sm:flex-row justify-between text-xs text-gray-500 mt-6 gap-2 sm:gap-0">
           <span>Showing 1 to 7 of 25 entries</span>
           <div className="space-x-2">
-            <button className="px-2 py-1 border rounded">Previous</button>
-            <button className="px-2 py-1 border rounded">Next</button>
+            <button className="px-2 py-1 border rounded hover:bg-gray-100">
+              Previous
+            </button>
+            <button className="px-2 py-1 border rounded hover:bg-gray-100">
+              Next
+            </button>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-xs text-gray-500 py-8 px-4">
+      <footer className="w-full text-center text-xs text-gray-500 py-8 px-4 border-t mt-10">
         <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-2">
           <a href="#" className="hover:text-blue-600">
             Privacy Policy
@@ -247,7 +251,7 @@ const StudentsAttendance = () => {
         <p>© 2024 EduTrack. All rights reserved.</p>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default StudentsAttendance;
+export default StudentsAttendance

@@ -11,13 +11,22 @@ const AdministrativeSearchbar = ({ onSearch }) => {
   };
 
   return (
-    <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-10">
+    <div
+      className="
+        w-full 
+        px-4 sm:px-6 md:px-8 lg:px-0 xl:px-0
+        py-8 xl:pt-2
+        lg:mr-[260px] 
+         
+        mx-auto
+      "
+    >
       {/* Header Section */}
       <div className="mb-6">
         <h2 className="text-2xl sm:text-3xl font-bold text-[#0E3668]">
           Administrative Log
         </h2>
-        <p className="mt-2 text-gray-500 text-sm sm:text-base font-medium leading-relaxed">
+        <p className="mt-2 xl:mt-10 text-gray-500 text-sm sm:text-base font-medium leading-relaxed">
           Track all system activities, including user logins, data modifications,
           and report generation.
         </p>
@@ -92,7 +101,7 @@ const AdministrativeSearchbar = ({ onSearch }) => {
           </div>
         </div>
 
-        {/* Date */}
+        {/* Start Date */}
         <div>
           <h4 className="text-base sm:text-lg font-medium text-gray-500 mb-2">
             Start Date
