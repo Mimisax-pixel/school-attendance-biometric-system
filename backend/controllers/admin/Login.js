@@ -9,13 +9,19 @@ const loginadmin = async (req, res) => {
       console.log("Admin not found with email:", email);
       return res
         .status(404)
-        .json({ message: "Admin not found", isauthenticated: false });
+        .json({
+          status: "failed",
+          message: "Admin not found",
+          isauthenticated: false,
+        });
     }
     if (existingAdmin.password !== password) {
       console.log("Incorrect password for admin:", email);
-      return res
-        .status(401)
-        .json({ message: "Incorrect password", isauthenticated: false });
+      return res.status(401).json({
+        status: "failed",
+        message: "Incorrect password",
+        isauthenticated: false,
+      });
     }
     let token = jwt.sign(
       { id: existingAdmin._id, role: "admin" },
@@ -30,6 +36,7 @@ const loginadmin = async (req, res) => {
     });
 
     res.status(200).json({
+      status: "success",
       message: "Admin logged in successfully",
       isauthenticated: true,
       adminId: existingAdmin._id,
@@ -37,7 +44,11 @@ const loginadmin = async (req, res) => {
     });
   } catch (error) {
     console.error("Error during admin login:", error);
-    res.status(500).json({ message: "Server error", isauthenticated: false });
+    res.status(500).json({
+      status: "failed",
+      message: "Server error",
+      isauthenticated: false,
+    });
   }
 };
 

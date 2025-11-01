@@ -9,9 +9,10 @@ export default async function loginStudent(req, res) {
     // Allow login with email or phone as well
     if (!identifier) {
       if (!identifier || !password) {
-        return res
-          .status(400)
-          .json({ message: "matricnumber and password are required" });
+        return res.status(400).json({
+          status: "failed",
+          message: "matricnumber and password are required",
+        });
       }
     }
     // Find student by email, phone, or matric number
@@ -24,11 +25,16 @@ export default async function loginStudent(req, res) {
     });
 
     if (!student) {
-      return res.status(404).json({ message: "Student not found" });
+      return res.status(404).json({
+        status: "failed",
+        message: "Student not found",
+      });
     }
     // Check password
     if (student.password !== password) {
-      return res.status(401).json({ message: "Invalid password" });
+      return res
+        .status(401)
+        .json({ status: "failed", message: "Invalid password" });
     }
     // Successful login
     let token = jwt.sign(
@@ -43,6 +49,7 @@ export default async function loginStudent(req, res) {
       httpOnly: true,
     });
     res.status(200).json({
+      status: "success",
       message: "Login successful",
       student: {
         id: student._id,

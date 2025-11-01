@@ -24,10 +24,14 @@ const studentRecords = async (req, res) => {
       .limit(limit)
       .lean();
 
-    return res.status(200).json({ total, page, limit, results });
+    return res
+      .status(200)
+      .json({ status: "success", total, page, limit, results });
   } catch (error) {
     console.error("studentRecords error:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "failed", error: "Internal server error" });
   }
 };
 
