@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 let classSchema = new mongoose.Schema({
   level: {
     type: String,
-    unique: true
+    required: [true, "Level is required"],
   },
   department: {
     type: String,
@@ -17,10 +17,10 @@ let classSchema = new mongoose.Schema({
     required: [true, "course code is required"],
   },
   instructorId: { type: String, required: [true, "Instructor name is required"] },
-  expectedStudents: {
+  numberOfStudentPresent: {
     type: Number,
     required: [true, "Expected number of students is required"],
-    default: 60,
+    default: 0,
   },
   createdAt: { type: Date, default: Date.now },
 });

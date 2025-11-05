@@ -2,6 +2,8 @@ import e from "express";
 import Classes from "../../models/class.js";
 import lecturer from "../../models/lecturer.js";
 import Course from "../../models/courses.js";
+import { attendance } from "../../models/students.js";
+import students from "../../models/students.js"
 import mongoose from "mongoose";
 
 export async function createSession(req, res) {
@@ -51,5 +53,18 @@ export async function getSessions(req, res) {
   } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
     }
+}
+
+export  async function fetchStudentDetails(req,res) {
+  try {
+    let studentId = req.body.studentId;
+    let student = await 
+  } catch () {
+    
+  }
+}
+
+export default function checkIn(){
+
 }
 

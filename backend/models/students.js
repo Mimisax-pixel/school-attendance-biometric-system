@@ -3,7 +3,7 @@ import mongoose, { mongo } from "mongoose";
 let attendanceSchema = new mongoose.Schema({
   courseId: String,
   courseCode: String,
-  status: String, 
+  courseTitle: String,
   studentId: String,
   level: String,
   department: String,
@@ -68,60 +68,3 @@ export let grades = new mongoose.model("Grades", gradesSchema);
 let Student = new mongoose.model("Student", studentSchema);
 export default Student;
 
-// _id
-// 68ef6fe47af769f1389e52de
-
-// ObjectId
-// fullname
-// lawrence ikara
-
-// String
-// email
-// lawrenceikara@gmail.com
-
-// String
-// password
-// password123
-
-// String
-// phone
-// +234 708 099 913 9
-
-// String
-// department
-// cyber security
-
-// String
-// level
-// 2
-
-// String
-// matricNumber
-// 3iiiioejofkeofjejf
-
-// String
-
-// courses
-// Array (empty)
-
-// Array
-
-// programmes
-// Array (empty)
-
-// Array
-// biometricData
-// biometric_placeholder
-
-// String
-
-// attendance
-// Array (empty)
-
-// Array
-// createdAt
-// 2025-10-15T09:56:52.703+00:00
-
-// Date
-// __v
-// 0
