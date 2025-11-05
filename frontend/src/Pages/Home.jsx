@@ -22,14 +22,26 @@ const App = () => {
   }
   async function loginStudent() {
     try {
+      let route = "";
+      switch (role) {
+        case "admin":
+          route = "http://localhost:5000/api/v1/login/admin";
+          break;
+        case "lecturer":
+          route = "http://localhost:5000/api/v1/login/lecturer";
+          break;
+        case "student":
+          route = "http://localhost:5000/api/v1/login/student";
+          break;
+        default:
+          alert("Please select a role");
+          return;
+      }
+
       setSubmit(true);
-      let res = await axios.post(
-        "http://localhost:5000/api/v1/login/student",
-        logindetails,
-        {
-          withCredentials: true,
-        }
-      );
+      let res = await axios.post(route, logindetails, {
+        withCredentials: true,
+      });
       if (res.data.status === "success") {
         setLoginDetails({});
         Email.current.value = "";
@@ -39,8 +51,8 @@ const App = () => {
         console.log(res);
         navigate("/adminDashboard");
       } else {
-        setSubmit(false)
-        alert("failed to login")
+        setSubmit(false);
+        alert("failed to login");
       }
     } catch (err) {
       console.log("server error,", err);
@@ -48,8 +60,6 @@ const App = () => {
     }
   }
 
-
-  
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-800">
       {/* NAVBAR */}
@@ -144,7 +154,9 @@ const App = () => {
               {/* Dropdown button */}
               <button
                 type="button"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={() => {
+                  setDropdownOpen(!dropdownOpen);
+                }}
                 className="flex justify-between items-center w-full border border-gray-300 bg-white rounded-md px-4 py-3 text-base text-gray-700 font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 {/* ✅ Always show text */}

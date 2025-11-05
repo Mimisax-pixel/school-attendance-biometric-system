@@ -1,9 +1,5 @@
 import mongoose from "mongoose";
 
-let numberOfclassesheld = new mongoose.Schema({
-  time: { type: Date, default: Date.now },
-  student_present: { type: Number, default: 0 },
-});
 let courserSchema = new mongoose.Schema({
   courseTitle: { type: String, required: true },
   courseCode: { type: String, required: true },
@@ -11,9 +7,9 @@ let courserSchema = new mongoose.Schema({
   creditunits: { type: Number, required: true },
   level: { type: String, required: true },
   semester: { type: String, required: true },
-  lecturerId: { type: mongoose.Schema.Types.ObjectId, ref: "Lecturer" },
+  lecturerId: { type: String, require: true },
+  numberOfClassesHeld: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
-  numberOfclassesheld: [numberOfclassesheld],
 });
 
 let Course = new mongoose.model("Course", courserSchema);
