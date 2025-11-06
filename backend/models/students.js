@@ -1,12 +1,8 @@
 import mongoose, { mongo } from "mongoose";
 
 let attendanceSchema = new mongoose.Schema({
-  courseId: String,
-  courseCode: String,
-  courseTitle: String,
+  classId: String,
   studentId: String,
-  level: String,
-  department: String,
   timestamp: { type: Date, default: Date.now },
 });
 

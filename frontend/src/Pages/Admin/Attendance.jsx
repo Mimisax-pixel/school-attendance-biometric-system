@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import {
   Bell,
   User,
@@ -10,10 +10,12 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import axios from "axios";
 
 const Attendance = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const department = useRef(null)
+  const course = useRef(null)
   const menuItems = [
     { name: "Dashboard", icon: BarChart3 },
     { name: "Courses", icon: BookOpen },
@@ -23,6 +25,10 @@ const Attendance = () => {
     { name: "Reports", icon: BarChart3 },
     { name: "Settings", icon: Settings },
   ];
+
+  async function handleStartSession() {
+
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -57,7 +63,9 @@ const Attendance = () => {
           md:translate-x-0 md:static`}
         >
           <div className="flex items-center justify-between p-4 border-b border-gray-200/50 md:border-none">
-            <div className="text-blue-700 text-2xl font-bold">FUTIA Analytics</div>
+            <div className="text-blue-700 text-2xl font-bold">
+              FUTIA Analytics
+            </div>
             <button
               className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => setSidebarOpen(false)}
@@ -73,9 +81,7 @@ const Attendance = () => {
                 href="#"
                 className={`flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200
                 ${
-                  item.name === "Attendance"
-                    ? "bg-blue-50 text-blue-700"
-                    : ""
+                  item.name === "Attendance" ? "bg-blue-50 text-blue-700" : ""
                 }`}
               >
                 <item.icon className="w-5 h-5" />
@@ -98,7 +104,9 @@ const Attendance = () => {
           <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-6 sm:py-8">
             {/* Desktop Header */}
             <div className="hidden md:flex items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Biometric Attendance</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Biometric Attendance
+              </h1>
               <div className="flex items-center gap-4">
                 <Bell className="w-5 h-5 text-gray-500" />
                 <img
@@ -116,37 +124,39 @@ const Attendance = () => {
                 {/* Select Class */}
                 <section className="bg-white border border-gray-200/40 rounded-xl p-5 sm:p-6 w-full shadow-sm">
                   <h2 className="text-lg font-semibold text-gray-800 mb-3">
-                    Select Class
+                    Start new Class Attendance Session
                   </h2>
 
                   <div className="space-y-3">
                     <label className="block text-sm text-gray-600">
                       Department
                     </label>
-                    <select
-                      className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-                    >
-                      <option>Select Department</option>
-                      <option>Computer Science</option>
-                      <option>Electrical Engineering</option>
-                      <option>Mechanical Engineering</option>
-                      <option>Mass Communication</option>
-                      <option>Cybersecurity</option>
+                    <select className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" ref={department} >
+                      <option value="">Select Department</option>
+                      <option value="Computer Science">Computer Science</option>
+                      <option value="Electrical Engineering">
+                        Electrical Engineering
+                      </option>
+                      <option value="Mechanical Engineering">
+                        Mechanical Engineering
+                      </option>
+                      <option value="Mass Communication">
+                        Mass Communication
+                      </option>
+                      <option value="Cybersecurity">Cybersecurity</option>
                     </select>
 
-                    <label className="block text-sm text-gray-600">Course</label>
-                    <select
-                      className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-                    >
+                    <label className="block text-sm text-gray-600">
+                      Course
+                    </label>
+                    <select className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" ref={course}>
                       <option>Select Course</option>
-                      <option>CSC 401</option>
-                      <option>CSC 402</option>
-                      <option>MAC1102</option>
+                      <option value="CSC 401">CSC 401</option>
+                      <option value=">CSC 402">CSC 402</option>
+                      <option value="MAC1102">MAC1102</option>
                     </select>
 
-                    <button
-                      className="w-full mt-2 bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 active:scale-98 transition-transform text-sm"
-                    >
+                    <button className="w-full mt-2 bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 active:scale-98 transition-transform text-sm">
                       Start Attendance Session →
                     </button>
                   </div>
@@ -179,8 +189,8 @@ const Attendance = () => {
                 <Fingerprint className="w-14 h-14 sm:w-16 sm:h-16 text-blue-600 mb-3" />
                 <h3 className="text-lg font-semibold mb-1">Ready to Scan</h3>
                 <p className="text-center text-sm sm:text-base text-gray-500 mb-5 px-2">
-                  Place your finger on the biometric scanner to record your attendance for
-                  MAC1201.
+                  Place your finger on the biometric scanner to record your
+                  attendance for MAC1201.
                 </p>
 
                 {/* Verified / Failed */}

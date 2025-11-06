@@ -12,6 +12,9 @@ const App = () => {
   const password = useRef("");
   const navigate = useNavigate();
 
+  let redirectTo = "";
+
+
   function handleUserInput(ref) {
     let obj = { ...logindetails };
     let fieldName = ref.current.id;
@@ -26,12 +29,15 @@ const App = () => {
       switch (role) {
         case "admin":
           route = "http://localhost:5000/api/v1/login/admin";
+          redirectTo = "/adminDashboard";
           break;
         case "lecturer":
           route = "http://localhost:5000/api/v1/login/lecturer";
+          redirectTo = "/attendance";
           break;
         case "student":
           route = "http://localhost:5000/api/v1/login/student";
+          redirectTo = "/grades";
           break;
         default:
           alert("Please select a role");
@@ -49,13 +55,14 @@ const App = () => {
         alert(res.data.status);
         setSubmit(false);
         console.log(res);
-        navigate("/adminDashboard");
+        navigate(redirectTo);
       } else {
         setSubmit(false);
         alert("failed to login");
       }
     } catch (err) {
       console.log("server error,", err);
+      alert("server error, try again later");
       setSubmit(false);
     }
   }
