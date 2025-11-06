@@ -3,18 +3,18 @@ import api from "../api/axiosInstance";
 
 export function useCourses() {
   const {
-    data: courses,
+    data: lecturer,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["courses"],
+    queryKey: ["lecturer"],
     queryFn: async () => {
-      const res = await api.get("/lectures"); // admin only
+      const res = await api.get("/lecturer/register"); // admin only
       return res.data.courses; // return array directly
     },
     retry: false, // prevent endless retries on 403
   });
 
-  return { courses, isLoading, isError, error };
+  return { lecturer, isLoading, isError, error };
 }
