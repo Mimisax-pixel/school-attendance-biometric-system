@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import AlertMessage from "../Components/Alerts";
 
 const App = () => {
   const [role, setRole] = useState("");
@@ -11,6 +12,7 @@ const App = () => {
   const Email = useRef("");
   const password = useRef("");
   const navigate = useNavigate();
+  const [alert, setAlert] = useState({ type: "", message: "" });
 
   let redirectTo = "";
 
@@ -52,17 +54,20 @@ const App = () => {
         setLoginDetails({});
         Email.current.value = "";
         password.current.value = "";
-        alert(res.data.status);
+        // alert(res.data.status);
+        setAlert({ type: "success", message: "Login successful" });
         setSubmit(false);
         console.log(res);
         navigate(redirectTo);
       } else {
         setSubmit(false);
-        alert("failed to login");
+        // alert("failed to login");
+        setAlert({ type: "error", message: "Failed to login" });
       }
     } catch (err) {
       console.log("server error,", err);
-      alert("server error, try again later");
+      setAlert({ type: "error", message: "Server error, try again later" });
+      // alert("Server error, try again later");
       setSubmit(false);
     }
   }
@@ -347,6 +352,11 @@ const App = () => {
           Reserved.
         </div>
       </footer>
+      <AlertMessage
+        type={alert.type}
+        message={alert.message}
+        onClose={() => setAlert({ type: "", message: "" })}
+      />
     </div>
   );
 };
