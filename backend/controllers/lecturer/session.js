@@ -7,6 +7,7 @@ import students from "../../models/students.js";
 import mongoose from "mongoose";
 
 export async function createSession(req, res) {
+  console.log(req.body);
   try {
     let instructor = await lecturer.findById(req.user.id);
     let courseProps = await Course.findOne({
@@ -36,10 +37,13 @@ export async function createSession(req, res) {
       course.numberOfClassesHeld += 1;
       await course.save();
     }
+    console.log(Class);
+    console.log(instructor);
+    // let classSession = Class.toObject();
     return res.status(201).json({
       status: "success",
       message: "Class created successfully",
-      data: Class,
+      data: { ...Class._doc, instructorName: instructor.name },
     });
   } catch (error) {
     res.status(500).json({ status: "failed", message: error.message });
@@ -95,6 +99,7 @@ export async function checkIn(req, res) {
       { _id: classId },
       { $inc: { numberOfStudentsPresent: 1 } }
     );
+    await addNewStudent.save()
     return res
       .status(201)
       .json({

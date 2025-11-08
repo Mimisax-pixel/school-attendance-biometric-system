@@ -26,6 +26,7 @@ const registerStudent = async (req, res) => {
       !password ||
       !department ||
       !level ||
+      !biometric ||
       !matricNumber
     ) {
       return res.status(400).json({ message: "All fields are required" });
@@ -50,7 +51,7 @@ const registerStudent = async (req, res) => {
       department,
       level,
       matricNumber,
-      biometricData: biometric + email,
+      biometricData: biometric,
     });
     await newStudent.save();
     console.log("student registered successfully");
