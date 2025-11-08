@@ -6,6 +6,7 @@ import { courseSchema } from "../Schema/courseSchema";
 import { useEditCourse } from "../hooks/useEditCourse"; // import your hook
 
 const EditCourseModal = ({ course, onClose }) => {
+  console.log(course);
   // 1. Use your mutation hook
   const { updateCourse, isLoading, isError, error } = useEditCourse();
 
@@ -42,10 +43,7 @@ const EditCourseModal = ({ course, onClose }) => {
     if (!course) return;
 
     updateCourse({
-      courseId: course.id, // assuming course has an `id` field
-      name: data.courseTitle,
-      department: data.department,
-      level: data.creditunits, // assuming 'level' corresponds to credit units
+      ...data,
     });
 
     onClose(); // close modal after saving
