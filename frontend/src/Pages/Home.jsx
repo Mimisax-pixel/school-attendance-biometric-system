@@ -1,8 +1,8 @@
-import React, { useState, useRef ,} from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AlertMessage from "../Components/Alerts";
-import {useApi} from "../providers/ApiProvider";
+import { useApi } from "../providers/ApiProvider";
 
 const App = () => {
   const [role, setRole] = useState("");
@@ -14,10 +14,10 @@ const App = () => {
   const password = useRef("");
   const navigate = useNavigate();
   const [alert, setAlert] = useState({ type: "", message: "" });
-  const {baseUrl} = useApi();
+  const { baseUrl } = useApi();
 
   let redirectTo = "";
-
+  // console.log("API BASE URL:", baseUrl);
 
   function handleUserInput(ref) {
     let obj = { ...logindetails };
