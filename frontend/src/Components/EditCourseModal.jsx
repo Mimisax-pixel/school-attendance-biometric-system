@@ -23,6 +23,8 @@ const EditCourseModal = ({ course, onClose }) => {
       courseTitle: "",
       department: "",
       creditunits: 0,
+      semester: 1, 
+      level: 100,
     },
   });
 
@@ -32,8 +34,10 @@ const EditCourseModal = ({ course, onClose }) => {
       reset({
         courseCode: course.courseCode,
         courseTitle: course.courseTitle,
-        department: course.department,
-        creditunits: course.creditunits,
+        department: course.department, 
+        creditunits: course.creditunits, 
+        semester: Number(course.semester) || 1,
+        level: Number(course.level) || 100,
       });
     }
   }, [course, reset]);
@@ -72,11 +76,13 @@ const EditCourseModal = ({ course, onClose }) => {
           />
 
           <CustomInput
-            label="Department"
+            label="Department / Session"
+            type="text"
             name="department"
             register={register}
             error={errors.department}
           />
+
           <CustomInput
             label="Credit Units"
             type="number"
