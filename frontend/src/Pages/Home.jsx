@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef ,} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AlertMessage from "../Components/Alerts";
+import {useApi} from "../providers/ApiProvider";
 
 const App = () => {
   const [role, setRole] = useState("");
@@ -13,6 +14,7 @@ const App = () => {
   const password = useRef("");
   const navigate = useNavigate();
   const [alert, setAlert] = useState({ type: "", message: "" });
+  const {baseUrl} = useApi();
 
   let redirectTo = "";
 
@@ -30,16 +32,16 @@ const App = () => {
       let route = "";
       switch (role) {
         case "admin":
-          route = "http://localhost:5000/api/v1/login/admin";
-          redirectTo = "/adminDashboard";
+          route = `${baseUrl}/login/admin`;
+          redirectTo = "/admin/dashboard";
           break;
         case "lecturer":
-          route = "http://localhost:5000/api/v1/login/lecturer";
-          redirectTo = "/attendance";
+          route = `${baseUrl}/login/lecturer`;
+          redirectTo = "/lecturer/dashboard";
           break;
         case "student":
-          route = "http://localhost:5000/api/v1/login/student";
-          redirectTo = "/grades";
+          route = `${baseUrl}/login/student`;
+          redirectTo = "/student/dashboard";
           break;
         default:
           alert("Please select a role");

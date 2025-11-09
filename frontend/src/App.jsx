@@ -18,26 +18,38 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route element={<ProtectedRoute/>}>
-          <Route path="/alerts" element={<AlertsPage />} />
-          <Route path="/attendance" element={<Attendance />} />
-          <Route path="/grades" element={<StudentsGrades />} />
-          <Route path="/adminDashboard" element={<AdminDashboard />} />
-          {/* <Route path="/biometricAttendance" element={<BiometricAttendance />} /> */}
-          <Route path="/courseManagement" element={<CourseManagement />} />
-          <Route
-            path="/biometricAttendance"
-            element={<BiometricAttendance />}
-          />
-          <Route path="/lecturers" element={<Lecturers />} />
-          <Route path="/administrativeLog" element={<AdministrativeLog />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin/dashboard">
+            <Route index element={<AdminDashboard />}></Route>
+            <Route path=""></Route>
+            <Route path="/admin/dashboard/alerts" element={<AlertsPage />} />
+            <Route
+              path="/admin/dashboard/administrativeLog"
+              element={<AdministrativeLog />}
+            />
+            <Route
+              path="/admin/dashboard/students"
+              element={<BiometricAttendance />}
+            />
+            <Route
+              path="/admin/dashboard/grades"
+              element={<StudentsGrades />}
+            />
+            <Route
+              path="/admin/dashboard/course-management"
+              element={<CourseManagement />}
+            />
+            <Route path="/admin/dashboard/lecturers" element={<Lecturers />} />
+          </Route>
+          <Route path="/lecturer/dashboard">
+            <Route index element={<Attendance />} />
+          </Route>
+          <Route path="/student/dashboard">
+            <Route index element={<StudentRegForm />}></Route>
+          </Route>
         </Route>
 
         {/* <Route path="/lecturers" element={<Lecturers />} /> */}
-        <Route
-          path="/admin/register/student"
-          element={<StudentRegForm />}
-        ></Route>
       </Routes>
     </Router>
   );

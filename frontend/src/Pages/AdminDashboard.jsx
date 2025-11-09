@@ -8,7 +8,6 @@ const AdminDashboard = () => {
   return (
     <div className="flex  gap-10 ">
       {/* <Sidebar /> */}
-
       <Dashboard />
     </div>
   );

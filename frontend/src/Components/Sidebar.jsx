@@ -10,19 +10,32 @@ import {
   Users,
   Menu,
   X,
+  Bell,
 } from "lucide-react";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { to: "/adminDashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { to: "/adminDashboard", icon: Users, label: "Students" },
-    { to: "/adminDashboard", icon: Building2, label: "Departments" },
-    { to: "/courseManagement", icon: BookOpen, label: "Courses" },
-    { to: "/biometricAttendance", icon: CalendarCheck, label: "Attendance" },
-    { to: "/lecturers", icon: CalendarCheck, label: "Lecturers" },
-    { to: "/adminDashboard", icon: BarChart2, label: "Reports" },
+    { to: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/admin/dashboard/students", icon: Users, label: "Students" },
+    {
+      to: "/admin/dashboard/departments",
+      icon: Building2,
+      label: "Departments",
+    },
+    {
+      to: "/admin/dashboard/course-management",
+      icon: BookOpen,
+      label: "Courses",
+    },
+    {
+      to: "/admin/dashboard/lecturers",
+      icon: CalendarCheck,
+      label: "Lecturers",
+    },
+    { to: "/admin/dashboard/reports", icon: BarChart2, label: "Reports" },
+    { to: "/admin/dashboard/alerts", icon: Bell, label: "alerts" },
   ];
 
   return (
