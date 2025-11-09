@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
+import { useApi } from "../providers/ApiProvider";
 
 const ProtectedRoute = () => {
   const [isAuth, setIsAuth] = useState(null); // null = loading
   const [loading, setLoading] = useState(true);
+  const { baseUrl } = useApi();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         // Call your backend endpoint that verifies the HTTP-only token
         const res = await axios.get(
-          "http://localhost:5000/api/v1/auth/verify",
+          `${baseUrl}/v1/auth/verify`,
           {
             withCredentials: true,
           }
