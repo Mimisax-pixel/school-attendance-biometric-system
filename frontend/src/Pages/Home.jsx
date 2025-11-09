@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import AlertMessage from "../Components/Alerts";
 
 const App = () => {
   const [role, setRole] = useState("");
@@ -11,6 +12,10 @@ const App = () => {
   const Email = useRef("");
   const password = useRef("");
   const navigate = useNavigate();
+  const [alert, setAlert] = useState({ type: "", message: "" });
+
+  let redirectTo = "";
+
 
   function handleUserInput(ref) {
     let obj = { ...logindetails };
@@ -26,12 +31,15 @@ const App = () => {
       switch (role) {
         case "admin":
           route = "http://localhost:5000/api/v1/login/admin";
+          redirectTo = "/adminDashboard";
           break;
         case "lecturer":
           route = "http://localhost:5000/api/v1/login/lecturer";
+          redirectTo = "/attendance";
           break;
         case "student":
           route = "http://localhost:5000/api/v1/login/student";
+          redirectTo = "/grades";
           break;
         default:
           alert("Please select a role");
@@ -46,16 +54,20 @@ const App = () => {
         setLoginDetails({});
         Email.current.value = "";
         password.current.value = "";
-        alert(res.data.status);
+        // alert(res.data.status);
+        setAlert({ type: "success", message: "Login successful" });
         setSubmit(false);
         console.log(res);
-        navigate("/adminDashboard");
+        navigate(redirectTo);
       } else {
         setSubmit(false);
-        alert("failed to login");
+        // alert("failed to login");
+        setAlert({ type: "error", message: "Failed to login" });
       }
     } catch (err) {
       console.log("server error,", err);
+      setAlert({ type: "error", message: "Server error, try again later" });
+      // alert("Server error, try again later");
       setSubmit(false);
     }
   }
@@ -340,6 +352,11 @@ const App = () => {
           Reserved.
         </div>
       </footer>
+      <AlertMessage
+        type={alert.type}
+        message={alert.message}
+        onClose={() => setAlert({ type: "", message: "" })}
+      />
     </div>
   );
 };

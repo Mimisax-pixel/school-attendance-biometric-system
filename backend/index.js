@@ -13,6 +13,7 @@ import StudentsRecords from "./routes/admin/students.js";
 import Lecturer from "./routes/admin/lecturers.js";
 import LecturerLogin from "./routes/lecturers/login.js";
 import lecturerCourses from "./routes/lecturers/courses.js";
+import AttendanceSessions from "./routes/lecturers/session.js";
 
 dotenv.config();
 mongoose
@@ -49,6 +50,7 @@ app.use(apiVersion, StudentsRecords);
 app.use(apiVersion, Lecturer);
 app.use(apiVersion, LecturerLogin);
 app.use(apiVersion, lecturerCourses);
+app.use(apiVersion,AttendanceSessions);
 
 // Basic route to check server status
 
