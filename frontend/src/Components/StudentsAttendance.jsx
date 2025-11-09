@@ -1,61 +1,25 @@
-import React, { useState } from 'react'
-import { Menu, X, ChevronDown, ChevronUp } from 'lucide-react'
+import React, { useState } from "react";
+import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
+import { useAttendance } from "../hooks/useAttendance";
 
 const StudentsAttendance = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [expanded, setExpanded] = useState(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [expanded, setExpanded] = useState(null);
+  const [page, setPage] = useState(0);
+  const limit = 20;
 
-  const students = [
-    {
-      name: 'Lawrence Ikara',
-      id: '2021001',
-      course: 'Cybersecurity',
-      rate: '85%',
-      date: '2024-03-15 08:00',
-    },
-    {
-      name: 'Victor Luke',
-      id: '2021002',
-      course: 'Electrical Engineering',
-      rate: '92%',
-      date: '2024-03-15 08:45',
-    },
-    {
-      name: 'David Okwong',
-      id: '2021003',
-      course: 'Mechanical Engineering',
-      rate: '78%',
-      date: '2024-03-15 09:15',
-    },
-    {
-      name: 'Liam Wilson',
-      id: '2021004',
-      course: 'Civil Engineering',
-      rate: '90%',
-      date: '2024-03-15 08:30',
-    },
-    {
-      name: 'Miracle Okon',
-      id: '2021005',
-      course: 'Chemical Engineering',
-      rate: '88%',
-      date: '2024-03-15 09:05',
-    },
-    {
-      name: 'Noah Anderson',
-      id: '2021006',
-      course: 'Biomedical Engineering',
-      rate: '82%',
-      date: '2024-03-15 08:50',
-    },
-    {
-      name: 'Isabella Thomas',
-      id: '2021007',
-      course: 'Aerospace Engineering',
-      rate: '95%',
-      date: '2024-03-15 08:20',
-    },
-  ]
+  const { data, isLoading, error } = useAttendance(page, limit);
+
+  if (isLoading)
+    return <p className="text-center mt-10">Loading attendance...</p>;
+  if (error)
+    return (
+      <p className="text-center mt-10 text-red-500">
+        Failed to load attendance
+      </p>
+    );
+
+  const students = data?.results || [];
 
   return (
     <div className="min-h-screen w-full bg-gray-100 font-sans overflow-x-hidden">
@@ -88,8 +52,6 @@ const StudentsAttendance = () => {
             <i className="far fa-bell"></i>
           </button>
           <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-
-          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden text-gray-700 focus:outline-none"
@@ -158,19 +120,19 @@ const StudentsAttendance = () => {
             <tbody>
               {students.map((s, i) => (
                 <tr key={i} className="border-b last:border-0 hover:bg-gray-50">
-                  <td className="p-4">{s.name}</td>
-                  <td className="p-4">{s.id}</td>
-                  <td className="p-4">{s.course}</td>
+                  <td className="p-4">{s.fullname}</td>
+                  <td className="p-4">{s.matricNumber}</td>
+                  <td className="p-4">{s.department}</td>
                   <td className="p-4 flex items-center space-x-2">
                     <div className="w-24 h-2 bg-gray-200 rounded">
                       <div
                         className="h-2 bg-blue-600 rounded"
-                        style={{ width: s.rate }}
+                        style={{ width: `${s.rateOfClassesAttended}%` }}
                       ></div>
                     </div>
-                    <span>{s.rate}</span>
+                    <span>{s.rateOfClassesAttended}%</span>
                   </td>
-                  <td className="p-4">{s.date}</td>
+                  <td className="p-4">{s.lastCheckIn || "N/A"}</td>
                 </tr>
               ))}
             </tbody>
@@ -185,35 +147,35 @@ const StudentsAttendance = () => {
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => setExpanded(expanded === i ? null : i)}
               >
-                <h3 className="font-semibold text-gray-800">{s.name}</h3>
+                <h3 className="font-semibold text-gray-800">{s.fullname}</h3>
                 {expanded === i ? (
                   <ChevronUp size={18} className="text-gray-500" />
                 ) : (
                   <ChevronDown size={18} className="text-gray-500" />
                 )}
               </div>
-
               {expanded === i && (
                 <div className="mt-3 text-sm text-gray-700 space-y-2">
                   <p>
-                    <span className="font-semibold">ID:</span> {s.id}
+                    <span className="font-semibold">ID:</span> {s.matricNumber}
                   </p>
                   <p>
-                    <span className="font-semibold">Course:</span> {s.course}
+                    <span className="font-semibold">Course:</span>{" "}
+                    {s.department}
                   </p>
                   <p className="flex items-center space-x-2">
                     <span className="font-semibold">Attendance:</span>
                     <div className="w-20 h-2 bg-gray-200 rounded">
                       <div
                         className="h-2 bg-blue-600 rounded"
-                        style={{ width: s.rate }}
+                        style={{ width: `${s.rateOfClassesAttended}%` }}
                       ></div>
                     </div>
-                    <span>{s.rate}</span>
+                    <span>{s.rateOfClassesAttended}%</span>
                   </p>
                   <p>
-                    <span className="font-semibold">Last Check-In:</span>{' '}
-                    {s.date}
+                    <span className="font-semibold">Last Check-In:</span>{" "}
+                    {s.lastCheckIn || "N/A"}
                   </p>
                 </div>
               )}
@@ -223,12 +185,20 @@ const StudentsAttendance = () => {
 
         {/* Pagination */}
         <div className="flex flex-col sm:flex-row justify-between text-xs text-gray-500 mt-6 gap-2 sm:gap-0">
-          <span>Showing 1 to 7 of 25 entries</span>
+          <span>
+            Showing {students.length} of {data?.total || 0} entries
+          </span>
           <div className="space-x-2">
-            <button className="px-2 py-1 border rounded hover:bg-gray-100">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+              className="px-2 py-1 border rounded hover:bg-gray-100"
+            >
               Previous
             </button>
-            <button className="px-2 py-1 border rounded hover:bg-gray-100">
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              className="px-2 py-1 border rounded hover:bg-gray-100"
+            >
               Next
             </button>
           </div>
@@ -251,7 +221,7 @@ const StudentsAttendance = () => {
         <p>© 2024 EduTrack. All rights reserved.</p>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default StudentsAttendance
+export default StudentsAttendance;

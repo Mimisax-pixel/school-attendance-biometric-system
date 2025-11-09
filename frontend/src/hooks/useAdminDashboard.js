@@ -12,7 +12,7 @@ const fetchAdminDashboard = async () => {
 
 export const useAdminDashboard = () => {
   return useQuery({
-    queryKey: ["adminDashboard"], // v5 uses an object
+    queryKey: ["adminDashboard"], 
     queryFn: fetchAdminDashboard,
     staleTime: 1000 * 60, // 1 minute
     retry: 1, // retry once if fails
