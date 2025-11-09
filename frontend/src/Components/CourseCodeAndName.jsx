@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./Layouts/Navbar";
-import SearchBar from "./Searchbar";
+import SearchBar from "./SearchBar";
 import { useCourses } from "../hooks/useCourses";
 import { Edit2, Trash2 } from "lucide-react";
 import EditCourseModal from "./EditCourseModal";
