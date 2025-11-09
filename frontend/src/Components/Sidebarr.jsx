@@ -2,6 +2,7 @@ import React from "react";
 import { Home, BarChart2, Users, LogOut, Menu } from "lucide-react";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
+
   return (
     <div
       className={`fixed top-0 left-0 h-full bg-[#0A496D] text-white flex flex-col transition-all duration-300 z-40

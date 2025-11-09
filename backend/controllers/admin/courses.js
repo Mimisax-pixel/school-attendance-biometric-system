@@ -3,7 +3,7 @@ import Courses from "../../models/courses.js";
 export async function getCourses(req, res) {
   try {
     let course_code = req.params.course_code;
-    console.log(course_code)
+    console.log(course_code);
     if (course_code) {
       let courses = await Courses.find({ courseCode: course_code });
       res.json({
@@ -52,9 +52,9 @@ export async function addNewCourse(req, res) {
 
 export async function editCourses(req, res) {
   try {
-    const { course_code, updatedCourseInfo } = req.body;
-
-    if (!course_code || !updatedCourseInfo) {
+    const updatedCourseInfo = req.body;
+    console.log(updatedCourseInfo);
+    if (!updatedCourseInfo) {
       return res.status(400).json({
         status: "failed",
         message: "Course code and updated course information are required",
@@ -62,7 +62,7 @@ export async function editCourses(req, res) {
     }
 
     let course = await Courses.findOneAndUpdate(
-      { courseCode: course_code },
+      { courseCode: updatedCourseInfo?.courseCode },
       { $set: updatedCourseInfo },
       { new: true }
     );

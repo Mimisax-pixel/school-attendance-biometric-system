@@ -12,7 +12,7 @@ import courseRouter from "./routes/admin/courses.js";
 import StudentsRecords from "./routes/admin/students.js";
 import Lecturer from "./routes/admin/lecturers.js";
 import LecturerLogin from "./routes/lecturers/login.js";
-import lecturerCourses from "./routes/lecturers/courses.js"
+import lecturerCourses from "./routes/lecturers/courses.js";
 import AttendanceSessions from "./routes/lecturers/session.js";
 
 dotenv.config();

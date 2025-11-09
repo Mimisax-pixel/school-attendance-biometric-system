@@ -6,6 +6,7 @@ import { courseSchema } from "../Schema/courseSchema";
 import { useEditCourse } from "../hooks/useEditCourse"; // import your hook
 
 const EditCourseModal = ({ course, onClose }) => {
+  console.log(course);
   // 1. Use your mutation hook
   const { updateCourse, isLoading, isError, error } = useEditCourse();
 
@@ -22,6 +23,8 @@ const EditCourseModal = ({ course, onClose }) => {
       courseTitle: "",
       department: "",
       creditunits: 0,
+      semester: 1, 
+      level: 100,
     },
   });
 
@@ -31,8 +34,10 @@ const EditCourseModal = ({ course, onClose }) => {
       reset({
         courseCode: course.courseCode,
         courseTitle: course.courseTitle,
-        department: course.department,
-        creditunits: course.creditunits,
+        department: course.department, 
+        creditunits: course.creditunits, 
+        semester: Number(course.semester) || 1,
+        level: Number(course.level) || 100,
       });
     }
   }, [course, reset]);
@@ -42,10 +47,7 @@ const EditCourseModal = ({ course, onClose }) => {
     if (!course) return;
 
     updateCourse({
-      courseId: course.id, // assuming course has an `id` field
-      name: data.courseTitle,
-      department: data.department,
-      level: data.creditunits, // assuming 'level' corresponds to credit units
+      ...data,
     });
 
     onClose(); // close modal after saving
@@ -74,11 +76,13 @@ const EditCourseModal = ({ course, onClose }) => {
           />
 
           <CustomInput
-            label="Department"
+            label="Department / Session"
+            type="text"
             name="department"
             register={register}
             error={errors.department}
           />
+
           <CustomInput
             label="Credit Units"
             type="number"

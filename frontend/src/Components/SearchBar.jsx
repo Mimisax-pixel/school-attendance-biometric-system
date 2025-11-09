@@ -46,10 +46,13 @@
 
 // export default SearchBar;
 
-import React from "react";
+
+import React, { useState } from "react";
 import { Search, Filter } from "lucide-react";
+import AddCourseModal from "./AddCourseModal";
 
 const SearchBar = () => {
+  const [showAddModal, setShowAddModal] = useState(false);
   return (
     <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 px-4 sm:px-6 md:px-8 py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
       {/* Search Input */}
@@ -69,10 +72,17 @@ const SearchBar = () => {
           Filter
         </button>
 
-        <button className="bg-[#1173D4] text-white px-4 py-2 rounded-lg hover:bg-[#0d5cad] transition text-sm sm:text-base w-full sm:w-auto">
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-[#1173D4] text-white px-4 py-2 rounded-lg hover:bg-[#0d5cad] transition text-sm sm:text-base w-full sm:w-auto"
+        >
           + Add Course
         </button>
+
       </div>
+      {showAddModal && (
+              <AddCourseModal onClose={() => setShowAddModal(false)} />
+            )}
     </div>
   );
 };
