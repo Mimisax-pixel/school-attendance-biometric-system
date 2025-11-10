@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useApi } from "../providers/ApiProvider";
 
-let { baseUrl } = useApi();
+let baseUrl = import.meta.env.VITE_API_BASE_URL;
 const fetchAttendance = async ({ queryKey }) => {
   const [_key, { page = 0, limit = 20 }] = queryKey;
   const response = await axios.get(

@@ -1,10 +1,10 @@
 // /hooks/useAdminDashboard.js
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useApi } from "../providers/ApiProvider";
+
 
 const fetchAdminDashboard = async () => {
-  let { baseUrl } = useApi();
+let baseUrl = import.meta.env.VITE_API_BASE_URL;
   const response = await axios.get(
     `${baseUrl}/admin/dashboard`,
     { withCredentials: true } // send JWT cookie for auth

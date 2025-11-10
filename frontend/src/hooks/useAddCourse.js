@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useApi } from "../providers/ApiProvider";
+
 
 export const useAddCourse = () => {
   const queryClient = useQueryClient();
-  let { baseUrl } = useApi();
+  let { baseUrl } = import.meta.env.VITE_API_BASE_URL;
   const {
     mutate: addCourse,
     isLoading,

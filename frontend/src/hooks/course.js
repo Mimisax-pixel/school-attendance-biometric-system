@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
-import { useApi } from "../providers/ApiProvider";
 
-let { baseUrl } = useApi();
-
+let baseUrl = import.meta.env.VITE_API_BASE_URL;
 export function useCourse(courseCode) {
   const {
     data: course,
