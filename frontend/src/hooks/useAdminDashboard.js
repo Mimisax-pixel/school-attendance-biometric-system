@@ -6,7 +6,7 @@ import axios from "axios";
 const fetchAdminDashboard = async () => {
 let baseUrl = import.meta.env.VITE_API_BASE_URL;
   const response = await axios.get(
-    `${baseUrl}/admin/dashboard`,
+    `${baseUrl}/auth/admin/dashboard`,
     { withCredentials: true } // send JWT cookie for auth
   );
   return response.data;
