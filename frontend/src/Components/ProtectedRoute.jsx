@@ -13,7 +13,7 @@ const ProtectedRoute = () => {
       try {
         // Call your backend endpoint that verifies the HTTP-only token
         const res = await axios.get(
-          `${baseUrl}/v1/auth/verify`,
+          `${baseUrl}/auth/verify`,
           {
             withCredentials: true,
           }
