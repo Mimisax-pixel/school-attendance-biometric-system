@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useApi } from "../providers/ApiProvider";
 
 export const useAddCourse = () => {
   const queryClient = useQueryClient();
-
+  let { baseUrl } = useApi();
   const {
     mutate: addCourse,
     isLoading,
@@ -10,7 +11,7 @@ export const useAddCourse = () => {
     error,
   } = useMutation({
     mutationFn: async (newCourse) => {
-      const response = await fetch(`http://localhost:5000/api/v1/course`, {
+      const response = await fetch(`${baseUrl}/course`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -25,8 +26,8 @@ export const useAddCourse = () => {
     //   queryClient.invalidateQueries(["courses"]);
     // },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["courses"]); 
-      return data; 
+      queryClient.invalidateQueries(["courses"]);
+      return data;
     },
   });
 

@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
+import { useApi } from "../providers/ApiProvider";
+
+let { baseUrl } = useApi();
 
 export function useCourse(courseCode) {
   const {
@@ -10,7 +13,7 @@ export function useCourse(courseCode) {
   } = useQuery({
     queryKey: ["course", courseCode], // unique per code
     queryFn: async () => {
-      const res = await api.get(`/courses/${courseCode}`, {
+      const res = await api.get(`${baseUrl}/courses/${courseCode}`, {
         withCredentials: true, // ensure token cookie is sent
       });
 

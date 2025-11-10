@@ -1,11 +1,12 @@
-
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useApi } from "../providers/ApiProvider";
 
+let { baseUrl } = useApi();
 const fetchAttendance = async ({ queryKey }) => {
   const [_key, { page = 0, limit = 20 }] = queryKey;
   const response = await axios.get(
-    `http://localhost:5000/api/v1/attendance-records?page=${page}&limit=${limit}`,
+    `${baseUrl}/attendance-records?page=${page}&limit=${limit}`,
     { withCredentials: true }
   );
   return response.data;
