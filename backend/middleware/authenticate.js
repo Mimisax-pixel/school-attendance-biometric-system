@@ -6,7 +6,7 @@ const isAuthenticated = (req, res, next) => {
   console.log("hit");
   if (!token) {
     return res.status(401).json({
-      status: "success",
+      status: "failed",
       message: "No token provided, authorization denied",
       authenticated: false,
     });
