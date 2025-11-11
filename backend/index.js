@@ -30,17 +30,23 @@ const PORT = process.env.PORT || 5000;
 let apiVersion = "/api/v1";
 
 // Middleware
-let origin = process.env.FRONTEND_URL || "http://localhost:5173";
-console.log(origin);
+
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true); // Allow
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: origin, // your frontend origin
-    credentials: true, // allow cookies to be sent
-  })
-);
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(apiVersion, Student);
 app.use(apiVersion, loginStudent);
@@ -52,7 +58,7 @@ app.use(apiVersion, StudentsRecords);
 app.use(apiVersion, Lecturer);
 app.use(apiVersion, LecturerLogin);
 app.use(apiVersion, lecturerCourses);
-app.use(apiVersion,AttendanceSessions);
+app.use(apiVersion, AttendanceSessions);
 
 // Basic route to check server status
 

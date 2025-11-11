@@ -52,8 +52,9 @@ const loginLecturer = async (req, res) => {
       // Set JWT token in HTTP-only cookie
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "none",
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
       });
 
       // Return success without sending token in body

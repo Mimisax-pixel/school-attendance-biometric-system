@@ -3,6 +3,7 @@ import api from "../api/axiosInstance";
 
 export function useEditCourse() {
   const queryClient = useQueryClient();
+  let baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
 
   const {
     mutate: updateCourse,
@@ -12,7 +13,7 @@ export function useEditCourse() {
     error,
   } = useMutation({
     mutationFn: async (payload) => {
-      const res = await api.patch(`/courses/edit`, payload);
+      const res = await api.patch(`${baseUrl}/courses/edit`, payload);
       return res.data;
     },
     onSuccess: () => {

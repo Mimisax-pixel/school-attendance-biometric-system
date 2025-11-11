@@ -6,7 +6,7 @@ import Navbar from "../Components/Layouts/Navbar";
 const CourseManagement = () => {
   return (
     <div>
-      <div className="flex  gap-10 ">
+      <div className="flex">
         <Sidebar />
         <CourseCodeAndName />
       </div>

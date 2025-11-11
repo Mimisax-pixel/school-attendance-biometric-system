@@ -4,9 +4,34 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./CustomInput";
 import { courseSchema } from "../Schema/courseSchema";
 import { useAddCourse } from "../hooks/useAddCourse";
+import axios from "axios";
 
 const AddCourseModal = ({ onClose }) => {
   const { addCourse, isLoading } = useAddCourse();
+  const [inputValue, setInputValue] = React.useState({
+    courseCode: "",
+    courseTitle: "",
+    department: "",
+    creditunits: "",
+    semester: "",
+    level: "",
+  });
+
+  async function handleAddcourse() {
+    let baseUrl =
+      import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
+    try {
+      const response = await axios.post(`${baseUrl}/courses`, inputValue, {
+        withCredentials: true,
+      });
+      console.log("Course added successfully:", response.data);
+      alert(`${inputValue.courseTitle} added successfully`);
+      onClose();
+    } catch (error) {
+      console.error("Error adding course:", error);
+      alert("Failed to add course. Please try again.");
+    }
+  }
 
   const {
     register,
@@ -16,33 +41,35 @@ const AddCourseModal = ({ onClose }) => {
     resolver: zodResolver(courseSchema),
   });
 
-const onSubmit = (data) => {
-  addCourse(data, {
-    onSuccess: () => {
-      alert(`${data.courseTitle} added successfully`);
-      onClose();
-    },
-  });
-};
-
+  const onSubmit = (data) => {
+    handleAddcourse();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Add Course</h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          className="space-y-4"
+        >
           <CustomInput
             label="Course Code"
             name="courseCode"
             register={register}
             error={errors.courseCode}
+            onChange={(e) =>
+              setInputValue({ ...inputValue, courseCode: e.target.value })
+            }
           />
           <CustomInput
             label="Course Title"
             name="courseTitle"
             register={register}
             error={errors.courseTitle}
+            onChange={(e) =>
+              setInputValue({ ...inputValue, courseTitle: e.target.value })
+            }
           />
           <CustomInput
             label="Department / Session"
@@ -50,6 +77,9 @@ const onSubmit = (data) => {
             name="department"
             register={register}
             error={errors.department}
+            onChange={(e) =>
+              setInputValue({ ...inputValue, department: e.target.value })
+            }
           />
 
           <CustomInput
@@ -58,6 +88,9 @@ const onSubmit = (data) => {
             name="creditunits"
             register={register}
             error={errors.creditunits}
+            onChange={(e) =>
+              setInputValue({ ...inputValue, creditunits: e.target.value })
+            }
           />
           <CustomInput
             label="Semester"
@@ -65,6 +98,9 @@ const onSubmit = (data) => {
             name="semester"
             register={register}
             error={errors.semester}
+            onChange={(e) =>
+              setInputValue({ ...inputValue, semester: e.target.value })
+            }
           />
           <CustomInput
             label="Level"
@@ -72,6 +108,9 @@ const onSubmit = (data) => {
             name="level"
             register={register}
             error={errors.level}
+            onChange={(e) =>
+              setInputValue({ ...inputValue, level: e.target.value })
+            }
           />
 
           <div className="flex justify-end gap-3 mt-4">
@@ -85,6 +124,7 @@ const onSubmit = (data) => {
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+              onClick={handleSubmit(onSubmit)}
             >
               {isLoading ? "Adding..." : "Add Course"}
             </button>

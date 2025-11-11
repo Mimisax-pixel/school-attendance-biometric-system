@@ -47,7 +47,7 @@ const EditCourseModal = ({ course, onClose }) => {
     if (!course) return;
 
     updateCourse({
-      ...data,
+      ...data,id:course._id
     });
 
     onClose(); // close modal after saving

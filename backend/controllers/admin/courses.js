@@ -62,7 +62,7 @@ export async function editCourses(req, res) {
     }
 
     let course = await Courses.findOneAndUpdate(
-      { courseCode: updatedCourseInfo?.courseCode },
+      { _id: updatedCourseInfo?.id },
       { $set: updatedCourseInfo },
       { new: true }
     );
@@ -91,17 +91,17 @@ export async function editCourses(req, res) {
 
 export async function deleteCourse(req, res) {
   try {
-    const { course_code } = req.params;
+    const { courseid } = req.params;
 
-    if (!course_code) {
+    if (!courseid) {
       return res.status(400).json({
         status: "failed",
         message: "Course code is required to delete a course",
       });
     }
 
-    const course = await Courses.findOneAndDelete({ courseCode: course_code });
-
+    const course = await Courses.findOneAndDelete({ _id: courseid });
+    console.log(course);
     if (!course) {
       return res.status(404).json({
         status: "failed",

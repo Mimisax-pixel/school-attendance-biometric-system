@@ -72,7 +72,7 @@ const CourseCodeAndName = () => {
                   )
                   .map((course) => (
                     <div
-                      key={course.id}
+                      key={course._id}
                       className="min-w-full grid grid-cols-5 items-center px-4 md:px-6 py-4 gap-4 text-gray-700 text-sm hover:bg-gray-50 transition"
                     >
                       <div className="truncate">{course.courseCode}</div>
@@ -102,7 +102,7 @@ const CourseCodeAndName = () => {
                               `Are you sure you want to delete ${course.courseTitle}?`
                             );
                             if (confirmDelete) {
-                              deleteCourse(course.courseCode);
+                              deleteCourse(course._id);
                               alert(
                                 `${course.courseTitle} deleted successfully`
                               ); //A Toast
