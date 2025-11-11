@@ -31,10 +31,7 @@ function App() {
               path="/admin/dashboard/students"
               element={<BiometricAttendance />}
             />
-            <Route
-              path="/admin/dashboard/grades"
-              element={<StudentsGrades />}
-            />
+              <Route path="/admin/dashboard/student/register" element={<StudentRegForm />}></Route>
             <Route
               path="/admin/dashboard/course-management"
               element={<CourseManagement />}
@@ -45,7 +42,10 @@ function App() {
             <Route index element={<Attendance />} />
           </Route>
           <Route path="/student/dashboard">
-            <Route index element={<StudentRegForm />}></Route>
+            <Route
+              path="/student/dashboard/grades"
+              element={<StudentsGrades />}
+              />
           </Route>
         </Route>
 

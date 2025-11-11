@@ -20,8 +20,17 @@ const Dashboard = () => {
   // Fetch live admin dashboard data
   const { data, isLoading, isError } = useAdminDashboard();
 
-  if (isLoading) return <p className="p-6 text-gray-500">Loading dashboard...</p>;
-  if (isError) return <p className="p-6 text-red-500">Failed to load dashboard data.</p>;
+  if (isLoading) {
+    return (
+      <div className="flex bg-gray-50 min-h-screen overflow-x-hidden w-full">
+        <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        <p className="p-6 text-gray-500">Loading dashboard...</p>
+      </div>
+    );
+        
+  }
+  if (isError)
+    return <p className="p-6 text-red-500">Failed to load dashboard data.</p>;
 
   // Extract data from API
   const totalStudents = data.totalStudents || 0;
@@ -30,8 +39,10 @@ const Dashboard = () => {
 
   // Calculate average attendance across levels
   const totalAttendance =
-    data.totalAttendaceRecordsAverage?.reduce((acc, item) => acc + item.average, 0) /
-      (data.totalAttendaceRecordsAverage?.length || 1) || 0;
+    data.totalAttendaceRecordsAverage?.reduce(
+      (acc, item) => acc + item.average,
+      0
+    ) / (data.totalAttendaceRecordsAverage?.length || 1) || 0;
 
   const attendanceData =
     data.totalAttendaceRecordsAverage?.map((item) => ({
@@ -43,10 +54,16 @@ const Dashboard = () => {
     <div className="flex bg-gray-50 min-h-screen overflow-x-hidden w-full">
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
-      <div className={`flex-1 transition-all duration-300 w-full ${sidebarOpen ? "ml-64" : "ml-0 lg:ml-64"}`}>
+      <div
+        className={`flex-1 transition-all duration-300 w-full ${
+          sidebarOpen ? "" : "ml-0 "
+        }`}
+      >
         {/* Mobile Navbar */}
         <div className="flex items-center justify-between px-4 py-3 bg-white shadow-md lg:hidden sticky top-0 z-40 w-full">
-          <h1 className="text-lg sm:text-xl font-bold text-[#0A496D]">Admin Dashboard</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-[#0A496D]">
+            Admin Dashboard
+          </h1>
         </div>
 
         <div className="w-full px-3 sm:px-5 md:px-8 lg:px-10 py-8 sm:py-10">
@@ -66,15 +83,21 @@ const Dashboard = () => {
                 key={i}
                 className="bg-white w-full p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 flex flex-col justify-center items-start"
               >
-                <h3 className="font-semibold text-gray-500 text-sm sm:text-base">{stat.label}</h3>
-                <p className="text-2xl sm:text-3xl font-bold text-[#0A496D] mt-2">{stat.value}</p>
+                <h3 className="font-semibold text-gray-500 text-sm sm:text-base">
+                  {stat.label}
+                </h3>
+                <p className="text-2xl sm:text-3xl font-bold text-[#0A496D] mt-2">
+                  {stat.value}
+                </p>
               </div>
             ))}
           </div>
 
           {/* Charts Section */}
           <div className="w-full space-y-6">
-            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#0A496D]">Attendance by Level</h3>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#0A496D]">
+              Attendance by Level
+            </h3>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 w-full">
               {/* Bar Chart */}
@@ -86,7 +109,11 @@ const Dashboard = () => {
                       <XAxis dataKey="level" stroke="#6B7280" />
                       <YAxis stroke="#6B7280" />
                       <Tooltip />
-                      <Bar dataKey="attendance" fill="#1173D4" radius={[8, 8, 0, 0]} />
+                      <Bar
+                        dataKey="attendance"
+                        fill="#1173D4"
+                        radius={[8, 8, 0, 0]}
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

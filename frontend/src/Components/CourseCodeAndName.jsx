@@ -28,7 +28,7 @@ const CourseCodeAndName = () => {
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col">
-      <Navbar />
+      <Navbar Title={"Course Management"}/>
       <main className="flex-grow w-full max-w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-16 md:pt-8 pb-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 sm:mb-8">
           <p className="font-medium text-gray-600 text-sm sm:text-base md:text-lg">

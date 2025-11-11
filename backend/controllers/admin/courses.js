@@ -30,6 +30,7 @@ export async function getCourses(req, res) {
 export async function addNewCourse(req, res) {
   try {
     let courseinfo = req.body;
+    console.log(courseinfo)
     console.log(courseinfo);
     let addNewCourse = new Courses({
       ...courseinfo,

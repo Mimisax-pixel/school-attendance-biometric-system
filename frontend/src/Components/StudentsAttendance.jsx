@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useAttendance } from "../hooks/useAttendance";
+import Navbar from "./Layouts/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const StudentsAttendance = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expanded, setExpanded] = useState(null);
   const [page, setPage] = useState(0);
+  let navigate = useNavigate();
   const limit = 20;
 
   const { data, isLoading, error } = useAttendance(page, limit);
@@ -24,51 +27,16 @@ const StudentsAttendance = () => {
   return (
     <div className="min-h-screen w-full bg-gray-100 font-sans overflow-x-hidden">
       {/* Header */}
-      <header className="w-full bg-white shadow px-4 sm:px-6 md:px-10 lg:px-16 py-4 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center space-x-2">
-          <div className="w-6 h-6 bg-blue-600 rounded"></div>
-          <span className="font-bold text-lg sm:text-xl">EduTrack</span>
-        </div>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex space-x-8 text-sm text-gray-600">
-          <a href="/adminDashboard" className="hover:text-black">
-            Dashboard
-          </a>
-          <a href="#" className="text-blue-600 font-medium">
-            Attendance
-          </a>
-          <a href="/administrativeLog" className="hover:text-black">
-            Performance
-          </a>
-          <a href="#" className="hover:text-black">
-            Reports
-          </a>
-        </nav>
-
-        {/* Right Icons */}
-        <div className="flex items-center space-x-4">
-          <button className="text-gray-600 hover:text-gray-800">
-            <i className="far fa-bell"></i>
-          </button>
-          <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-gray-700 focus:outline-none"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </header>
+      <Navbar Title={"Student Records"}></Navbar>
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <nav className="md:hidden bg-white shadow-inner px-6 py-4 space-y-3 text-gray-700">
-          <a href="/adminDashboard" className="block hover:text-black">
+          <a href="/admin/dashboard" className="block hover:text-black">
             Dashboard
           </a>
-          <a href="#" className="block text-blue-600 font-medium">
-            Attendance
+          <a href="/admin/students" className="block text-blue-600 font-medium">
+            Studenta
           </a>
           <a href="/administrativeLog" className="block hover:text-black">
             Performance
@@ -81,8 +49,8 @@ const StudentsAttendance = () => {
 
       {/* Main */}
       <main className="w-full px-4 sm:px-6 md:px-10 lg:px-16 py-8">
-        <h1 className="text-xl sm:text-2xl font-semibold mb-6 text-gray-800">
-          Biometric Attendance
+        <h1 className="text-lg font-semibold mb-6 text-gray-800">
+          Students Academic and Attendance records
         </h1>
 
         {/* Filter/Search */}
@@ -100,8 +68,8 @@ const StudentsAttendance = () => {
           <select className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto">
             <option>All Students</option>
           </select>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto hover:bg-blue-700 transition">
-            Export Report
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto hover:bg-blue-700 transition" onClick={()=>navigate('/admin/dashboard/student/register')}>
+            Register new Student
           </button>
         </div>
 

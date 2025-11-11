@@ -5,9 +5,10 @@ import CustomInput from "./CustomInput";
 import { courseSchema } from "../Schema/courseSchema";
 import { useAddCourse } from "../hooks/useAddCourse";
 import axios from "axios";
+import { set } from "zod";
 
 const AddCourseModal = ({ onClose }) => {
-  const { addCourse, isLoading } = useAddCourse();
+  const [isLoading,setIsLoading] = React.useState(false);
   const [inputValue, setInputValue] = React.useState({
     courseCode: "",
     courseTitle: "",
@@ -17,19 +18,22 @@ const AddCourseModal = ({ onClose }) => {
     level: "",
   });
 
+  console.log(inputValue);
   async function handleAddcourse() {
-    let baseUrl =
-      import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
+    setIsLoading(true);
+    let baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
     try {
-      const response = await axios.post(`${baseUrl}/courses`, inputValue, {
+      const response = await axios.post(`${baseUrl}/course`, inputValue, {
         withCredentials: true,
       });
       console.log("Course added successfully:", response.data);
       alert(`${inputValue.courseTitle} added successfully`);
       onClose();
+      setIsLoading(false);
     } catch (error) {
       console.error("Error adding course:", error);
       alert("Failed to add course. Please try again.");
+      setIsLoading(false)
     }
   }
 
@@ -43,6 +47,7 @@ const AddCourseModal = ({ onClose }) => {
 
   const onSubmit = (data) => {
     handleAddcourse();
+
   };
 
   return (
@@ -50,9 +55,7 @@ const AddCourseModal = ({ onClose }) => {
       <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Add Course</h2>
 
-        <form
-          className="space-y-4"
-        >
+        <form className="space-y-4">
           <CustomInput
             label="Course Code"
             name="courseCode"

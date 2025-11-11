@@ -4,7 +4,7 @@ import Sidebar from '../Components/Sidebar'
 
 const BiometricAttendance = () => {
   return (
-    <div className='flex justify-end'>
+    <div className='flex'>
       <Sidebar></Sidebar>
       <StudentsAttendance/>
     </div>

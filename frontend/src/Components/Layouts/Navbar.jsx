@@ -1,12 +1,12 @@
 import React from "react";
 import { Bell } from "lucide-react";
 
-const Navbar = () => {
+const Navbar = ({Title}) => {
   return (
     <nav className="flex items-center justify-between bg-white border-b border-gray-200 px-4 sm:px-6 md:px-10 lg:px-16 h-[60px] sm:h-[70px] sticky top-0 z-20 w-full">
       {/* Page Title */}
       <h1 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 truncate">
-        Course Management
+        {Title}
       </h1>
 
       {/* Right Icons */}

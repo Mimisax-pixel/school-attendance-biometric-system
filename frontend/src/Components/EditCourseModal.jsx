@@ -6,7 +6,6 @@ import { courseSchema } from "../Schema/courseSchema";
 import { useEditCourse } from "../hooks/useEditCourse"; // import your hook
 
 const EditCourseModal = ({ course, onClose }) => {
-  console.log(course);
   // 1. Use your mutation hook
   const { updateCourse, isLoading, isError, error } = useEditCourse();
 
