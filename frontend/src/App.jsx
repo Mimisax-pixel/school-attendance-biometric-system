@@ -43,7 +43,7 @@ function App() {
           </Route>
           <Route path="/student/dashboard">
             <Route
-              path="/student/dashboard/grades"
+              index
               element={<StudentsGrades />}
               />
           </Route>

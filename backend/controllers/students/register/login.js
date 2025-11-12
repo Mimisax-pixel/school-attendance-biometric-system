@@ -51,6 +51,8 @@ export default async function loginStudent(req, res) {
       secure: process.env.NODE_ENV === "production" ? true : false,
       maxAge: 24 * 60 * 60 * 1000,
     });
+
+    
     res.status(200).json({
       status: "success",
       message: "Login successful",

@@ -50,12 +50,12 @@ const loginLecturer = async (req, res) => {
       );
 
       // Set JWT token in HTTP-only cookie
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production" ? true : false,
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
+     res.cookie("token", token, {
+       httpOnly: true,
+       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+       secure: process.env.NODE_ENV === "production" ? true : false,
+       maxAge: 24 * 60 * 60 * 1000,
+     });
 
       // Return success without sending token in body
       return res.status(200).json({
