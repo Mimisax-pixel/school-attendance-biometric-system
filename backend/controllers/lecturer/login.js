@@ -54,7 +54,7 @@ const loginLecturer = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production" ? true : false,
         sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: 24 * 60 * 60 * 1000,
       });
 
       // Return success without sending token in body

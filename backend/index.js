@@ -20,6 +20,7 @@ mongoose
   .connect(process.env.DB_CONNECTION_STRING)
   .then(() => {
     console.log("Connected to MongoDB");
+    console.log(process.env.NODE_ENV)
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB", err);
@@ -43,7 +44,6 @@ const corsOptions = {
   },
   credentials: true,
 };
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
