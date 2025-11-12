@@ -48,8 +48,8 @@ export default async function loginStudent(req, res) {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "none",
-      secure: process.env.NODE_ENV === "production",
-      MaxAge: 24 * 60 * 60 * 1000, 
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
       status: "success",
