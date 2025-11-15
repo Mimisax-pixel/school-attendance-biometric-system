@@ -5,10 +5,11 @@ import CustomInput from "./CustomInput";
 import { courseSchema } from "../Schema/courseSchema";
 import { useAddCourse } from "../hooks/useAddCourse";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { set } from "zod";
 
 const AddCourseModal = ({ onClose }) => {
-  const [isLoading,setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [inputValue, setInputValue] = React.useState({
     courseCode: "",
     courseTitle: "",
@@ -18,22 +19,24 @@ const AddCourseModal = ({ onClose }) => {
     level: "",
   });
 
-
   async function handleAddcourse() {
     setIsLoading(true);
-    let baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
+    let baseUrl =
+      import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
     try {
       const response = await axios.post(`${baseUrl}/course`, inputValue, {
         withCredentials: true,
       });
 
-      alert(`${inputValue.courseTitle} added successfully`);
+      toast.success(`${inputValue.courseTitle} added successfully`);
       onClose();
       setIsLoading(false);
     } catch (error) {
-
-      alert("Failed to add course. Please try again.");
-      setIsLoading(false)
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to add course. Please try again."
+      );
+      setIsLoading(false);
     }
   }
 
@@ -47,7 +50,6 @@ const AddCourseModal = ({ onClose }) => {
 
   const onSubmit = (data) => {
     handleAddcourse();
-
   };
 
   return (

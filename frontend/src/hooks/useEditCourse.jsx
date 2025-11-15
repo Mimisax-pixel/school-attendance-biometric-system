@@ -1,5 +1,6 @@
 ﻿import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
+import toast from "react-hot-toast";
 
 export function useEditCourse() {
   const queryClient = useQueryClient();
@@ -16,7 +17,11 @@ export function useEditCourse() {
       return res.data;
     },
     onSuccess: () => {
+      toast.success("Course updated successfully!");
       queryClient.invalidateQueries(["courses"]);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to update course");
     },
   });
 

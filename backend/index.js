@@ -34,18 +34,21 @@ const PORT = process.env.PORT || 5000;
 let apiVersion = "/api/v1";
 
 // Middleware
-
-const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"];
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+const allowedOrigins = [frontendUrl, "http://localhost:5173"];
 
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true); // Allow
     } else {
+      console.warn(`Origin ${origin} not allowed by CORS`);
       callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(express.json());
 app.use(cookieParser());

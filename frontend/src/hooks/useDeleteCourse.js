@@ -1,4 +1,5 @@
 ﻿import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export const useDeleteCourse = () => {
   const queryClient = useQueryClient();
@@ -9,8 +10,6 @@ export const useDeleteCourse = () => {
       ?.split("=")[1];
   }
 
-
-
   const { mutate: deleteCourse, isLoading } = useMutation({
     mutationFn: async (courseCode) => {
       const response = await fetch(
@@ -18,8 +17,8 @@ export const useDeleteCourse = () => {
         {
           method: "DELETE",
           headers: {
-            "authorization": "Bearer " + getCookie("token"),
-          }
+            authorization: "Bearer " + getCookie("token"),
+          },
         }
       );
 
@@ -28,7 +27,11 @@ export const useDeleteCourse = () => {
     },
 
     onSuccess: () => {
+      toast.success("Course deleted successfully!");
       queryClient.invalidateQueries(["courses"]);
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to delete course");
     },
   });
 
