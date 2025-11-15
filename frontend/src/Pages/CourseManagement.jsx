@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import Sidebar from "../Components/Sidebar";
 import CourseCodeAndName from "../Components/CourseCodeAndName";
 import Navbar from "../Components/Layouts/Navbar";

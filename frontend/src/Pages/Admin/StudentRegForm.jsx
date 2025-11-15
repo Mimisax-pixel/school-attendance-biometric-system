@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const StudentRegForm = () => {
@@ -34,10 +34,10 @@ const StudentRegForm = () => {
         "http://localhost:5000/api/v1/register/student",
         formData
       );
-      console.log("Server response:", response.data);
+
       alert("Student registered successfully!");
     } catch (error) {
-      console.error("Error registering student:", error);
+
       alert("Failed to register student.");
     }
   };
@@ -58,10 +58,10 @@ const StudentRegForm = () => {
               ...prev,
               biometricData: data.template,
             }));
-            setStatus("✅ Fingerprint enrollment completed!");
+            setStatus("âœ… Fingerprint enrollment completed!");
           }
         } catch (err) {
-          console.error("Message parsing error:", err);
+
         }
       };
 

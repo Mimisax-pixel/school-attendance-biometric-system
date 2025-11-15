@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+﻿import React, { useEffect } from "react";
 
 
 const AlertMessage = ({ type = "info", message, onClose, duration = 4000 }) => {
@@ -12,7 +12,7 @@ const AlertMessage = ({ type = "info", message, onClose, duration = 4000 }) => {
 
   if (!message) return null;
 
-  // Tailwind color styles based on alert type
+
   const typeClasses = {
     info: "bg-blue-500",
     error: "bg-red-500",

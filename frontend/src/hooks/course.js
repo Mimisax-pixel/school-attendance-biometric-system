@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
 
 
@@ -13,7 +13,7 @@ export function useCourse(courseCode) {
     queryFn: async () => {
       const res = await api.get(`/courses/${courseCode}`);
 
-      // The API returns an array inside "courses", so pick the first one
+
       return res.data.courses?.[0];
     },
     enabled: !!courseCode, // run only if courseCode is provided

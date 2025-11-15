@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+﻿import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AlertMessage from "../Components/Alerts";
@@ -20,15 +20,15 @@ const App = () => {
 
   let redirectTo = "";
   let token = getCookie("token");
-  // console.log("API BASE URL:", baseUrl);
+
 
   function handleUserInput(ref) {
     let obj = { ...logindetails };
     let fieldName = ref.current.id;
     obj[fieldName] = ref.current.value;
     setLoginDetails(obj);
-    // console.log(ref.current.value);
-    console.log(logindetails);
+
+
   }
   async function loginStudent() {
     try {
@@ -61,22 +61,22 @@ const App = () => {
         setLoginDetails({});
         Email.current.value = "";
         password.current.value = "";
-        // alert(res.data.status);
+
         toast.success("Login successful");
         setSubmit(false);
-        console.log(res);
+
         navigate(redirectTo);
       } else {
         setSubmit(false);
-        // alert("failed to login");
-        // setAlert({ type: "error", message: "Failed to login" });
+
+
         toast.error("Failed to login");
       }
     } catch (err) {
-      console.log("server error,", err);
-      // setAlert({ type: "error", message: "Server error, try again later" });
+
+
       toast.error("Server error, try again later");
-      // alert("Server error, try again later");
+
       setSubmit(false);
     }
   }
@@ -180,7 +180,7 @@ const App = () => {
                 }}
                 className="flex justify-between items-center w-full border border-gray-300 bg-white rounded-md px-4 py-3 text-base text-gray-700 font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
-                {/* ✅ Always show text */}
+                {/* âœ… Always show text */}
                 <span>
                   {role
                     ? role.charAt(0).toUpperCase() + role.slice(1)
@@ -236,7 +236,7 @@ const App = () => {
             {role && (
               <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto w-full">
                 <div className="text-blue-600 text-4xl mb-3">
-                  {role === "admin" ? "🔐" : "🎓"}
+                  {role === "admin" ? "ðŸ”" : "ðŸŽ“"}
                 </div>
                 <h4 className="text-lg font-semibold mb-4 capitalize">
                   {role} Login
@@ -357,7 +357,7 @@ const App = () => {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-4 text-center text-gray-500 text-xs sm:text-sm">
-          © 2025 Federal University of Technology, Ikot Abasi. All Rights
+          Â© 2025 Federal University of Technology, Ikot Abasi. All Rights
           Reserved.
         </div>
       </footer>

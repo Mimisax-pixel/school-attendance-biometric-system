@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import {
   LineChart,
@@ -21,7 +21,7 @@ const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-  // Fetch live admin dashboard data
+
   const { data, isLoading, isError } = useAdminDashboard();
 
   if (isLoading) {
@@ -36,12 +36,12 @@ const Dashboard = () => {
   if (isError)
     return <p className="p-6 text-red-500">Failed to load dashboard data.</p>;
 
-  // Extract data from API
+
   const totalStudents = data.totalStudents || 0;
   const totalLecturers = data.totalLecturers || 0;
   const totalCourses = data.totalCourses || 0;
 
-  // Calculate average attendance across levels
+
   const totalAttendance =
     data.totalAttendaceRecordsAverage?.reduce(
       (acc, item) => acc + item.average,

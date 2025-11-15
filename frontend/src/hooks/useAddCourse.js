@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCookie } from "../api/axiosInstance";
 
 
@@ -30,9 +30,9 @@ export const useAddCourse = () => {
       return response.json();
     },
 
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries(["courses"]);
-    // },
+
+
+
     onSuccess: (data) => {
       queryClient.invalidateQueries(["courses"]);
       return data;

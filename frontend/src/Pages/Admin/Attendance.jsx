@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+﻿import React, { useState, useRef, useEffect } from "react";
 import {
   Bell,
   User,
@@ -15,7 +15,6 @@ import axios from "axios";
 import AlertMessage from "../../Components/Alerts";
 import { getCookie } from "../../api/axiosInstance.js";
 import { use } from "react";
-import lecturer from "../../../../backend/models/lecturers.js";
 
 let token = getCookie("token");
 
@@ -48,7 +47,7 @@ const Attendance = () => {
   let [courseOptions, setCourseOptions] = useState([]);
 
   useEffect(() => {
-    // Fetch course options from API or define them here
+
     const fetchCourses = async () => {
       try {
         const response = await axios.post(
@@ -61,15 +60,15 @@ const Attendance = () => {
           }
         );
         setCourseOptions(response.data.courses);
-        console.log("Courses fetched:", response.data.courses);
+
       } catch (error) {
-        console.error("Error fetching courses:", error);
+
       }
     };
     fetchCourses();
   }, []);
 
-  // 🔹 Trigger Check-in API
+
 
   async function triggerCheckIn() {
     try {
@@ -90,9 +89,9 @@ const Attendance = () => {
         message: "Check-in successful",
       });
       setIsVerify("verified");
-      console.log("Check-in successful:", response.data);
+
     } catch (error) {
-      console.error("Error during check-in:", error);
+
       setAlert({
         type: "error",
         message: error.response?.data?.message || "Check-in failed",
@@ -104,24 +103,24 @@ const Attendance = () => {
     return window.chrome && window.chrome.webview;
   }
 
-  // 🔹 Trigger fingerprint verification
+
   async function verifyFingerprint() {
-    const savedTemplate = student.biometricData; // or fetched from API
+    const savedTemplate = student.biometricData;
 
     if (isWebView2()) {
       window.chrome.webview.postMessage(`verify_fingerprint:${savedTemplate}`);
     } else {
-      // Handle normal browser gracefully
-      console.warn("WebView2 not detected — running in browser.");
+
+
       setAlert({
         type: "info",
         message: "Finger Print is only available on the biometric app",
       });
-      // alert("Fingerprint verification is only available on the biometric app.");
+
     }
   }
 
-  // 🔹 Listen for messages from VB.NET (WebView2)
+
   if (isWebView2()) {
     window.chrome.webview.addEventListener("message", (e) => {
       try {
@@ -130,26 +129,26 @@ const Attendance = () => {
         if (data.status === "verified") {
           setAlert({
             type: "success",
-            message: "✅ Verified successfully!",
+            message: "âœ… Verified successfully!",
           });
-          // alert("✅ Verified successfully!");
-          triggerCheckIn(); // your logic here
+
+          triggerCheckIn();
         } else if (data.status === "failed") {
           setAlert({
             type: "error",
-            message: "❌ Verification failed!",
+            message: "âŒ Verification failed!",
           });
-          // alert("❌ Verification failed!");
+
         } else if (data.status) {
-          // For other status updates like "Place your finger..."
+
           document.getElementById("status").innerText = data.status;
         }
       } catch (err) {
-        console.error("Invalid message received:", e.data, err);
+
       }
     });
   } else {
-    console.log("WebView2 bridge not active — messages from VB.NET disabled.");
+
   }
 
   async function handleSearch() {
@@ -173,9 +172,9 @@ const Attendance = () => {
         message: "Student details fetched successfully",
       });
       setStudent(response.data.data);
-      console.log("Student details fetched:", response.data);
+
     } catch (error) {
-      console.error("Error fetching student details:", error);
+
       setAlert({
         type: "error",
         message:
@@ -188,7 +187,7 @@ const Attendance = () => {
   async function handleStartSession() {
     const dept = department.current.value;
     const crs = course.current.value;
-    console.log(crs, dept);
+
 
     setLoading(true);
     try {
@@ -205,14 +204,14 @@ const Attendance = () => {
         }
       );
       setLoading(false);
-      console.log("Session started:", response.data);
+
       setAlert({
         type: "success",
         message: "Attendance session started successfully",
       });
       setSession(response.data.data);
     } catch (error) {
-      console.error("Error starting session:", error);
+
       setAlert({
         type: "error",
         message: error.response?.data?.message || "Failed to start session",
@@ -326,8 +325,8 @@ const Attendance = () => {
                         className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                         ref={department}
                         onChange={(e) => {
-                          console.log(e.target.value);
-                          // department.current.value = e.target.value
+
+
                         }}
                       >
                         <option value="">Select Department</option>
@@ -353,8 +352,8 @@ const Attendance = () => {
                         className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                         ref={course}
                         onChange={(e) => {
-                          console.log(e.target.value);
-                          // course.current.value = e.target.value;
+
+
                         }}
                       >
                         {courseOptions.length === 0 && (
@@ -371,7 +370,7 @@ const Attendance = () => {
                         className="w-full mt-2 bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 active:scale-98 transition-transform text-sm"
                         onClick={handleStartSession}
                       >
-                        {loading ? "loading..." : "Start Attendance Session →"}
+                        {loading ? "loading..." : "Start Attendance Session â†’"}
                       </button>
                     </div>
                   </section>
@@ -477,7 +476,7 @@ const Attendance = () => {
                       </div>
                     </div>
                     <span className="text-green-600 font-semibold text-sm">
-                      ✔ Verified
+                      âœ” Verified
                     </span>
                   </div>
 
@@ -492,7 +491,7 @@ const Attendance = () => {
                       </div>
                     </div>
                     <span className="text-red-600 font-semibold text-sm">
-                      ✖ Failed
+                      âœ– Failed
                     </span>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Home, BarChart2, Users, LogOut, Menu } from "lucide-react";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {

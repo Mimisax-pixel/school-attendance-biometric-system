@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
 import { useApi } from "../providers/ApiProvider";
@@ -11,13 +11,13 @@ const ProtectedRoute = () => {
 
   
   let token = getCookie("token");
-  // console.log(token);
+
   
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Call your backend endpoint that verifies the HTTP-only token
+
         const res = await axios.get(`${baseUrl}/auth/verify`, {
           headers: {
             Authorization: "Bearer " + token,

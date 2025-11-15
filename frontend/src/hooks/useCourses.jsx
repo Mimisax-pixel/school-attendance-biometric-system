@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import api,{getCookie} from "../api/axiosInstance";
 
 
 
 export function useCourses() {
-  // let baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1"
+
   const {data: courses, isLoading, isError, error,
   } = useQuery({
     queryKey: ["courses"],

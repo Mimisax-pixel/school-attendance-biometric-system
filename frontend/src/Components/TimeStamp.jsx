@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import AdministrativeSearchbar from "./AdministrativeSearchbar";
 
 const TimeStamp = () => {
@@ -66,12 +66,12 @@ const TimeStamp = () => {
           <div className="space-y-6 font-semibold text-sm sm:text-base leading-5">
             <p>Successful login</p>
             <p>
-              Updated student ‘Oluwaseun’ (CSC/18/1234) performance record
+              Updated student â€˜Oluwaseunâ€™ (CSC/18/1234) performance record
             </p>
-            <p>Generated attendance report for ‘CSC 401’ (October 2023)</p>
+            <p>Generated attendance report for â€˜CSC 401â€™ (October 2023)</p>
             <p>Modified attendance alert threshold for 75%</p>
             <p>Successful login</p>
-            <p>Failed login attempt by user ‘Admin’</p>
+            <p>Failed login attempt by user â€˜Adminâ€™</p>
           </div>
         </div>
 
