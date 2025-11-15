@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../api/axiosInstance.js";
 
 const StudentRegForm = () => {
   const [formData, setFormData] = useState({
@@ -30,10 +30,9 @@ const StudentRegForm = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/register/student",
-        formData
-      );
+      const response = await api.post("/register/student", formData, {
+        withCredentials: true,
+      });
 
       alert("Student registered successfully!");
     } catch (error) {

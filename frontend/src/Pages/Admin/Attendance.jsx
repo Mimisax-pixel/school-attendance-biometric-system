@@ -11,12 +11,9 @@ import {
   X,
   BookMarked,
 } from "lucide-react";
-import axios from "axios";
+import api from "../../api/axiosInstance.js";
 import AlertMessage from "../../Components/Alerts";
-import { getCookie } from "../../api/axiosInstance.js";
 import { use } from "react";
-
-let token = getCookie("token");
 
 const Void = () => {
   return (
@@ -47,51 +44,27 @@ const Attendance = () => {
   let [courseOptions, setCourseOptions] = useState([]);
 
   useEffect(() => {
-
     const fetchCourses = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/v1/lecturer/courses", {
-          },
-          {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          }
-        );
+        const response = await api.post("/lecturer/courses", {});
         setCourseOptions(response.data.courses);
-
-      } catch (error) {
-
-      }
+      } catch (error) {}
     };
     fetchCourses();
   }, []);
 
-
-
   async function triggerCheckIn() {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/session/checkin",
-        {
-          studentId: student.studentId,
-          classId: session.sessionId,
-        },
-        {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        }
-      );
+      const response = await api.post("/session/checkin", {
+        studentId: student.studentId,
+        classId: session.sessionId,
+      });
       setAlert({
         type: "success",
         message: "Check-in successful",
       });
       setIsVerify("verified");
-
     } catch (error) {
-
       setAlert({
         type: "error",
         message: error.response?.data?.message || "Check-in failed",
@@ -103,23 +76,18 @@ const Attendance = () => {
     return window.chrome && window.chrome.webview;
   }
 
-
   async function verifyFingerprint() {
     const savedTemplate = student.biometricData;
 
     if (isWebView2()) {
       window.chrome.webview.postMessage(`verify_fingerprint:${savedTemplate}`);
     } else {
-
-
       setAlert({
         type: "info",
         message: "Finger Print is only available on the biometric app",
       });
-
     }
   }
-
 
   if (isWebView2()) {
     window.chrome.webview.addEventListener("message", (e) => {
@@ -138,43 +106,28 @@ const Attendance = () => {
             type: "error",
             message: "âŒ Verification failed!",
           });
-
         } else if (data.status) {
-
           document.getElementById("status").innerText = data.status;
         }
-      } catch (err) {
-
-      }
+      } catch (err) {}
     });
   } else {
-
   }
 
   async function handleSearch() {
     setLoading(true);
     try {
       let regNo = document.getElementById("Rg").value || "";
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/session/student_details",
-        {
-          studentId: regNo,
-        },
-        {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        }
-      );
+      const response = await api.post("/session/student_details", {
+        studentId: regNo,
+      });
       setLoading(false);
       setAlert({
         type: "success",
         message: "Student details fetched successfully",
       });
       setStudent(response.data.data);
-
     } catch (error) {
-
       setAlert({
         type: "error",
         message:
@@ -188,21 +141,12 @@ const Attendance = () => {
     const dept = department.current.value;
     const crs = course.current.value;
 
-
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/session",
-        {
-          department: dept,
-          courseCode: crs,
-        },
-        {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        }
-      );
+      const response = await api.post("/session", {
+        department: dept,
+        courseCode: crs,
+      });
       setLoading(false);
 
       setAlert({
@@ -211,7 +155,6 @@ const Attendance = () => {
       });
       setSession(response.data.data);
     } catch (error) {
-
       setAlert({
         type: "error",
         message: error.response?.data?.message || "Failed to start session",
@@ -324,10 +267,7 @@ const Attendance = () => {
                       <select
                         className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                         ref={department}
-                        onChange={(e) => {
-
-
-                        }}
+                        onChange={(e) => {}}
                       >
                         <option value="">Select Department</option>
                         <option value="Computer Science">
@@ -351,10 +291,7 @@ const Attendance = () => {
                       <select
                         className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                         ref={course}
-                        onChange={(e) => {
-
-
-                        }}
+                        onChange={(e) => {}}
                       >
                         {courseOptions.length === 0 && (
                           <option value="">No courses available</option>
@@ -370,7 +307,9 @@ const Attendance = () => {
                         className="w-full mt-2 bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 active:scale-98 transition-transform text-sm"
                         onClick={handleStartSession}
                       >
-                        {loading ? "loading..." : "Start Attendance Session â†’"}
+                        {loading
+                          ? "loading..."
+                          : "Start Attendance Session â†’"}
                       </button>
                     </div>
                   </section>

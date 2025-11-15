@@ -53,9 +53,7 @@ const App = () => {
 
       setSubmit(true);
       let res = await axios.post(route, logindetails, {
-        headers: {
-          Authorization: "bearer " + token,
-        }
+        withCredentials: true,
       });
       if (res.data.status === "success") {
         setLoginDetails({});

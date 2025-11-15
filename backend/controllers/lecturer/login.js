@@ -50,11 +50,12 @@ const loginLecturer = async (req, res) => {
       );
 
       // Set JWT token in HTTP-only cookie
-     res.cookie("token", token, {
-       httpOnly: false, // IMPORTANT: allow frontend to read it
-       maxAge: 3600 * 1000,
-       path: "/",
-     });
+      res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 24 * 3600 * 1000,
+      });
 
       // Return success without sending token in body
       return res.status(200).json({

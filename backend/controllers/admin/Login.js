@@ -33,11 +33,13 @@ const loginadmin = async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: false, // IMPORTANT: allow frontend to read it
-      maxAge: 3600 * 1000,
+      httpOnly: true,
+      sameSite: "lax",
       path: "/",
+      maxAge: 24 * 3600 * 1000,
     });
-
+    console.log("logged in successfully");
+    
     res.status(200).json({
       status: "success",
       message: "Admin logged in successfully",

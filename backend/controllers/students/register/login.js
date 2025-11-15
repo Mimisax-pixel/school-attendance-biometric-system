@@ -45,11 +45,12 @@ export default async function loginStudent(req, res) {
       }
     );
 
-     res.cookie("token", token, {
-       httpOnly: false, // IMPORTANT: allow frontend to read it
-       maxAge: 3600 * 1000,
-       path: "/",
-     });
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 3600 * 1000,
+    });
 
     
     res.status(200).json({
