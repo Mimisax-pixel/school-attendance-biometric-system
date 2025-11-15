@@ -24,7 +24,7 @@ const LecturerAttendance = () => {
   if (isError) return <p className="p-6 text-red-600">{error?.message}</p>;
 
   return (
-    <div className="container mx-auto lg:ml-[300px] py-10 px-4 sm:px-6 lg:px-20">
+    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-20">
       <LecturerNav />
       <LecturesSearchbar />
 
