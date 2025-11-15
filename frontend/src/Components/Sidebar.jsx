@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart2,
@@ -42,7 +42,7 @@ const Sidebar = () => {
     <>
       {/* ===== MOBILE HEADER ===== */}
       <header className="flex items-center justify-between px-4 py-3 bg-white shadow-md md:hidden fixed top-0 left-0 w-full z-30">
-        <h2 className="text-lg font-bold text-[#0E3668]">📚 Futa</h2>
+        <h2 className="text-lg font-bold text-[#0E3668]">ðŸ“š Futa</h2>
         <button
           onClick={() => setIsOpen(true)}
           className="text-gray-700 hover:text-blue-600"
@@ -68,7 +68,7 @@ const Sidebar = () => {
         {/* Header + Close button (mobile only) */}
         <div className="flex items-center justify-between mb-6 md:mb-10">
           <div>
-            <h2 className="text-xl font-bold text-[#0E3668]">📚 Futa</h2>
+            <h2 className="text-xl font-bold text-[#0E3668]">ðŸ“š Futa</h2>
             <h3 className="font-semibold text-gray-500 text-sm md:text-base">
               Academics Pro
             </h3>

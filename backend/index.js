@@ -14,13 +14,16 @@ import Lecturer from "./routes/admin/lecturers.js";
 import LecturerLogin from "./routes/lecturers/login.js";
 import lecturerCourses from "./routes/lecturers/courses.js";
 import AttendanceSessions from "./routes/lecturers/session.js";
+import { startAttendanceRateJob } from "./jobs/computeAttendanceRates.js";
 
 dotenv.config();
 mongoose
   .connect(process.env.DB_CONNECTION_STRING)
   .then(() => {
     console.log("Connected to MongoDB");
-    console.log(process.env.NODE_ENV)
+    console.log(process.env.NODE_ENV);
+    // Start background job for computing attendance rates (every 1 hour)
+    startAttendanceRateJob(60 * 60 * 1000);
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB", err);

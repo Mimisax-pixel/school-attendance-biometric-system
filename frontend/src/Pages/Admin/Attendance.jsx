@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+﻿import React, { useState, useRef, useEffect } from "react";
 import {
   Bell,
   User,
@@ -11,8 +11,9 @@ import {
   X,
   BookMarked,
 } from "lucide-react";
-import axios from "axios";
+import api from "../../api/axiosInstance.js";
 import AlertMessage from "../../Components/Alerts";
+import { use } from "react";
 
 const Void = () => {
   return (
@@ -22,8 +23,6 @@ const Void = () => {
   );
 };
 
-
-
 const Attendance = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [student, setStudent] = useState(null);
@@ -31,7 +30,7 @@ const Attendance = () => {
   const course = useRef(null);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isVerify,setIsVerify]=useState("");
+  const [isVerify, setIsVerify] = useState("");
   const menuItems = [
     { name: "Dashboard", icon: BarChart3 },
     { name: "Courses", icon: BookOpen },
@@ -42,56 +41,54 @@ const Attendance = () => {
     { name: "Settings", icon: Settings },
   ];
   const [alert, setAlert] = useState({ type: "", message: "" });
+  let [courseOptions, setCourseOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await api.post("/lecturer/courses", {});
+        setCourseOptions(response.data.courses);
+      } catch (error) {}
+    };
+    fetchCourses();
+  }, []);
 
   async function triggerCheckIn() {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/session/checkin",
-        {
-          studentId: student.studentId,
-          classId: session.sessionId,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await api.post("/session/checkin", {
+        studentId: student.studentId,
+        classId: session.sessionId,
+      });
       setAlert({
         type: "success",
         message: "Check-in successful",
       });
       setIsVerify("verified");
-      console.log("Check-in successful:", response.data);
     } catch (error) {
-      console.error("Error during check-in:", error);
       setAlert({
         type: "error",
         message: error.response?.data?.message || "Check-in failed",
       });
     }
-}
+  }
 
   function isWebView2() {
     return window.chrome && window.chrome.webview;
   }
 
-  // 🔹 Trigger fingerprint verification
   async function verifyFingerprint() {
-    const savedTemplate = student.biometricData; // or fetched from API
+    const savedTemplate = student.biometricData;
 
     if (isWebView2()) {
       window.chrome.webview.postMessage(`verify_fingerprint:${savedTemplate}`);
     } else {
-      // Handle normal browser gracefully
-      console.warn("WebView2 not detected — running in browser.");
       setAlert({
         type: "info",
         message: "Finger Print is only available on the biometric app",
       });
-      // alert("Fingerprint verification is only available on the biometric app.");
     }
   }
 
-  // 🔹 Listen for messages from VB.NET (WebView2)
   if (isWebView2()) {
     window.chrome.webview.addEventListener("message", (e) => {
       try {
@@ -100,84 +97,64 @@ const Attendance = () => {
         if (data.status === "verified") {
           setAlert({
             type: "success",
-            message: "✅ Verified successfully!",
+            message: "âœ… Verified successfully!",
           });
-          // alert("✅ Verified successfully!");
-          triggerCheckIn(); // your logic here
+
+          triggerCheckIn();
         } else if (data.status === "failed") {
-           setAlert({
-             type: "error",
-             message: "❌ Verification failed!",
-           });
-          // alert("❌ Verification failed!");
+          setAlert({
+            type: "error",
+            message: "âŒ Verification failed!",
+          });
         } else if (data.status) {
-          // For other status updates like "Place your finger..."
           document.getElementById("status").innerText = data.status;
         }
-      } catch (err) {
-        console.error("Invalid message received:", e.data, err);
-      }
+      } catch (err) {}
     });
   } else {
-    console.log("WebView2 bridge not active — messages from VB.NET disabled.");
   }
 
   async function handleSearch() {
     setLoading(true);
     try {
       let regNo = document.getElementById("Rg").value || "";
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/session/student_details",
-        {
-          studentId: regNo,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await api.post("/session/student_details", {
+        studentId: regNo,
+      });
       setLoading(false);
       setAlert({
         type: "success",
         message: "Student details fetched successfully",
       });
       setStudent(response.data.data);
-      console.log("Student details fetched:", response.data);
     } catch (error) {
-      console.error("Error fetching student details:", error);
       setAlert({
         type: "error",
         message:
           error.response?.data?.message || "Failed to fetch student details",
       });
       setLoading(false);
-     }
+    }
   }
 
   async function handleStartSession() {
     const dept = department.current.value;
     const crs = course.current.value;
-    console.log(crs,dept);
-    
+
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/session",
-        {
-          department: dept,
-          courseCode: crs,
-        }, {
-          withCredentials: true,
-        }
-      );
+      const response = await api.post("/session", {
+        department: dept,
+        courseCode: crs,
+      });
       setLoading(false);
-      console.log("Session started:", response.data);
+
       setAlert({
         type: "success",
         message: "Attendance session started successfully",
       });
       setSession(response.data.data);
     } catch (error) {
-      console.error("Error starting session:", error);
       setAlert({
         type: "error",
         message: error.response?.data?.message || "Failed to start session",
@@ -290,10 +267,7 @@ const Attendance = () => {
                       <select
                         className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                         ref={department}
-                        onChange={(e) => {
-                          console.log(e.target.value);
-                          // department.current.value = e.target.value
-                        }}
+                        onChange={(e) => {}}
                       >
                         <option value="">Select Department</option>
                         <option value="Computer Science">
@@ -317,23 +291,25 @@ const Attendance = () => {
                       <select
                         className="w-full rounded-md border border-gray-200/50 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                         ref={course}
-                        onChange={(e) => {
-                          console.log(e.target.value);
-                          // course.current.value = e.target.value;
-                        }}
+                        onChange={(e) => {}}
                       >
-                        <option>Select Course</option>
-                        <option value="CSC 401">CSC 401</option>
-                        <option value=">CSC 402">CSC 402</option>
-                        <option value="MAC1102">MAC1102</option>
-                        <option value="cyb111">cyb111</option>
+                        {courseOptions.length === 0 && (
+                          <option value="">No courses available</option>
+                        )}
+                        {courseOptions.map((crs) => (
+                          <option key={crs.courseCode} value={crs.courseCode}>
+                            {crs.courseTitle} ({crs.courseCode})
+                          </option>
+                        ))}
                       </select>
 
                       <button
                         className="w-full mt-2 bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 active:scale-98 transition-transform text-sm"
                         onClick={handleStartSession}
                       >
-                        {loading ? "loading..." : "Start Attendance Session →"}
+                        {loading
+                          ? "loading..."
+                          : "Start Attendance Session â†’"}
                       </button>
                     </div>
                   </section>
@@ -439,7 +415,7 @@ const Attendance = () => {
                       </div>
                     </div>
                     <span className="text-green-600 font-semibold text-sm">
-                      ✔ Verified
+                      âœ” Verified
                     </span>
                   </div>
 
@@ -454,7 +430,7 @@ const Attendance = () => {
                       </div>
                     </div>
                     <span className="text-red-600 font-semibold text-sm">
-                      ✖ Failed
+                      âœ– Failed
                     </span>
                   </div>
                 </div>
@@ -483,4 +459,4 @@ const Attendance = () => {
   );
 };
 
-export default Attendance
+export default Attendance;

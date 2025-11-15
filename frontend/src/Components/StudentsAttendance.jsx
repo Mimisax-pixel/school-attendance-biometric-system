@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useAttendance } from "../hooks/useAttendance";
 import Navbar from "./Layouts/Navbar";
@@ -186,7 +186,7 @@ const StudentsAttendance = () => {
             Contact Us
           </a>
         </div>
-        <p>© 2024 EduTrack. All rights reserved.</p>
+        <p>Â© 2024 EduTrack. All rights reserved.</p>
       </footer>
     </div>
   );

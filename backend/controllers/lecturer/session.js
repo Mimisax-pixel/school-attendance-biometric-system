@@ -66,9 +66,10 @@ export async function getSessions(req, res) {
 export async function fetchStudentDetails(req, res) {
   try {
     let studentId = req.body.studentId;
-    let student = await Student.findOne({ matricNumber: studentId }).select(
-      "biometricData fullname matricNumber department level"
-    ).lean().exec();
+    let student = await Student.findOne({ matricNumber: studentId })
+      .select("biometricData fullname matricNumber department level")
+      .lean()
+      .exec();
     if (!student) {
       return res
         .status(404)
@@ -94,19 +95,18 @@ export async function checkIn(req, res) {
       studentId: studentId,
       classId: classId,
     });
-    attendanceRecord.save();
-    let addNewStudent = await Classes.updateOne(
+
+    await attendanceRecord.save();
+    await Classes.updateOne(
       { _id: classId },
-      { $inc: { numberOfStudentsPresent: 1 } }
+      { $inc: { numberOfStudentPresent: 1 } }
     );
-    await addNewStudent.save()
-    return res
-      .status(201)
-      .json({
-        status: "success",
-        message: "Check-in successful",
-        data: attendanceRecord,
-      });
+
+    return res.status(201).json({
+      status: "success",
+      message: "Check-in successful",
+      data: attendanceRecord,
+    });
   } catch (error) {
     res.status(500).json({ status: "failed", message: error.message });
   }

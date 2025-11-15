@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+﻿import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./CustomInput";
@@ -6,10 +6,10 @@ import { courseSchema } from "../Schema/courseSchema";
 import { useEditCourse } from "../hooks/useEditCourse"; // import your hook
 
 const EditCourseModal = ({ course, onClose }) => {
-  // 1. Use your mutation hook
+
   const { updateCourse, isLoading, isError, error } = useEditCourse();
 
-  // 2. Initialize form
+
   const {
     register,
     handleSubmit,
@@ -27,7 +27,7 @@ const EditCourseModal = ({ course, onClose }) => {
     },
   });
 
-  // 3. Update form values when course changes
+
   useEffect(() => {
     if (course) {
       reset({
@@ -41,7 +41,7 @@ const EditCourseModal = ({ course, onClose }) => {
     }
   }, [course, reset]);
 
-  // 4. Handle form submission
+
   const onSubmit = (data) => {
     if (!course) return;
 

@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
+﻿import React, { useState } from 'react'
 
 export default function AlertsPage() {
-  // Attendance
+
   const [attendanceTrigger, setAttendanceTrigger] = useState('lowAttendanceStreak')
   const [attendanceThreshold, setAttendanceThreshold] = useState('')
   const [attendanceRecipients, setAttendanceRecipients] = useState('studentOnly')
 
-  // Performance
+
   const [performanceTrigger, setPerformanceTrigger] = useState('gpaBelow')
   const [performanceThreshold, setPerformanceThreshold] = useState('')
   const [performanceRecipients, setPerformanceRecipients] = useState('studentAndAdvisor')
 
-  // Deadlines
+
   const [deadlineEvent, setDeadlineEvent] = useState('assignment')
   const [deadlineReminderDays, setDeadlineReminderDays] = useState('')
   const [deadlineRecipients, setDeadlineRecipients] = useState('allStudents')
 
-  // Sidebar toggle
+
   const [menuOpen, setMenuOpen] = useState(false)
 
   const handleSave = (e) => {
@@ -85,7 +85,7 @@ export default function AlertsPage() {
           ))}
         </nav>
 
-        <div className="px-6 py-6 text-sm text-gray-400 border-t">© 2025 FUTIA</div>
+        <div className="px-6 py-6 text-sm text-gray-400 border-t">Â© 2025 FUTIA</div>
       </aside>
 
       {/* BLUR OVERLAY (for mobile menu) */}

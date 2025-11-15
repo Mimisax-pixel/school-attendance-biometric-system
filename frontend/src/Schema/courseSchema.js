@@ -1,4 +1,4 @@
-import z from "zod";
+﻿import z from "zod";
 
 export const courseSchema = z.object({
   courseCode: z.string().min(1, "Course code is required"),

@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
 
-let baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
+
 export function useCourse(courseCode) {
   const {
     data: course,
@@ -11,11 +11,9 @@ export function useCourse(courseCode) {
   } = useQuery({
     queryKey: ["course", courseCode], // unique per code
     queryFn: async () => {
-      const res = await api.get(`${baseUrl}/courses/${courseCode}`, {
-        withCredentials: true, // ensure token cookie is sent
-      });
+      const res = await api.get(`/courses/${courseCode}`);
 
-      // The API returns an array inside "courses", so pick the first one
+
       return res.data.courses?.[0];
     },
     enabled: !!courseCode, // run only if courseCode is provided

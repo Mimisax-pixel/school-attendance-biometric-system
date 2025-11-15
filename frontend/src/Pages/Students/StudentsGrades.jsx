@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { BookOpen, LayoutDashboard, User, CheckCircle, Menu, X } from "lucide-react";
 
 const Grades = () => {
@@ -138,7 +138,7 @@ const Grades = () => {
   );
 };
 
-/* ---------- Reusable Components ---------- */
+
 
 const Section = ({ title, children }) => (
   <section className="mb-10">

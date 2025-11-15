@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import LecturesSearchbar from "../Components/LecturesSearchbar";
 import LecturerNav from "./LecturerNav";
 import { useLecturers } from "../hooks/useLecturers";

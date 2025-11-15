@@ -10,7 +10,7 @@ let courserSchema = new mongoose.Schema({
   lecturerId: { type: String, require: true },
   numberOfClassesHeld: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
-});
+});//
 
 let Course = new mongoose.model("Course", courserSchema);
 export default Course;

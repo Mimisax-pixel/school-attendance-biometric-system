@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./Pages/Home";
@@ -12,6 +12,7 @@ import Lecturers from "./Pages/Lecturers";
 import AdministrativeLog from "./Pages/AdministrativeLog";
 import StudentRegForm from "./Pages/Admin/StudentRegForm";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import NotFound from "./Pages/Notfound";
 
 function App() {
   return (
@@ -43,11 +44,12 @@ function App() {
           </Route>
           <Route path="/student/dashboard">
             <Route
-              path="/student/dashboard/grades"
+              index
               element={<StudentsGrades />}
               />
           </Route>
         </Route>
+        <Route path="*" element={<NotFound />} />
 
         {/* <Route path="/lecturers" element={<Lecturers />} /> */}
       </Routes>

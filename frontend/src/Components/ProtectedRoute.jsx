@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import axios from "axios";
-import { useApi } from "../providers/ApiProvider";
+import api from "../api/axiosInstance.js";
 
 const ProtectedRoute = () => {
-  const [isAuth, setIsAuth] = useState(null); // null = loading
+  const [isAuth, setIsAuth] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { baseUrl } = useApi();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Call your backend endpoint that verifies the HTTP-only token
-        const res = await axios.get(
-          `${baseUrl}/auth/verify`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await api.get(`/auth/verify`);
         if (res.status === 200) {
           setIsAuth(true);
         } else {
@@ -33,7 +25,7 @@ const ProtectedRoute = () => {
     checkAuth();
   }, []);
 
-  if (loading) return <div>Loading...</div>; // optional spinner
+  if (loading) return <div>Loading...</div>;
 
   return isAuth ? <Outlet /> : <Navigate to="/" replace />;
 };

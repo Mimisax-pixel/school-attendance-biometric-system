@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./CustomInput";
@@ -18,7 +18,7 @@ const AddCourseModal = ({ onClose }) => {
     level: "",
   });
 
-  console.log(inputValue);
+
   async function handleAddcourse() {
     setIsLoading(true);
     let baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
@@ -26,12 +26,12 @@ const AddCourseModal = ({ onClose }) => {
       const response = await axios.post(`${baseUrl}/course`, inputValue, {
         withCredentials: true,
       });
-      console.log("Course added successfully:", response.data);
+
       alert(`${inputValue.courseTitle} added successfully`);
       onClose();
       setIsLoading(false);
     } catch (error) {
-      console.error("Error adding course:", error);
+
       alert("Failed to add course. Please try again.");
       setIsLoading(false)
     }

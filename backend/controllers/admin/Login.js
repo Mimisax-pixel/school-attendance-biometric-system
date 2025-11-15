@@ -4,16 +4,15 @@ import jwt from "jsonwebtoken";
 const loginadmin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email);
     const existingAdmin = await admin.findOne({ email });
     if (!existingAdmin) {
       console.log("Admin not found with email:", email);
-      return res
-        .status(404)
-        .json({
-          status: "failed",
-          message: "Admin not found",
-          isauthenticated: false,
-        });
+      return res.status(404).json({
+        status: "failed",
+        message: "Admin not found",
+        isauthenticated: false,
+      });
     }
     if (existingAdmin.password !== password) {
       console.log("Incorrect password for admin:", email);
@@ -33,10 +32,11 @@ const loginadmin = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 24 * 3600 * 1000,
     });
+    console.log("logged in successfully");
 
     res.status(200).json({
       status: "success",
