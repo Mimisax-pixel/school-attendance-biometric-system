@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import LecturesSearchbar from "../Components/LecturesSearchbar";
+import LecturesSearchbar from "./LecturesSearchbar";
 import LecturerNav from "./LecturerNav";
 import { useLecturers } from "../hooks/useLecturers";
 import { useDeleteLecturer } from "../hooks/useDeleteLecturer";
@@ -46,19 +46,21 @@ const LecturerAttendance = () => {
             className="grid grid-cols-1 md:grid-cols-[1.3fr_1.2fr_1.2fr_1.8fr_2fr_0.6fr] gap-y-3 md:gap-x-6 bg-white md:bg-transparent border md:border-0 shadow-sm md:shadow-none rounded-lg md:rounded-none p-4 md:p-2 items-start md:items-center hover:bg-gray-50 transition-all"
           >
             <p className="font-medium text-[#32333B] text-sm md:text-base">
-              {lect.fullName}
+              {lect.name || lect.fullName}
             </p>
             <p className="font-medium text-[#32333B] text-sm md:text-base">
               {lect.department}
             </p>
             <p className="font-medium text-[#32333B] text-sm md:text-base">
-              {lect.faculty}
+              {lect.faculty || "-"}
             </p>
             <p className="font-medium text-[#32333B] text-sm md:text-base break-words">
-              {lect.email}
+              {lect.contact || lect.email || "-"}
             </p>
             <p className="font-medium text-[#32333B] text-sm md:text-base whitespace-normal leading-relaxed break-words max-w-[250px] md:max-w-full">
-              {lect.courses?.join(", ") || "N/A"}
+              {lect.courses_assigned && lect.courses_assigned.join
+                ? lect.courses_assigned.join(", ")
+                : lect.courses || "N/A"}
             </p>
 
             <div className="flex justify-start md:justify-end gap-2">

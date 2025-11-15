@@ -6,8 +6,9 @@ export function useLecturers() {
   return useQuery({
     queryKey: ["lecturers"],
     queryFn: async () => {
-      const res = await api.get("/lecturer/all"); // adjust endpoint if needed
-      return res.data;
+      const res = await api.get("/lecturers");
+      // backend returns { status, results, data }
+      return res.data.data || [];
     },
   });
 }
