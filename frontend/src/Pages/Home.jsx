@@ -1,9 +1,8 @@
 ﻿import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axiosInstance.js";
 import AlertMessage from "../Components/Alerts";
 import { useApi } from "../providers/ApiProvider";
-import { getCookie } from "../api/axiosInstance.js";
 import toast from "react-hot-toast";
 
 const App = () => {
@@ -16,10 +15,6 @@ const App = () => {
   const password = useRef("");
   const navigate = useNavigate();
   const [alert, setAlert] = useState({ type: "", message: "" });
-  const { baseUrl } = useApi();
-
-  let redirectTo = "";
-  let token = getCookie("token");
 
   function handleUserInput(ref) {
     let obj = { ...logindetails };
@@ -29,29 +24,13 @@ const App = () => {
   }
   async function loginStudent() {
     try {
-      let route = "";
-      switch (role) {
-        case "admin":
-          route = `${baseUrl}/login/admin`;
-          redirectTo = "/admin/dashboard";
-          break;
-        case "lecturer":
-          route = `${baseUrl}/login/lecturer`;
-          redirectTo = "/lecturer/dashboard";
-          break;
-        case "student":
-          route = `${baseUrl}/login/student`;
-          redirectTo = "/student/dashboard";
-          break;
-        default:
-          alert("Please select a role");
-          return;
+      if (!role) {
+        alert("Please select a role");
+        return;
       }
 
       setSubmit(true);
-      let res = await axios.post(route, logindetails, {
-        withCredentials: true,
-      });
+      let res = await api.post(`/login/${role}`, logindetails);
       if (res.data.status === "success") {
         setLoginDetails({});
         Email.current.value = "";
@@ -60,7 +39,12 @@ const App = () => {
         toast.success("Login successful");
         setSubmit(false);
 
-        navigate(redirectTo);
+        const redirectMap = {
+          admin: "/admin/dashboard",
+          lecturer: "/lecturer/dashboard",
+          student: "/student/dashboard",
+        };
+        navigate(redirectMap[role] || "/");
       } else {
         setSubmit(false);
 
