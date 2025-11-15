@@ -36,7 +36,6 @@ const StudentRegForm = () => {
 
       alert("Student registered successfully!");
     } catch (error) {
-
       alert("Failed to register student.");
     }
   };
@@ -59,9 +58,7 @@ const StudentRegForm = () => {
             }));
             setStatus("âœ… Fingerprint enrollment completed!");
           }
-        } catch (err) {
-
-        }
+        } catch (err) {}
       };
 
       window.chrome.webview.addEventListener("message", listener);

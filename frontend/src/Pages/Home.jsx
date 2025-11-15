@@ -21,14 +21,11 @@ const App = () => {
   let redirectTo = "";
   let token = getCookie("token");
 
-
   function handleUserInput(ref) {
     let obj = { ...logindetails };
     let fieldName = ref.current.id;
     obj[fieldName] = ref.current.value;
     setLoginDetails(obj);
-
-
   }
   async function loginStudent() {
     try {
@@ -67,12 +64,9 @@ const App = () => {
       } else {
         setSubmit(false);
 
-
         toast.error("Failed to login");
       }
     } catch (err) {
-
-
       toast.error("Server error, try again later");
 
       setSubmit(false);

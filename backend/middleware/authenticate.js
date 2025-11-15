@@ -5,8 +5,8 @@ const isAuthenticated = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({ 
-      status: "failed", 
+    return res.status(401).json({
+      status: "failed",
       message: "No token provided, authorization denied",
       authenticated: false,
     });

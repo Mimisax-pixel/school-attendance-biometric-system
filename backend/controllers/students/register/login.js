@@ -52,7 +52,6 @@ export default async function loginStudent(req, res) {
       maxAge: 3600 * 1000,
     });
 
-    
     res.status(200).json({
       status: "success",
       message: "Login successful",
