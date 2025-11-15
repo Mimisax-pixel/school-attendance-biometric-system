@@ -13,6 +13,10 @@ import {
 } from "recharts";
 import { useAdminDashboard } from "../hooks/useAdminDashboard"; // your custom hook
 
+
+
+
+
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -62,13 +66,13 @@ const Dashboard = () => {
         {/* Mobile Navbar */}
         <div className="flex items-center justify-between px-4 py-3 bg-white shadow-md lg:hidden sticky top-0 z-40 w-full">
           <h1 className="text-lg sm:text-xl font-bold text-[#0A496D]">
-            Admin Dashboard
+            Admin Dashboard 
           </h1>
         </div>
 
         <div className="w-full px-3 sm:px-5 md:px-8 lg:px-10 py-8 sm:py-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-[#0A496D] hidden lg:block">
-            Admin Dashboard
+            Admin Dashboard 
           </h2>
 
           {/* Stat Cards */}

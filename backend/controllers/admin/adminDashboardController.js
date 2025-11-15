@@ -1,6 +1,7 @@
 import Student, { attendance, grades } from "../../models/students.js";
 import Course from "../../models/courses.js";
 import Lecturer from "../../models/lecturers.js";
+import Classes from "../../models/class.js";
 
 const adminDashboardController = async (req, res) => {
   try {
@@ -9,38 +10,52 @@ const adminDashboardController = async (req, res) => {
     const totalLecturers = await Lecturer.countDocuments();
     const totalCourses = await Course.countDocuments();
 
-    // Average attendance by level
+    // Average attendance by level (using pre-computed rateOfClassesAttended field)
     const totalAttendaceRecordsAverage = async () => {
-      let averageByLevel = [];
-      for (let level = 100; level <= 500; level += 100) {
-        const attendanceLevel = await attendance.find({
-          level: level.toString(),
-        });
+      const levels = ["100", "200", "300", "400", "500"];
+      const levelAverages = [];
 
-        if (attendanceLevel.length === 0) {
-          averageByLevel.push({ level, average: 0 });
+      for (const level of levels) {
+        // Get all students at this level with their pre-computed attendance rates
+        const studentsAtLevel = await Student.find({ level }).select(
+          "rateOfClassesAttended"
+        ).lean();
+
+        if (studentsAtLevel.length === 0) {
+          levelAverages.push({ level: Number(level), average: 0 });
           continue;
         }
 
-        let total = 0;
-        for (let i = 0; i < attendanceLevel.length; i++) {
-          total += attendanceLevel[i].attendedclasses;
+        // Calculate average attendance rate for the level
+        let totalAttendanceRate = 0;
+        let studentsWithCourses = 0;
+
+        for (const student of studentsAtLevel) {
+          // Skip students with no computed rate (no courses)
+          if (student.rateOfClassesAttended === null || student.rateOfClassesAttended === undefined) {
+            continue;
+          }
+          totalAttendanceRate += student.rateOfClassesAttended;
+          studentsWithCourses++;
         }
 
-        const average = total / attendanceLevel.length;
-        averageByLevel.push({ level, average });
+        // Average attendance rate for the level
+        const levelAverage =
+          studentsWithCourses > 0
+            ? Math.round((totalAttendanceRate / studentsWithCourses) * 100) / 100
+            : 0;
+        levelAverages.push({
+          level: Number(level),
+          average: levelAverage,
+        });
       }
-      return averageByLevel;
+
+      return levelAverages;
     };
 
-    // Total classes held
+    // Total classes held (count of class sessions stored in `Classes` collection)
     const totalClassesHeld = async () => {
-      const courses = await Course.find({});
-      let totalClasses = 0;
-      for (const course of courses) {
-        totalClasses += course.numberOfclassesheld?.length || 0;
-      }
-      return totalClasses;
+      return await Classes.countDocuments();
     };
 
     // Average classes held by level
@@ -56,7 +71,7 @@ const adminDashboardController = async (req, res) => {
 
         let totalClasses = 0;
         for (const course of coursesByLevel) {
-          totalClasses += course.numberOfclassesheld?.length || 0;
+          totalClasses += course.numberOfClassesHeld || 0;
         }
 
         averageClassesByLevel.push({ level, total: totalClasses });
@@ -72,6 +87,16 @@ const adminDashboardController = async (req, res) => {
         totalCoursesHeldAverage(),
       ]);
 
+    console.log(
+      totalStudents,
+      totalLecturers,
+      totalCourses,
+      attendanceAverages,
+      classesHeld,
+      coursesHeldAverage
+    );
+    console.log(classesHeld);
+
     // ✅ Send only plain JSON data
     res.json({
       status: "success",
@@ -84,13 +109,11 @@ const adminDashboardController = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in adminDashboardController:", error);
-    res
-      .status(500)
-      .json({
-        status: "failed",
-        message: "Server error",
-        error: error.message,
-      });
+    res.status(500).json({
+      status: "failed",
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 

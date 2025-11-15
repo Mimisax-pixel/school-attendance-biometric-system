@@ -1,9 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCookie } from "../api/axiosInstance";
 
 
 export const useAddCourse = () => {
   const queryClient = useQueryClient();
   let { baseUrl } = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
+ 
+  let token = getCookie("token");
+
+
   const {
     mutate: addCourse,
     isLoading,
@@ -14,7 +19,10 @@ export const useAddCourse = () => {
       const response = await fetch(`${baseUrl}/course`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer  + ${token}`,
+        },
         body: JSON.stringify(newCourse),
       });
 

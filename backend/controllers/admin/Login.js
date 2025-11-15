@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 const loginadmin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email)
     const existingAdmin = await admin.findOne({ email });
     if (!existingAdmin) {
       console.log("Admin not found with email:", email);
@@ -32,10 +33,9 @@ const loginadmin = async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: false, // IMPORTANT: allow frontend to read it
+      maxAge: 3600 * 1000,
+      path: "/",
     });
 
     res.status(200).json({

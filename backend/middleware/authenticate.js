@@ -2,8 +2,14 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
 const isAuthenticated = (req, res, next) => {
-  const token = req.cookies.token;
-  console.log("Cookies:", req.cookies.token);
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ status: "failed", message: "Missing token" });
+  }
+
+  const token = authHeader.split(" ")[1];
+  console.log("Cookies:", token);
 
   console.log("hit");
   if (!token) {

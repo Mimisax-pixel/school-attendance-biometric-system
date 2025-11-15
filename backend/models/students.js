@@ -8,7 +8,7 @@ let attendanceSchema = new mongoose.Schema({
 
 let gradesSchema = new mongoose.Schema({
   courseCode: String,
-  courseTitle: String,
+  courseTitle: String, //
   grade: String,
   semester: String,
   year: String,
@@ -48,6 +48,10 @@ let studentSchema = new mongoose.Schema({
   courses: {
     type: [String],
   },
+  numberOfCoursesOffered: {
+    type: Number,
+    default: 0,
+  },
   programmes: {
     type: [String],
   },
@@ -63,4 +67,3 @@ export let attendance = new mongoose.model("Attendance", attendanceSchema);
 export let grades = new mongoose.model("Grades", gradesSchema);
 let Student = new mongoose.model("Student", studentSchema);
 export default Student;
-

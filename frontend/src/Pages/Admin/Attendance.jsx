@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Bell,
   User,
@@ -13,6 +13,11 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import AlertMessage from "../../Components/Alerts";
+import { getCookie } from "../../api/axiosInstance.js";
+import { use } from "react";
+import lecturer from "../../../../backend/models/lecturers.js";
+
+let token = getCookie("token");
 
 const Void = () => {
   return (
@@ -22,8 +27,6 @@ const Void = () => {
   );
 };
 
-
-
 const Attendance = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [student, setStudent] = useState(null);
@@ -31,7 +34,7 @@ const Attendance = () => {
   const course = useRef(null);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isVerify,setIsVerify]=useState("");
+  const [isVerify, setIsVerify] = useState("");
   const menuItems = [
     { name: "Dashboard", icon: BarChart3 },
     { name: "Courses", icon: BookOpen },
@@ -42,6 +45,31 @@ const Attendance = () => {
     { name: "Settings", icon: Settings },
   ];
   const [alert, setAlert] = useState({ type: "", message: "" });
+  let [courseOptions, setCourseOptions] = useState([]);
+
+  useEffect(() => {
+    // Fetch course options from API or define them here
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/lecturer/courses", {
+          },
+          {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        setCourseOptions(response.data.courses);
+        console.log("Courses fetched:", response.data.courses);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+    fetchCourses();
+  }, []);
+
+  // 🔹 Trigger Check-in API
 
   async function triggerCheckIn() {
     try {
@@ -52,7 +80,9 @@ const Attendance = () => {
           classId: session.sessionId,
         },
         {
-          withCredentials: true,
+          headers: {
+            Authorization: "bearer " + token,
+          },
         }
       );
       setAlert({
@@ -68,7 +98,7 @@ const Attendance = () => {
         message: error.response?.data?.message || "Check-in failed",
       });
     }
-}
+  }
 
   function isWebView2() {
     return window.chrome && window.chrome.webview;
@@ -105,10 +135,10 @@ const Attendance = () => {
           // alert("✅ Verified successfully!");
           triggerCheckIn(); // your logic here
         } else if (data.status === "failed") {
-           setAlert({
-             type: "error",
-             message: "❌ Verification failed!",
-           });
+          setAlert({
+            type: "error",
+            message: "❌ Verification failed!",
+          });
           // alert("❌ Verification failed!");
         } else if (data.status) {
           // For other status updates like "Place your finger..."
@@ -132,7 +162,9 @@ const Attendance = () => {
           studentId: regNo,
         },
         {
-          withCredentials: true,
+          headers: {
+            Authorization: "bearer " + token,
+          },
         }
       );
       setLoading(false);
@@ -150,14 +182,14 @@ const Attendance = () => {
           error.response?.data?.message || "Failed to fetch student details",
       });
       setLoading(false);
-     }
+    }
   }
 
   async function handleStartSession() {
     const dept = department.current.value;
     const crs = course.current.value;
-    console.log(crs,dept);
-    
+    console.log(crs, dept);
+
     setLoading(true);
     try {
       const response = await axios.post(
@@ -165,8 +197,11 @@ const Attendance = () => {
         {
           department: dept,
           courseCode: crs,
-        }, {
-          withCredentials: true,
+        },
+        {
+          headers: {
+            Authorization: "bearer " + token,
+          },
         }
       );
       setLoading(false);
@@ -322,11 +357,14 @@ const Attendance = () => {
                           // course.current.value = e.target.value;
                         }}
                       >
-                        <option>Select Course</option>
-                        <option value="CSC 401">CSC 401</option>
-                        <option value=">CSC 402">CSC 402</option>
-                        <option value="MAC1102">MAC1102</option>
-                        <option value="cyb111">cyb111</option>
+                        {courseOptions.length === 0 && (
+                          <option value="">No courses available</option>
+                        )}
+                        {courseOptions.map((crs) => (
+                          <option key={crs.courseCode} value={crs.courseCode}>
+                            {crs.courseTitle} ({crs.courseCode})
+                          </option>
+                        ))}
                       </select>
 
                       <button
@@ -483,4 +521,4 @@ const Attendance = () => {
   );
 };
 
-export default Attendance
+export default Attendance;

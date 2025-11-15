@@ -2,6 +2,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useDeleteCourse = () => {
   const queryClient = useQueryClient();
+  function getCookie(name) {
+    return document.cookie
+      .split("; ")
+      .find((row) => row.startsWith(name + "="))
+      ?.split("=")[1];
+  }
+
+  // api.defaults.headers.common["Authorization"] = "Bearer " + getCookie("token");
 
   const { mutate: deleteCourse, isLoading } = useMutation({
     mutationFn: async (courseCode) => {
@@ -9,7 +17,9 @@ export const useDeleteCourse = () => {
         `http://localhost:5000/api/v1/courses/${courseCode}`,
         {
           method: "DELETE",
-          credentials: "include",
+          headers: {
+            "authorization": "Bearer " + getCookie("token"),
+          }
         }
       );
 

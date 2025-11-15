@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AlertMessage from "../Components/Alerts";
 import { useApi } from "../providers/ApiProvider";
+import { getCookie } from "../api/axiosInstance.js";
+import toast from "react-hot-toast";
 
 const App = () => {
   const [role, setRole] = useState("");
@@ -17,6 +19,7 @@ const App = () => {
   const { baseUrl } = useApi();
 
   let redirectTo = "";
+  let token = getCookie("token");
   // console.log("API BASE URL:", baseUrl);
 
   function handleUserInput(ref) {
@@ -50,25 +53,29 @@ const App = () => {
 
       setSubmit(true);
       let res = await axios.post(route, logindetails, {
-        withCredentials: true,
+        headers: {
+          Authorization: "bearer " + token,
+        }
       });
       if (res.data.status === "success") {
         setLoginDetails({});
         Email.current.value = "";
         password.current.value = "";
         // alert(res.data.status);
-        setAlert({ type: "success", message: "Login successful" });
+        toast.success("Login successful");
         setSubmit(false);
         console.log(res);
         navigate(redirectTo);
       } else {
         setSubmit(false);
         // alert("failed to login");
-        setAlert({ type: "error", message: "Failed to login" });
+        // setAlert({ type: "error", message: "Failed to login" });
+        toast.error("Failed to login");
       }
     } catch (err) {
       console.log("server error,", err);
-      setAlert({ type: "error", message: "Server error, try again later" });
+      // setAlert({ type: "error", message: "Server error, try again later" });
+      toast.error("Server error, try again later");
       // alert("Server error, try again later");
       setSubmit(false);
     }

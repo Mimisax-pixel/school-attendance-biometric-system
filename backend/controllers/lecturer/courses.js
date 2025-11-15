@@ -5,21 +5,23 @@ export async function getCourses(req, res) {
     let lecturerId = req.user.id
     if (lecturerId) {
       let course_code = req.params.course_code;
-      console.log(course_code);
       if (course_code) {
         let courses = await Courses.find({
           courseCode: course_code,
           lecturerId,
         });
+        console.log(courses);
+        
         res.json({
           status: "success",
           courses,
         });
       } else {
-        let allCourses = await Courses.find({lecturerId});
+        let courses = await Courses.find({ lecturerId });
+        console.log(courses);
         res.json({
           status: "success",
-          courses: allCourses,
+          courses
         });
       }
     } else {

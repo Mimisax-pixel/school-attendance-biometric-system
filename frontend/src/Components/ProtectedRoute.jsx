@@ -2,22 +2,27 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
 import { useApi } from "../providers/ApiProvider";
+import { getCookie } from "../api/axiosInstance";
 
 const ProtectedRoute = () => {
   const [isAuth, setIsAuth] = useState(null); // null = loading
   const [loading, setLoading] = useState(true);
   const { baseUrl } = useApi();
 
+  
+  let token = getCookie("token");
+  // console.log(token);
+  
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
         // Call your backend endpoint that verifies the HTTP-only token
-        const res = await axios.get(
-          `${baseUrl}/auth/verify`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get(`${baseUrl}/auth/verify`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         if (res.status === 200) {
           setIsAuth(true);
         } else {
