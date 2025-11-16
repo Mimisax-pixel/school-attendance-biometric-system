@@ -38,16 +38,16 @@ To get this project up and running on your local machine, follow these steps.
     ```
 
 ### Environment Variables
-Create a `.env` file in the `backend` directory and populate it with the following required variables:
+Create a `.env` file in the `backend` directory and populate it with the following required variables. Do NOT commit this file to source control — see the Security note below.
 
-```example
-# Backend Environment Variables
+```env
+# Backend Environment Variables (example placeholders only)
 
-# Database
-DB_CONNECTION_STRING=mongodb+srv://username:password@cluster.mongodb.net/school-attendance
+# Database (replace <username>, <password>, <cluster> and <dbname>)
+DB_CONNECTION_STRING="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority"
 
-# JWT Secret for token signing
-JWT_SECRET=your-secret-key-change-this-in-production
+# JWT Secret for token signing (use a long random string)
+JWT_SECRET="replace-with-a-strong-random-secret"
 
 # Server Configuration
 PORT=5000
@@ -60,6 +60,12 @@ FRONTEND_URL=http://localhost:5173
 # Production (uncomment and update for deployment)
 # FRONTEND_URL=https://your-production-frontend.com
 ```
+
+**Security**
+
+- Never commit `.env` files or secrets to your repository. Use environment variables provided by your hosting platform or a secrets manager in production.
+- If a secret is accidentally committed, rotate the credential immediately and remove it from the repository history (see notes below).
+
 
 ## API Documentation
 ### Base URL
