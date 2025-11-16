@@ -68,7 +68,7 @@ const Sidebar = () => {
         {/* Header + Close button (mobile only) */}
         <div className="flex items-center justify-between mb-6 md:mb-10">
           <div>
-            <h2 className="text-xl font-bold text-[#0E3668]">ðŸ“š Futa</h2>
+            <h2 className="text-xl font-bold text-[#0E3668]"> AUT</h2>
             <h3 className="font-semibold text-gray-500 text-sm md:text-base">
               Academics Pro
             </h3>

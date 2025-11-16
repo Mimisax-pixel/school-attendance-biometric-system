@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
+import toast from "react-hot-toast";
 
 export function useAddLecturer() {
   const queryClient = useQueryClient();
@@ -14,8 +15,12 @@ export function useAddLecturer() {
       const res = await api.post("/lecturer/register", lecturerData);
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      toast.success(data.message || "Lecturer added successfully");
       queryClient.invalidateQueries(["lecturers"]); // refresh list
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.error || "Failed to add lecturer");
     },
   });
 
