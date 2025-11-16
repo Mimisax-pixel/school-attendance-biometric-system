@@ -8,6 +8,8 @@ const LecturerNav = () => {
         LECTURERS
       </p>
 
+      
+      
       {/* Button */}
       <button className="text-white bg-[#1173D4] py-2 px-6 rounded-lg text-sm sm:text-base md:text-lg font-medium hover:bg-blue-600 transition-colors">
         + Add new Lecturer

@@ -222,7 +222,7 @@ const App = () => {
             {role && (
               <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto w-full">
                 <div className="text-blue-600 text-4xl mb-3">
-                  {role === "admin" ? "ðŸ”" : "ðŸŽ“"}
+                  {role === "admin" ? "" : "📚"}
                 </div>
                 <h4 className="text-lg font-semibold mb-4 capitalize">
                   {role} Login
