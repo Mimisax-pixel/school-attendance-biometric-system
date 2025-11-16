@@ -6,6 +6,7 @@ import { Edit2, Trash2 } from "lucide-react";
 import EditCourseModal from "./EditCourseModal";
 import AddCourseModal from "./AddCourseModal";
 import { useDeleteCourse } from "../hooks/useDeleteCourse";
+import { is } from "zod/v4/locales";
 
 const CourseCodeAndName = () => {
   const { courses, isLoading, isError, error } = useCourses();
@@ -14,13 +15,8 @@ const CourseCodeAndName = () => {
   const { deleteCourse } = useDeleteCourse();
   const [searchTerm, setSearchTerm] = useState("");
 
-  if (isLoading) return <p className="p-6">Loading courses...</p>;
-  if (isError)
-    return (
-      <p className="p-6 text-red-600">
-        Error: {error?.message || "Failed to fetch courses"}
-      </p>
-    );
+  // if (isLoading) return <p className="p-6">Loading courses...</p>;
+  
 
   const filteredCourses = (courses || []).filter(
     (course) =>
@@ -70,44 +66,50 @@ const CourseCodeAndName = () => {
                   <div>UNIT</div>
                   <div>ACTIONS</div>
                 </div>
-                <div className="divide-y divide-gray-200">
-                  {filteredCourses.map((course) => (
-                    <div
-                      key={course._id}
-                      className="min-w-full grid grid-cols-5 items-center px-4 md:px-6 py-4 gap-4 text-gray-700 text-sm hover:bg-gray-50 transition"
-                    >
-                      <div className="truncate">{course.courseCode}</div>
-                      <div className="truncate">{course.courseTitle}</div>
-                      <div className="truncate">{course.department}</div>
-                      <div className="truncate">{course.creditunits}</div>
-                      <div className="flex gap-3">
-                        <button
-                          className="p-1"
-                          onClick={() => setSelectedCourse(course)}
-                          aria-label={`edit ${course.courseCode}`}
+                  <div className="divide-y divide-gray-200">
+                    {isError && "Error fetching courses"}
+                  {isLoading && "Loading..."}
+                  {(isLoading == false || isError == false) && (
+                    <>
+                      {filteredCourses.map((course) => (
+                        <div
+                          key={course._id}
+                          className="min-w-full grid grid-cols-5 items-center px-4 md:px-6 py-4 gap-4 text-gray-700 text-sm hover:bg-gray-50 transition"
                         >
-                          <Edit2 className="text-blue-600 w-5 h-5 hover:text-blue-800" />
-                        </button>
+                          <div className="truncate">{course.courseCode}</div>
+                          <div className="truncate">{course.courseTitle}</div>
+                          <div className="truncate">{course.department}</div>
+                          <div className="truncate">{course.creditunits}</div>
+                          <div className="flex gap-3">
+                            <button
+                              className="p-1"
+                              onClick={() => setSelectedCourse(course)}
+                              aria-label={`edit ${course.courseCode}`}
+                            >
+                              <Edit2 className="text-blue-600 w-5 h-5 hover:text-blue-800" />
+                            </button>
 
-                        <button
-                          className="p-1"
-                          onClick={() => {
-                            const confirmDelete = window.confirm(
-                              `Are you sure you want to delete ${course.courseTitle}?`
-                            );
-                            if (confirmDelete) {
-                              deleteCourse(course._id);
-                              alert(
-                                `${course.courseTitle} deleted successfully`
-                              );
-                            }
-                          }}
-                        >
-                          <Trash2 className="text-red-500 w-5 h-5 hover:text-red-700" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                            <button
+                              className="p-1"
+                              onClick={() => {
+                                const confirmDelete = window.confirm(
+                                  `Are you sure you want to delete ${course.courseTitle}?`
+                                );
+                                if (confirmDelete) {
+                                  deleteCourse(course._id);
+                                  alert(
+                                    `${course.courseTitle} deleted successfully`
+                                  );
+                                }
+                              }}
+                            >
+                              <Trash2 className="text-red-500 w-5 h-5 hover:text-red-700" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
