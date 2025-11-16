@@ -1,13 +1,21 @@
-// /src/hooks/useLecturers.js
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
 
-export function useLecturers() {
+export function useLecturers(search = "") {
   return useQuery({
-    queryKey: ["lecturers"],
+    queryKey: ["lecturers", search],
     queryFn: async () => {
-      const res = await api.get("/lecturer/register"); // adjust endpoint if needed
-      return res.data;
+      // If there is a search query, call the search endpoint
+      if (search && search.trim() !== "") {
+        const res = await api.get(
+          `/lecturers/search?q=${encodeURIComponent(search)}`
+        );
+        return res.data.data || [];
+      }
+
+      // Otherwise, get the full list
+      const res = await api.get("/lecturers");
+      return res.data.data || [];
     },
   });
 }

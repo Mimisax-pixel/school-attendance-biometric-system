@@ -12,8 +12,8 @@ import {
   BookMarked,
 } from "lucide-react";
 import api from "../../api/axiosInstance.js";
-import AlertMessage from "../../Components/Alerts";
-import { use } from "react";
+import toast from "react-hot-toast";
+import ContinueSession from "../../Components/ContinueSession.jsx";
 
 const Void = () => {
   return (
@@ -31,6 +31,7 @@ const Attendance = () => {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isVerify, setIsVerify] = useState("");
+  const [showContinueSession, setShowContinueSession] = useState(false);
   const menuItems = [
     { name: "Dashboard", icon: BarChart3 },
     { name: "Courses", icon: BookOpen },
@@ -40,7 +41,6 @@ const Attendance = () => {
     { name: "Reports", icon: BarChart3 },
     { name: "Settings", icon: Settings },
   ];
-  const [alert, setAlert] = useState({ type: "", message: "" });
   let [courseOptions, setCourseOptions] = useState([]);
 
   useEffect(() => {
@@ -48,7 +48,10 @@ const Attendance = () => {
       try {
         const response = await api.post("/lecturer/courses", {});
         setCourseOptions(response.data.courses);
-      } catch (error) {}
+        toast.success("Courses loaded successfully");
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to load courses");
+      }
     };
     fetchCourses();
   }, []);
@@ -57,18 +60,12 @@ const Attendance = () => {
     try {
       const response = await api.post("/session/checkin", {
         studentId: student.studentId,
-        classId: session.sessionId,
-      });
-      setAlert({
-        type: "success",
-        message: "Check-in successful",
+        classId: session._id || session.sessionId,
       });
       setIsVerify("verified");
+      toast.success("Check-in successful");
     } catch (error) {
-      setAlert({
-        type: "error",
-        message: error.response?.data?.message || "Check-in failed",
-      });
+      toast.error(error.response?.data?.message || "Check-in failed");
     }
   }
 
@@ -82,10 +79,7 @@ const Attendance = () => {
     if (isWebView2()) {
       window.chrome.webview.postMessage(`verify_fingerprint:${savedTemplate}`);
     } else {
-      setAlert({
-        type: "info",
-        message: "Finger Print is only available on the biometric app",
-      });
+      toast("Finger Print is only available on the biometric app");
     }
   }
 
@@ -95,17 +89,10 @@ const Attendance = () => {
         const data = JSON.parse(e.data);
 
         if (data.status === "verified") {
-          setAlert({
-            type: "success",
-            message: "âœ… Verified successfully!",
-          });
-
+          toast.success("✅ Verified successfully!");
           triggerCheckIn();
         } else if (data.status === "failed") {
-          setAlert({
-            type: "error",
-            message: "âŒ Verification failed!",
-          });
+          toast.error("❌ Verification failed!");
         } else if (data.status) {
           document.getElementById("status").innerText = data.status;
         }
@@ -122,17 +109,12 @@ const Attendance = () => {
         studentId: regNo,
       });
       setLoading(false);
-      setAlert({
-        type: "success",
-        message: "Student details fetched successfully",
-      });
+      toast.success("Student details fetched successfully");
       setStudent(response.data.data);
     } catch (error) {
-      setAlert({
-        type: "error",
-        message:
-          error.response?.data?.message || "Failed to fetch student details",
-      });
+      toast.error(
+        error.response?.data?.message || "Failed to fetch student details"
+      );
       setLoading(false);
     }
   }
@@ -149,16 +131,10 @@ const Attendance = () => {
       });
       setLoading(false);
 
-      setAlert({
-        type: "success",
-        message: "Attendance session started successfully",
-      });
+      toast.success("Attendance session started successfully");
       setSession(response.data.data);
     } catch (error) {
-      setAlert({
-        type: "error",
-        message: error.response?.data?.message || "Failed to start session",
-      });
+      toast.error(error.response?.data?.message || "Failed to start session");
       setLoading(false);
     }
   }
@@ -175,7 +151,7 @@ const Attendance = () => {
           >
             <Menu className="w-6 h-6 text-gray-700" />
           </button>
-          <div className="text-blue-700 font-bold text-lg">FUTIA Analytics</div>
+          <div className="text-blue-700 font-bold text-lg">AUT Analytics</div>
         </div>
 
         <div className="flex items-center gap-3">
@@ -197,7 +173,7 @@ const Attendance = () => {
         >
           <div className="flex items-center justify-between p-4 border-b border-gray-200/50 md:border-none">
             <div className="text-blue-700 text-2xl font-bold">
-              FUTIA Analytics
+              AUT Analytics
             </div>
             <button
               className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -254,7 +230,7 @@ const Attendance = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
               {/* LEFT COLUMN */}
               <div className="space-y-5 w-full">
-                {session === null && (
+                {session === null && !showContinueSession && (
                   <section className="bg-white border border-gray-200/40 rounded-xl p-5 sm:p-6 w-full shadow-sm">
                     <h2 className="text-lg font-semibold text-gray-800 mb-3">
                       Start new Class Attendance Session
@@ -307,12 +283,25 @@ const Attendance = () => {
                         className="w-full mt-2 bg-blue-600 text-white font-medium py-3 rounded-md hover:bg-blue-700 active:scale-98 transition-transform text-sm"
                         onClick={handleStartSession}
                       >
-                        {loading
-                          ? "loading..."
-                          : "Start Attendance Session â†’"}
+                        {loading ? "loading..." : "Start Attendance Session "}
+                      </button>
+                      <button
+                        className="w-full text-blue-700 font-medium py-1 rounded-md hover:bg-blue-100 active:scale-98 transition-transform text-sm underline"
+                        onClick={() => setShowContinueSession(true)}
+                      >
+                        Continue Previous Session
                       </button>
                     </div>
                   </section>
+                )}
+                {showContinueSession && session === null && (
+                  <ContinueSession
+                    onSessionSelected={(selectedSession) => {
+                      setSession(selectedSession);
+                      setShowContinueSession(false);
+                    }}
+                    onBack={() => setShowContinueSession(false)}
+                  />
                 )}
                 {session !== null && (
                   <section className="bg-white border border-gray-200 rounded-xl p-5 sm:p-6 w-full shadow-sm">
@@ -321,8 +310,8 @@ const Attendance = () => {
                     </h2>
                     <p className="text-sm text-gray-700">
                       An attendance session has been started for the course{" "}
-                      <strong>{/*session.courseTitle || "*/}</strong> (
-                      {/*session.courseCode || ""*/}). Students can now check in
+                      <strong>{session?.courseTitle || ""}</strong> (
+                      {session?.courseCode || ""}). Students can now check in
                       using the biometric scanner.
                     </p>
                     <label
@@ -354,20 +343,21 @@ const Attendance = () => {
                   <ul className="text-sm text-gray-700 space-y-2">
                     <li>
                       <strong>Course:</strong>{" "}
-                      {session ? session.courseTitle : ""}
+                      {session ? session.courseTitle || "N/A" : "N/A"}
                     </li>
                     <li>
-                      <strong>Code:</strong> {session ? session.courseCode : ""}
+                      <strong>Code:</strong>{" "}
+                      {session ? session.courseCode || "N/A" : "N/A"}
                     </li>
                     <li>
-                      <strong>Lecturer:</strong>{" "}
-                      {session ? session.instructorName : ""}
+                      <strong>Department:</strong>{" "}
+                      {session ? session.department || "N/A" : "N/A"}
                     </li>
                     <li>
                       <strong>Time:</strong>{" "}
                       {session
                         ? new Date(session.createdAt).toLocaleString()
-                        : ""}
+                        : "N/A"}
                     </li>
                   </ul>
                 </section>
@@ -454,7 +444,6 @@ const Attendance = () => {
           </div>
         </main>
       </div>
-      <AlertMessage type={alert.type} message={alert.message} />
     </div>
   );
 };

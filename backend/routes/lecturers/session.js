@@ -14,6 +14,12 @@ const router = express.Router();
 router.post("/session", isAuthenticated, isRole("lecturer"), createSession);
 // Get all sessions
 router.get("/sessions", isAuthenticated, isRole("lecturer"), getSessions);
+router.get(
+  "/session/lecturer-sessions",
+  isAuthenticated,
+  isRole("lecturer"),
+  getSessions
+);
 router.post(
   "/session/student_details",
   isAuthenticated,

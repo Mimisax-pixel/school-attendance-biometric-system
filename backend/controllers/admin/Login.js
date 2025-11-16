@@ -30,9 +30,11 @@ const loginadmin = async (req, res) => {
       }
     );
 
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       path: "/",
       maxAge: 24 * 3600 * 1000,
     });

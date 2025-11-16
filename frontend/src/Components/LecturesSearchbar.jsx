@@ -10,10 +10,10 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center px-4 sm:px-8 md:px-12 lg:px-20 xl:px-32 2xl:px-48 py-6 sm:py-8 md:py-12 lg:py-16">
+    <div className="w-full flex flex-col items-center justify-center px-4 sm:px-8 md:px-6 py-6 sm:py-2 md:py-2 lg:py-8">
       <form
         onSubmit={handleSubmit}
-        className="relative flex items-center justify-between w-full max-w-[1100px] mx-auto"
+        className="relative flex items-center justify-between  w-full mx-auto"
       >
         {/* Search Input */}
         <input
@@ -23,6 +23,7 @@ const SearchBar = ({ onSearch }) => {
           onChange={(e) => setQuery(e.target.value)}
           className="
             w-full
+            inline-block bg-white
             border border-gray-300 rounded-xl
             py-3 sm:py-4 md:py-5
             pl-4 sm:pl-6 md:pl-8 lg:pl-10

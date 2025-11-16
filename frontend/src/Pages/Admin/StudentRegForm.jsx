@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import api from "../../api/axiosInstance.js";
+import toast from "react-hot-toast";
 
 const StudentRegForm = () => {
   const [formData, setFormData] = useState({
@@ -33,10 +34,23 @@ const StudentRegForm = () => {
       const response = await api.post("/register/student", formData, {
         withCredentials: true,
       });
-
-      alert("Student registered successfully!");
+      toast.success("Student registered successfully!");
+      setFormData({
+        fullname: "",
+        matricNumber: "",
+        email: "",
+        phone: "",
+        department: "",
+        level: "",
+        programme: "",
+        course: "",
+        semester: "",
+        biometricData: "",
+      });
     } catch (error) {
-      alert("Failed to register student.");
+      toast.error(
+        error.response?.data?.message || "Failed to register student"
+      );
     }
   };
 

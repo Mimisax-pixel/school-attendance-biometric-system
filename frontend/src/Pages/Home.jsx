@@ -25,7 +25,12 @@ const App = () => {
   async function loginStudent() {
     try {
       if (!role) {
-        alert("Please select a role");
+        toast.error("Please select a role");
+        return;
+      }
+
+      if (!logindetails.email || !logindetails.password) {
+        toast.error("Please enter email and password");
         return;
       }
 
@@ -36,24 +41,29 @@ const App = () => {
         Email.current.value = "";
         password.current.value = "";
 
-        toast.success("Login successful");
+        toast.success("Login successful, redirecting...");
         setSubmit(false);
 
-        const redirectMap = {
-          admin: "/admin/dashboard",
-          lecturer: "/lecturer/dashboard",
-          student: "/student/dashboard",
-        };
-        navigate(redirectMap[role] || "/");
+        // Add small delay to allow user to see the success message
+        setTimeout(() => {
+          const redirectMap = {
+            admin: "/admin/dashboard",
+            lecturer: "/lecturer/dashboard",
+            student: "/student/dashboard",
+          };
+          navigate(redirectMap[role] || "/");
+        }, 500);
       } else {
         setSubmit(false);
-
-        toast.error("Failed to login");
+        toast.error(res.data.message || "Login failed, please try again");
       }
     } catch (err) {
-      toast.error("Server error, try again later");
-
       setSubmit(false);
+      const errorMessage =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Failed to connect to server";
+      toast.error(errorMessage);
     }
   }
 
@@ -63,7 +73,7 @@ const App = () => {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto flex justify-between items-center py-4 px-4 md:px-6">
           <h1 className="text-lg md:text-xl font-bold text-blue-700">
-            <span className="text-green-700 font-semibold">FUTIA</span> Academic
+            <span className="text-green-700 font-semibold">AUT</span> Academic
             Portal
           </h1>
 
@@ -130,7 +140,7 @@ const App = () => {
         </h2>
         <p className="mb-6 text-blue-100 max-w-xl mx-auto text-sm sm:text-base">
           Streamlining academic performance and attendance monitoring for a
-          brighter future at FUTIA.
+          brighter future at AUT.
         </p>
         <button className="bg-white text-blue-600 font-semibold px-6 py-2 rounded-md hover:bg-gray-100 transition">
           Get Started
@@ -212,7 +222,7 @@ const App = () => {
             {role && (
               <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto w-full">
                 <div className="text-blue-600 text-4xl mb-3">
-                  {role === "admin" ? "ðŸ”" : "ðŸŽ“"}
+                  {role === "admin" ? "" : "📚"}
                 </div>
                 <h4 className="text-lg font-semibold mb-4 capitalize">
                   {role} Login
@@ -265,7 +275,7 @@ const App = () => {
       <footer className="bg-gray-900 text-gray-300 py-10 text-sm">
         <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6">
           <div>
-            <h5 className="text-white font-semibold mb-3">FUTIA</h5>
+            <h5 className="text-white font-semibold mb-3">AUT</h5>
             <p>
               Federal University of Technology, Ikot Abasi. A center of
               excellence in technological education and research.
@@ -327,7 +337,7 @@ const App = () => {
           <div>
             <h5 className="text-white font-semibold mb-3">Contact Us</h5>
             <p>Ikot Abasi, Akwa Ibom State, Nigeria.</p>
-            <p>Email: info@futia.edu.ng</p>
+            <p>Email: info@aut.edu.ng</p>
             <p>Phone: +234-XXX-XXX-XXXX</p>
           </div>
         </div>

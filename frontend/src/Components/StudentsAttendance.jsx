@@ -3,18 +3,33 @@ import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useAttendance } from "../hooks/useAttendance";
 import Navbar from "./Layouts/Navbar";
 import { useNavigate } from "react-router-dom";
+import { is } from "zod/v4/locales";
 
 const StudentsAttendance = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expanded, setExpanded] = useState(null);
   const [page, setPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [department, setDepartment] = useState("");
+  const [level, setLevel] = useState("");
   let navigate = useNavigate();
   const limit = 20;
 
-  const { data, isLoading, error } = useAttendance(page, limit);
+  // Determine if search looks like a matric/studentId (simple heuristic)
+  const studentId =
+    searchQuery && searchQuery.includes("/") ? searchQuery : undefined;
 
-  if (isLoading)
-    return <p className="text-center mt-10">Loading attendance...</p>;
+  const { data, isLoading, error } = useAttendance({
+    page,
+    limit,
+    q: searchQuery,
+    department,
+    level,
+    studentId,
+  });
+
+  // if (isLoading)
+    // return <p className="text-center mt-10">Loading attendance...</p>;
   if (error)
     return (
       <p className="text-center mt-10 text-red-500">
@@ -22,7 +37,17 @@ const StudentsAttendance = () => {
       </p>
     );
 
-  const students = data?.results || [];
+  let students = data?.results || [];
+
+  // If backend doesn't support name search, apply client-side name filter as fallback
+  if (searchQuery && !studentId) {
+    const q = searchQuery.toLowerCase();
+    students = students.filter(
+      (s) =>
+        (s.fullname || "").toLowerCase().includes(q) ||
+        (s.matricNumber || "").toLowerCase().includes(q)
+    );
+  }
 
   return (
     <div className="min-h-screen w-full bg-gray-100 font-sans overflow-x-hidden">
@@ -58,53 +83,89 @@ const StudentsAttendance = () => {
           <input
             className="flex-1 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-200 w-full"
             placeholder="Search by student name or ID..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setPage(0); // reset to page 0 on search change
+            }}
           />
-          <select className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto">
-            <option>All Date Ranges</option>
+          <select
+            className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto"
+            value={department}
+            onChange={(e) => {
+              setDepartment(e.target.value);
+              setPage(0);
+            }}
+          >
+            <option value="">All Departments</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
           </select>
-          <select className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto">
-            <option>All Courses</option>
+          <select
+            className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto"
+            value={level}
+            onChange={(e) => {
+              setLevel(e.target.value);
+              setPage(0);
+            }}
+          >
+            <option value="">All Levels</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
           </select>
-          <select className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto">
-            <option>All Students</option>
-          </select>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto hover:bg-blue-700 transition" onClick={()=>navigate('/admin/dashboard/student/register')}>
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto hover:bg-blue-700 transition"
+            onClick={() => navigate("/admin/dashboard/student/register")}
+          >
             Register new Student
           </button>
         </div>
 
         {/* Desktop Table */}
         <div className="hidden md:block w-full mt-6 overflow-x-auto">
-          <table className="min-w-full bg-white rounded-xl shadow text-sm">
-            <thead>
-              <tr className="text-left text-gray-600 border-b">
-                <th className="p-4">STUDENT NAME</th>
-                <th className="p-4">STUDENT ID</th>
-                <th className="p-4">COURSE</th>
-                <th className="p-4">ATTENDANCE RATE</th>
-                <th className="p-4">LAST CHECK-IN</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((s, i) => (
-                <tr key={i} className="border-b last:border-0 hover:bg-gray-50">
-                  <td className="p-4">{s.fullname}</td>
-                  <td className="p-4">{s.matricNumber}</td>
-                  <td className="p-4">{s.department}</td>
-                  <td className="p-4 flex items-center space-x-2">
-                    <div className="w-24 h-2 bg-gray-200 rounded">
-                      <div
-                        className="h-2 bg-blue-600 rounded"
-                        style={{ width: `${s.rateOfClassesAttended}%` }}
-                      ></div>
-                    </div>
-                    <span>{s.rateOfClassesAttended}%</span>
-                  </td>
-                  <td className="p-4">{s.lastCheckIn || "N/A"}</td>
+          {isLoading && (
+            <p className="text-center my-6">Loading attendance...</p>
+          )}
+          {isLoading == false && (
+            <table className="min-w-full bg-white rounded-xl shadow text-sm">
+              <thead>
+                <tr className="text-left text-gray-600 border-b">
+                  <th className="p-4">STUDENT NAME</th>
+                  <th className="p-4">STUDENT ID</th>
+                  <th className="p-4">COURSE</th>
+                  <th className="p-4">ATTENDANCE RATE</th>
+                  <th className="p-4">LAST CHECK-IN</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {students.map((s, i) => (
+                  <tr
+                    key={i}
+                    className="border-b last:border-0 hover:bg-gray-50"
+                  >
+                    <td className="p-4">{s.fullname}</td>
+                    <td className="p-4">{s.matricNumber}</td>
+                    <td className="p-4">{s.department}</td>
+                    <td className="p-4 flex items-center space-x-2">
+                      <div className="w-24 h-2 bg-gray-200 rounded">
+                        <div
+                          className="h-2 bg-blue-600 rounded"
+                          style={{ width: `${s.rateOfClassesAttended}%` }}
+                        ></div>
+                      </div>
+                      <span>{s.rateOfClassesAttended}%</span>
+                    </td>
+                    <td className="p-4">{s.lastCheckIn || "N/A"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         {/* Mobile Collapsible View */}
