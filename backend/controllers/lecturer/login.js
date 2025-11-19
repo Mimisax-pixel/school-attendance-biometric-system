@@ -1,5 +1,6 @@
 import Lecturer from "../../models/lecturers.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 const loginLecturer = async (req, res) => {
   try {
@@ -25,7 +26,7 @@ const loginLecturer = async (req, res) => {
 
     // Compare passwords
     try {
-      const match = lecturer.password === password; // TODO: Replace with proper password hashing
+      const match = await bcrypt.compare(password, lecturer.password);
 
       if (!match) {
         return res.status(401).json({

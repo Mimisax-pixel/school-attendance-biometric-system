@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Student from "../../../models/students.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 export default async function loginStudent(req, res) {
   try {
@@ -30,8 +31,9 @@ export default async function loginStudent(req, res) {
         message: "Student not found",
       });
     }
-    // Check password
-    if (student.password !== password) {
+    // Check password using bcrypt
+    const match = await bcrypt.compare(password, student.password);
+    if (!match) {
       return res
         .status(401)
         .json({ status: "failed", message: "Invalid password" });

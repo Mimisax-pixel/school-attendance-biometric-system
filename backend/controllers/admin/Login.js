@@ -1,5 +1,6 @@
 import admin from "../../models/admin.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 const loginadmin = async (req, res) => {
   try {
@@ -14,7 +15,8 @@ const loginadmin = async (req, res) => {
         isauthenticated: false,
       });
     }
-    if (existingAdmin.password !== password) {
+    const match = await bcrypt.compare(password, existingAdmin.password);
+    if (!match) {
       console.log("Incorrect password for admin:", email);
       return res.status(401).json({
         status: "failed",

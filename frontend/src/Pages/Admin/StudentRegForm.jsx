@@ -12,11 +12,13 @@ const StudentRegForm = () => {
     level: "",
     programme: "",
     course: "",
+    password: "",
     semester: "",
     biometricData: "",
   });
   const [status, setStatus] = useState("Ready");
   const [fingerprintImage, setFingerprintImage] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const requestFingerprint = (e) => {
     e.preventDefault();
@@ -24,12 +26,20 @@ const StudentRegForm = () => {
       setStatus("Starting fingerprint capture...");
       window.chrome.webview.postMessage("start_capture");
     } else {
-      alert("Not running inside WebView2");
+      toast.error("Not running inside WebView2");
     }
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    if (formData.password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    if (!formData.biometricData) { 
+      toast.error("Biometric data is required");
+      return;
+    }
     try {
       const response = await api.post("/register/student", formData, {
         withCredentials: true,
@@ -46,6 +56,7 @@ const StudentRegForm = () => {
         course: "",
         semester: "",
         biometricData: "",
+        password: "",
       });
     } catch (error) {
       toast.error(
@@ -70,7 +81,7 @@ const StudentRegForm = () => {
               ...prev,
               biometricData: data.template,
             }));
-            setStatus("âœ… Fingerprint enrollment completed!");
+            setStatus("Fingerprint enrollment completed!");
           }
         } catch (err) {}
       };
@@ -110,6 +121,7 @@ const StudentRegForm = () => {
               onChange={(e) =>
                 setFormData({ ...formData, fullname: e.target.value })
               }
+              required
             />
           </div>
 
@@ -126,6 +138,7 @@ const StudentRegForm = () => {
               onChange={(e) =>
                 setFormData({ ...formData, matricNumber: e.target.value })
               }
+              required
             />
           </div>
 
@@ -142,6 +155,7 @@ const StudentRegForm = () => {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
+              required
             />
           </div>
 
@@ -158,7 +172,9 @@ const StudentRegForm = () => {
               onChange={(e) =>
                 setFormData({ ...formData, phone: e.target.value })
               }
+              required
             />
+            
           </div>
 
           {/* Department */}
@@ -174,6 +190,7 @@ const StudentRegForm = () => {
               onChange={(e) =>
                 setFormData({ ...formData, department: e.target.value })
               }
+              required
             />
           </div>
 
@@ -190,6 +207,40 @@ const StudentRegForm = () => {
               onChange={(e) =>
                 setFormData({ ...formData, level: e.target.value })
               }
+              required
+            />
+          </div>
+
+          {/* password */}
+          <div className="w-full sm:w-[48%]">
+            <label htmlFor="level" className="font-medium text-gray-700">
+              Passowrd
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none p-3 mt-1"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className="w-full sm:w-[48%]">
+            <label htmlFor="level" className="font-medium text-gray-700">
+             Confirm Passowrd
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none p-3 mt-1"
+              value={confirmPassword}
+              onChange={(e) =>
+                setConfirmPassword(e.target.value)
+              }
+              required
             />
           </div>
 

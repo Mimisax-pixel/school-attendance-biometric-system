@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import express from "express";
 import Student from "../../../models/students.js";
+import bcrypt from "bcryptjs";
 
 const router = express.Router();
 // Register a new student
@@ -17,8 +18,8 @@ const registerStudent = async (req, res) => {
       biometricData,
     } = req.body;
     console.log(req.body);
-    const password = req.body.password || "password123";
-    const biometric = biometricData || "biometric_placeholder";
+    const password = req.body.password;
+    const biometric = biometricData ;
     // Validate required fields
     if (
       !email ||
@@ -42,11 +43,12 @@ const registerStudent = async (req, res) => {
           "Student with provided email, phone, matric number, or biometric data already exists",
       });
     }
-    // Create new student
+    // Hash password and create new student
+    const hashed = await bcrypt.hash(password, 10);
     const newStudent = new Student({
       fullname,
       email,
-      password,
+      password: hashed,
       phone,
       department,
       level,

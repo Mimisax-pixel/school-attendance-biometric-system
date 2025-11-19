@@ -1,4 +1,6 @@
 ﻿import React, { useState } from "react";
+import Sidebar from "../../Components/Sidebar";
+import toast from "react-hot-toast";
 
 export default function AlertsPage() {
   const [attendanceTrigger, setAttendanceTrigger] = useState(
@@ -21,12 +23,12 @@ export default function AlertsPage() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    alert("Settings saved (demo)");
+    toast.error("This page is still being developed");
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row relative">
-      {/* MOBILE HEADER */}
+      {/* MOBILE HEADER
       <header className="md:hidden flex justify-between items-center px-6 py-4 bg-white border-b shadow-sm sticky top-0 z-50">
         <div className="text-blue-600 text-2xl font-bold">AUT</div>
         <button
@@ -58,8 +60,8 @@ export default function AlertsPage() {
         </button>
       </header>
 
-      {/* SIDEBAR */}
-      <aside
+      SIDEBAR */}
+      {/* <aside
         className={`fixed md:static z-40 top-0 left-0 h-full w-64 bg-white border-r shadow-md md:shadow-none 
         transform transition-transform duration-500 ease-in-out
         ${menuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
@@ -111,21 +113,21 @@ export default function AlertsPage() {
               <span>{item.name}</span>
             </a>
           ))}
-        </nav>
+        </nav> 
 
         <div className="px-6 py-6 text-sm text-gray-400 border-t">
-          Â© 2025 AUT
+           2025 AUT
         </div>
       </aside>
 
-      {/* BLUR OVERLAY (for mobile menu) */}
+      {/* BLUR OVERLAY (for mobile menu) 
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-30 md:hidden transition-opacity duration-300"
           onClick={() => setMenuOpen(false)}
         ></div>
-      )}
-
+      )} */}
+      <Sidebar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       {/* MAIN CONTENT */}
       <main className="flex-1 overflow-auto mt-4 md:mt-0 z-0 relative">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-10 relative z-20">

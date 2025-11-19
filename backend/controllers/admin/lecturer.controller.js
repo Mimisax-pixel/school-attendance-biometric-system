@@ -3,6 +3,7 @@ import Lecturer from "../../models/lecturers.js";
 import isAuthenticated from "../../middleware/authenticate.js";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import bcrypt from "bcryptjs";
 
 const registerLecturer = async (req, res) => {
   try {
@@ -27,10 +28,11 @@ const registerLecturer = async (req, res) => {
       });
     }
 
-    // Create and save new lecturer
+    // Hash password and save new lecturer
+    const hashed = await bcrypt.hash(password, 10);
     const lecturer = new Lecturer({
       contact: email,
-      password: password,
+      password: hashed,
       name: fullName,
       department: department,
     });
@@ -102,7 +104,7 @@ export async function updateLecturer(req, res) {
     if (contact) payload.contact = contact;
     if (typeof courses_assigned !== "undefined")
       payload.courses_assigned = courses_assigned;
-    if (password) payload.password = password; // consider hashing in future
+    if (password) payload.password = await bcrypt.hash(password, 10);
 
     const updated = await Lecturer.findByIdAndUpdate(id, payload, { new: true })
       .select("-password")
