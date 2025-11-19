@@ -1,104 +1,79 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-const LecturerModal = ({ lecturer, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
+const LecturerModal = ({ onClose, onSubmit, isAdding }) => {
+  const [form, setForm] = useState({
     fullName: "",
     email: "",
-    department: "",
     password: "",
+    department: "",
   });
 
-  useEffect(() => {
-    if (lecturer) {
-      setFormData({
-        fullName: lecturer.fullName || lecturer.name,
-        email: lecturer.email,
-        department: lecturer.department,
-        password: "",
-      });
-    }
-  }, [lecturer]);
-
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit(form);
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">
-          {lecturer ? "Edit Lecturer" : "Add Lecturer"}
-        </h2>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <h2 className="text-xl font-semibold mb-4">Add Lecturer</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="fullName"
+            value={form.fullName}
+            onChange={handleChange}
+            placeholder="Full Name"
+            className="w-full border rounded px-3 py-2"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="w-full border rounded px-3 py-2"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="Password"
+            className="w-full border rounded px-3 py-2"
+            required
+          />
+          <input
+            type="text"
+            name="department"
+            value={form.department}
+            onChange={handleChange}
+            placeholder="Department"
+            className="w-full border rounded px-3 py-2"
+            required
+          />
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm text-gray-600">Full Name</label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-600">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-600">Department</label>
-            <input
-              type="text"
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-              required
-            />
-          </div>
-
-          {!lecturer && (
-            <div>
-              <label className="block text-sm text-gray-600">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-                required
-              />
-            </div>
-          )}
-
-          <div className="flex justify-end gap-3 mt-4">
+          <div className="flex justify-end gap-2 mt-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border"
+              className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+              disabled={isAdding}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg bg-blue-600 text-white"
+              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+              disabled={isAdding}
             >
-              {lecturer ? "Save Changes" : "Add Lecturer"}
+              {isAdding ? "Adding..." : "Add"}
             </button>
           </div>
         </form>

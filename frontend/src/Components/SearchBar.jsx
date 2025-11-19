@@ -1,53 +1,4 @@
-﻿
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Search, Filter } from "lucide-react";
 import AddCourseModal from "./AddCourseModal";
 
@@ -78,14 +29,12 @@ const SearchBar = () => {
         >
           + Add Course
         </button>
-
       </div>
       {showAddModal && (
-              <AddCourseModal onClose={() => setShowAddModal(false)} />
-            )}
+        <AddCourseModal onClose={() => setShowAddModal(false)} />
+      )}
     </div>
   );
 };
 
 export default SearchBar;
-
