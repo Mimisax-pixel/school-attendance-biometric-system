@@ -6,7 +6,7 @@ import isRole from "../../middleware/verifyrole.js";
 
 let router = express.Router();
 
-router.get('/auth/admin/dashboard', isAuthenticated,isRole("admin"), adminDashboardController);
+router.get('/auth/admin/dashboard', isAuthenticated, isRole(["admin", "lecturer"]), adminDashboardController);
 router.post('/auth/admin/compute-attendance-rates', isAuthenticated, isRole("admin"), computeAttendanceRatesEndpoint);
 
 export default router;

@@ -6,7 +6,6 @@ import { Edit2, Trash2 } from "lucide-react";
 import EditCourseModal from "./EditCourseModal";
 import AddCourseModal from "./AddCourseModal";
 import { useDeleteCourse } from "../hooks/useDeleteCourse";
-import { is } from "zod/v4/locales";
 
 const CourseCodeAndName = () => {
   const { courses, isLoading, isError, error } = useCourses();
@@ -35,12 +34,12 @@ const CourseCodeAndName = () => {
             Manage courses and their details. {filteredCourses.length} course(s)
             found.
           </p>
-          <button
+          {/* <button
             onClick={() => setShowAddModal(true)}
             className="text-white bg-[#1173D4] py-2 px-4 rounded-lg w-full sm:w-auto text-sm sm:text-base hover:bg-[#0E5EAC] transition"
           >
             + Add New Course
-          </button>
+          </button> */}
         </div>
 
         <div className="w-full mb-6">

@@ -10,7 +10,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     >
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-blue-400">
-        <h1 className="text-2xl font-bold">EduTrack</h1>
+        <h1 className="text-2xl font-bold">fUTIA</h1>
         <button onClick={toggleSidebar} className="lg:hidden text-white">
           <Menu size={22} />
         </button>

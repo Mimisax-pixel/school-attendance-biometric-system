@@ -30,10 +30,12 @@ export async function getCourses(req, res) {
 export async function addNewCourse(req, res) {
   try {
     let courseinfo = req.body;
+    let id = req.user.id;
     console.log(courseinfo)
     console.log(courseinfo);
     let addNewCourse = new Courses({
       ...courseinfo,
+      lecturerId: id,
     });
     await addNewCourse.save();
     res.send({

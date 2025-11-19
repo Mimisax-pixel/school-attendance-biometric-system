@@ -27,7 +27,6 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <div className="flex bg-gray-50 min-h-screen overflow-x-hidden w-full">
-        <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         <p className="p-6 text-gray-500">Loading dashboard...</p>
       </div>
     );
@@ -55,8 +54,7 @@ const Dashboard = () => {
     })) || [];
 
   return (
-    <div className="flex bg-gray-50 min-h-screen overflow-x-hidden w-full">
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+    
 
       <div
         className={`flex-1 transition-all duration-300 w-full ${
@@ -126,7 +124,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

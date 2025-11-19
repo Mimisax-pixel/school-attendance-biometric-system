@@ -23,12 +23,12 @@ const SearchBar = () => {
           Filter
         </button>
 
-        <button
+        {/* <button
           onClick={() => setShowAddModal(true)}
           className="bg-[#1173D4] text-white px-4 py-2 rounded-lg hover:bg-[#0d5cad] transition text-sm sm:text-base w-full sm:w-auto"
         >
           + Add Course
-        </button>
+        </button> */}
       </div>
       {showAddModal && (
         <AddCourseModal onClose={() => setShowAddModal(false)} />

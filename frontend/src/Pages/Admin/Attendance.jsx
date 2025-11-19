@@ -1,19 +1,13 @@
 ﻿import React, { useState, useRef, useEffect } from "react";
 import {
   Bell,
-  User,
   Fingerprint,
-  Settings,
-  BookOpen,
-  Users,
-  BarChart3,
   Menu,
-  X,
-  BookMarked,
 } from "lucide-react";
 import api from "../../api/axiosInstance.js";
 import toast from "react-hot-toast";
 import ContinueSession from "../../Components/ContinueSession.jsx";
+import LecturerSideBar from "../../Components/LecturerSideBar.jsx";
 
 const Void = () => {
   return (
@@ -22,6 +16,8 @@ const Void = () => {
     </span>
   );
 };
+
+
 
 const Attendance = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -32,21 +28,13 @@ const Attendance = () => {
   const [loading, setLoading] = useState(false);
   const [isVerify, setIsVerify] = useState("");
   const [showContinueSession, setShowContinueSession] = useState(false);
-  const menuItems = [
-    { name: "Dashboard", icon: BarChart3 },
-    { name: "Courses", icon: BookOpen },
-    { name: "Students", icon: Users },
-    { name: "Attendance", icon: Fingerprint },
-    { name: "Lecturers", icon: User },
-    { name: "Reports", icon: BarChart3 },
-    { name: "Settings", icon: Settings },
-  ];
+  
   let [courseOptions, setCourseOptions] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await api.post("/lecturer/courses", {});
+        const response = await api.get("/lecturer/courses", {});
         setCourseOptions(response.data.courses);
         toast.success("Courses loaded successfully");
       } catch (error) {
@@ -151,7 +139,7 @@ const Attendance = () => {
           >
             <Menu className="w-6 h-6 text-gray-700" />
           </button>
-          <div className="text-blue-700 font-bold text-lg">AUT Analytics</div>
+          <div className="text-blue-700 font-bold text-lg">FUTIA Analytics</div>
         </div>
 
         <div className="flex items-center gap-3">
@@ -166,47 +154,15 @@ const Attendance = () => {
 
       <div className="flex justify-start w-full overflow-x-hidden">
         {/* --- Sidebar --- */}
-        <aside
-          className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-white border-r border-gray-200/50 transition-transform duration-300 ease-in-out shrink-0 grow-0
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-          md:translate-x-0 md:static`}
-        >
-          <div className="flex items-center justify-between p-4 border-b border-gray-200/50 md:border-none">
-            <div className="text-blue-700 text-2xl font-bold">
-              AUT Analytics
-            </div>
-            <button
-              className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <X className="w-5 h-5 text-gray-700" />
-            </button>
-          </div>
-
-          <nav className="mt-3 px-2 pb-6">
-            {menuItems.map((item) => (
-              <a
-                key={item.name}
-                href="#"
-                className={`flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200
-                ${
-                  item.name === "Attendance" ? "bg-blue-50 text-blue-700" : ""
-                }`}
-              >
-                <item.icon className="w-5 h-5" />
-                <span className="text-sm md:text-base">{item.name}</span>
-              </a>
-            ))}
-          </nav>
-        </aside>
-
+      <LecturerSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+        
         {/* Overlay for mobile */}
-        {sidebarOpen && (
+        {/* {sidebarOpen && (
           <div
             className="fixed inset-0 z-30 bg-black bg-opacity-30 md:hidden"
             onClick={() => setSidebarOpen(false)}
           />
-        )}
+        )} */}
 
         {/* --- Main Content --- */}
         <main className=" min-h-screen  w-full  bg-gray-50">

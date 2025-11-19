@@ -1,9 +1,5 @@
 const isRole = (routerole) => {
-  // routerole must be a string in this application
-  if (typeof routerole !== "string") {
-    throw new TypeError("isRole middleware requires routerole to be a string");
-  }
-
+  // routerole must be a string in this applicatio
   return function (req, res, next) {
     const user = req.user;
 
@@ -15,7 +11,9 @@ const isRole = (routerole) => {
     }
 
     const { role } = user;
-    if (routerole === role) {
+    let isRole = routerole.includes(role)
+    console.log(isRole)
+    if (isRole || routerole === role) {
       return next();
     }
 
