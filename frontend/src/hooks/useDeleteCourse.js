@@ -1,39 +1,32 @@
 ﻿import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from "../api/axiosInstance";
 import toast from "react-hot-toast";
 
 export const useDeleteCourse = () => {
   const queryClient = useQueryClient();
-  function getCookie(name) {
-    return document.cookie
-      .split("; ")
-      .find((row) => row.startsWith(name + "="))
-      ?.split("=")[1];
-  }
 
-  const { mutate: deleteCourse, isLoading } = useMutation({
-    mutationFn: async (courseCode) => {
-      const response = await fetch(
-        `http://localhost:5000/api/v1/courses/${courseCode}`,
-        {
-          method: "DELETE",
-          headers: {
-            authorization: "Bearer " + getCookie("token"),
-          },
-        }
-      );
-
-      if (!response.ok) throw new Error("Failed to delete course");
-      return response.json();
+  const {
+    mutate: deleteCourse,
+    isLoading,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: async (courseId) => {
+      const res = await api.delete(`/courses/${courseId}`);
+      return res.data;
     },
-
-    onSuccess: () => {
-      toast.success("Course deleted successfully!");
+    onSuccess: (data) => {
+      toast.success(data.message || "Course deleted successfully!");
       queryClient.invalidateQueries(["courses"]);
     },
-    onError: (error) => {
-      toast.error(error.message || "Failed to delete course");
+    onError: (err) => {
+      toast.error(
+        err.response?.data?.message || err.message || "Failed to delete course"
+      );
     },
   });
 
-  return { deleteCourse, isLoading };
+  return { deleteCourse, isLoading, isError, error };
 };
+
+export default useDeleteCourse;

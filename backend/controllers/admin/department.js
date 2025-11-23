@@ -1,20 +1,20 @@
-import Courses from "../../models/courses.js";
+import Department from "../../models/department.js";
 
-export async function getCourses(req, res) {
+export async function getDepartment(req, res) {
   try {
-    let course_code = req.params.course_code;
-    console.log(course_code);
-    if (course_code) {
-      let courses = await Courses.find({ courseCode: course_code });
+    let department = req.params.department;
+    // console.log(course_code);
+    if (department) {
+      let department = await Department.find({ title: department });
       res.json({
         status: "success",
         courses,
       });
     } else {
-      let allCourses = await Courses.find({});
+      let allDepartment = await Department.find({});
       res.json({
         status: "success",
-        courses: allCourses,
+        courses: allDepartment,
       });
     }
   } catch (err) {
@@ -27,21 +27,21 @@ export async function getCourses(req, res) {
   }
 }
 
-export async function addNewCourse(req, res) {
+export async function addNewDepartment(req, res) {
   try {
-    let courseinfo = req.body;
+    let departmentInfo = req.body;
     let id = req.user.id;
-    console.log(courseinfo)
-    console.log(courseinfo);
-    let addNewCourse = new Courses({
-      ...courseinfo,
+    // console.log(DepartmentInfo);
+    // console.log(courseinfo);
+    let addNewDepartment = new Department({
+      ...departmentInfo,
       lecturerId: id,
     });
-    await addNewCourse.save();
+    await addNewDepartment.save();
     res.send({
       status: "success",
       message: "courses registered successfully",
-      addNewCourse,
+      addNewDepartment,
     });
   } catch (err) {
     console.log(err);
@@ -53,24 +53,32 @@ export async function addNewCourse(req, res) {
   }
 }
 
-export async function editCourses(req, res) {
+
+
+export async function editDepartment(req, res) {
   try {
-    const updatedCourseInfo = req.body;
-    console.log(updatedCourseInfo);
-    if (!updatedCourseInfo) {
+      const updatedDepartmentInfo = req.body;
+      let id = req.params.id
+    //   console.log(id);
+      
+    //   console.log(updatedDepartmentInfo);
+      
+    if (!updatedDepartmentInfo) {
       return res.status(400).json({
         status: "failed",
         message: "Course code and updated course information are required",
       });
     }
 
-    let course = await Courses.findOneAndUpdate(
-      { _id: updatedCourseInfo?.id },
-      { $set: updatedCourseInfo },
+    let department = await Department.findOneAndUpdate(
+      { _id: id },
+      { $set: updatedDepartmentInfo },
       { new: true }
-    );
+      );
+      console.log(department);
+      
 
-    if (!course) {
+    if (!department) {
       return res.status(404).json({
         status: "failed",
         message: "Course not found",
@@ -80,10 +88,10 @@ export async function editCourses(req, res) {
     res.json({
       status: "success",
       message: "Course updated successfully",
-      course,
+      department,
     });
   } catch (err) {
-    console.log("error: " + err);
+    
     res.json({
       status: "failed",
       message: "Something went wrong",
@@ -92,30 +100,29 @@ export async function editCourses(req, res) {
   }
 }
 
-export async function deleteCourse(req, res) {
+export async function deleteDepartment(req, res) {
   try {
-    const { courseid } = req.params;
-    console.log(courseid);
-    
-    if (!courseid) {
+    const departmentid = req.params.id;
+    console.log(departmentid)
+    if (!departmentid) {
       return res.status(400).json({
         status: "failed",
-        message: "Course code is required to delete a course",
+        message: "Department id is required to delete a course",
       });
     }
 
-    const course = await Courses.findOneAndDelete({ _id: courseid });
-    console.log(course);
+    const department = await Department.findOneAndDelete({ _id: departmentid });
+    // console.log(course);
     if (!course) {
       return res.status(404).json({
         status: "failed",
-        message: "Course not found",
+        message: "Department not found",
       });
     }
 
     res.json({
       status: "success",
-      message: `Course has been deleted successfully`,
+      message: `department has been deleted successfully`,
     });
   } catch (err) {
     console.log("error: " + err);

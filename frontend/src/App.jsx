@@ -15,6 +15,8 @@ import NotFound from "./Pages/Notfound";
 import Dashboard from "./Components/DashBoard";
 import LecturerSideBar from "./Components/LecturerSideBar";
 import LecturerCourses from "./Components/LecturerCourses";
+import Department from "./Pages/Department";
+import Sidebar from "./Components/Sidebar";
 
 function App() {
   return (
@@ -45,6 +47,15 @@ function App() {
               element={<CourseManagement />}
             />
             <Route path="/admin/dashboard/lecturers" element={<Lecturers />} />
+            <Route
+              path="/admin/dashboard/departments"
+              element={
+                <div className="flex">
+                  <Sidebar />
+                  <Department />
+                </div>
+              }
+            ></Route>
           </Route>
 
           {/* THIS IS SECTION IS FOR THE LECTURER ROUTES */}

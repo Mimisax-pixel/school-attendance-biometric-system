@@ -15,6 +15,8 @@ import LecturerLogin from "./routes/lecturers/login.js";
 import lecturerCourses from "./routes/lecturers/courses.js";
 import AttendanceSessions from "./routes/lecturers/session.js";
 import { startAttendanceRateJob } from "./jobs/computeAttendanceRates.js";
+import Department from "./routes/admin/departments.js";
+
 
 dotenv.config();
 mongoose
@@ -50,6 +52,7 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
@@ -65,6 +68,7 @@ app.use(apiVersion, Lecturer);
 app.use(apiVersion, LecturerLogin);
 app.use(apiVersion, lecturerCourses);
 app.use(apiVersion, AttendanceSessions);
+app.use(apiVersion, Department)
 
 // Basic route to check server status
 

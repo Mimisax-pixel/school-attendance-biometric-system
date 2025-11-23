@@ -3,42 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./CustomInput";
 import { courseSchema } from "../Schema/courseSchema";
-import { useAddCourse } from "../hooks/useAddCourse";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { set } from "zod";
+import useAddCourse from "../hooks/useAddCourse";
 
 const AddCourseModal = ({ onClose }) => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState({
-    courseCode: "",
-    courseTitle: "",
-    department: "",
-    creditunits: "",
-    semester: "",
-    level: "",
-  });
-
-  async function handleAddcourse() {
-    setIsLoading(true);
-    let baseUrl =
-      import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
-    try {
-      const response = await axios.post(`${baseUrl}/course`, inputValue, {
-        withCredentials: true,
-      });
-
-      toast.success(`${inputValue.courseTitle} added successfully`);
-      onClose();
-      setIsLoading(false);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to add course. Please try again."
-      );
-      setIsLoading(false);
-    }
-  }
+  const { addCourse, isLoading } = useAddCourse();
 
   const {
     register,
@@ -46,10 +14,22 @@ const AddCourseModal = ({ onClose }) => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(courseSchema),
+    defaultValues: {
+      courseCode: "",
+      courseTitle: "",
+      department: "",
+      creditunits: 0,
+      semester: 1,
+      level: 100,
+    },
   });
 
   const onSubmit = (data) => {
-    handleAddcourse();
+    addCourse(data, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
 
   return (
@@ -57,24 +37,18 @@ const AddCourseModal = ({ onClose }) => {
       <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Add Course</h2>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <CustomInput
             label="Course Code"
             name="courseCode"
             register={register}
             error={errors.courseCode}
-            onChange={(e) =>
-              setInputValue({ ...inputValue, courseCode: e.target.value })
-            }
           />
           <CustomInput
             label="Course Title"
             name="courseTitle"
             register={register}
             error={errors.courseTitle}
-            onChange={(e) =>
-              setInputValue({ ...inputValue, courseTitle: e.target.value })
-            }
           />
           <CustomInput
             label="Department / Session"
@@ -82,9 +56,6 @@ const AddCourseModal = ({ onClose }) => {
             name="department"
             register={register}
             error={errors.department}
-            onChange={(e) =>
-              setInputValue({ ...inputValue, department: e.target.value })
-            }
           />
 
           <CustomInput
@@ -93,9 +64,6 @@ const AddCourseModal = ({ onClose }) => {
             name="creditunits"
             register={register}
             error={errors.creditunits}
-            onChange={(e) =>
-              setInputValue({ ...inputValue, creditunits: e.target.value })
-            }
           />
           <CustomInput
             label="Semester"
@@ -103,9 +71,6 @@ const AddCourseModal = ({ onClose }) => {
             name="semester"
             register={register}
             error={errors.semester}
-            onChange={(e) =>
-              setInputValue({ ...inputValue, semester: e.target.value })
-            }
           />
           <CustomInput
             label="Level"
@@ -113,9 +78,6 @@ const AddCourseModal = ({ onClose }) => {
             name="level"
             register={register}
             error={errors.level}
-            onChange={(e) =>
-              setInputValue({ ...inputValue, level: e.target.value })
-            }
           />
 
           <div className="flex justify-end gap-3 mt-4">
@@ -129,7 +91,7 @@ const AddCourseModal = ({ onClose }) => {
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading}
             >
               {isLoading ? "Adding..." : "Add Course"}
             </button>

@@ -14,7 +14,7 @@ router.get("/courses", isAuthenticated,isRole("admin"), getCourses);
 router.get("/courses/:course_code", isAuthenticated,isRole("admin"), getCourses);
 router.post("/course", isAuthenticated,isRole(["lecturer","admin"]), addNewCourse);
 router.patch(
-  ["lecturer", "admin"],
+  "/courses/edit",
   isAuthenticated,
   isRole(["lecturer", "admin"]),
   editCourses

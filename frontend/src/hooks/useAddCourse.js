@@ -1,13 +1,9 @@
 ﻿import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getCookie } from "../api/axiosInstance";
+import api from "../api/axiosInstance";
 import toast from "react-hot-toast";
 
 export const useAddCourse = () => {
   const queryClient = useQueryClient();
-  let { baseUrl } =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
-
-  let token = getCookie("token");
 
   const {
     mutate: addCourse,
@@ -16,29 +12,21 @@ export const useAddCourse = () => {
     error,
   } = useMutation({
     mutationFn: async (newCourse) => {
-      const response = await fetch(`${baseUrl}/course`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer  + ${token}`,
-        },
-        body: JSON.stringify(newCourse),
-      });
-
-      if (!response.ok) throw new Error("Failed to add course");
-      return response.json();
+      const res = await api.post(`/course`, newCourse);
+      return res.data;
     },
-
     onSuccess: (data) => {
-      toast.success("Course added successfully!");
+      toast.success(data.message || "Course added successfully!");
       queryClient.invalidateQueries(["courses"]);
-      return data;
     },
-    onError: (error) => {
-      toast.error(error.message || "Failed to add course");
+    onError: (err) => {
+      toast.error(
+        err.response?.data?.message || err.message || "Failed to add course"
+      );
     },
   });
 
   return { addCourse, isLoading, isError, error };
 };
+
+export default useAddCourse;
