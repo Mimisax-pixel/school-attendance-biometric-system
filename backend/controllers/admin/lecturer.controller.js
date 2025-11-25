@@ -8,6 +8,8 @@ import bcrypt from "bcryptjs";
 const registerLecturer = async (req, res) => {
   try {
     const { email, password, fullName, department } = req.body;
+    console.log(req.body);
+    
 
     // Validate required fields
     if (!email || !password || !fullName || !department) {

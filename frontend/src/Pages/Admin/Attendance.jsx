@@ -1,11 +1,8 @@
 ﻿import React, { useState, useRef, useEffect } from "react";
-import {
-  Bell,
-  Fingerprint,
-  Menu,
-} from "lucide-react";
+import { Bell, Fingerprint, Menu } from "lucide-react";
 import api from "../../api/axiosInstance.js";
 import toast from "react-hot-toast";
+import { useDepartments } from "../../hooks/useDepartments";
 import ContinueSession from "../../Components/ContinueSession.jsx";
 import LecturerSideBar from "../../Components/LecturerSideBar.jsx";
 
@@ -17,8 +14,6 @@ const Void = () => {
   );
 };
 
-
-
 const Attendance = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [student, setStudent] = useState(null);
@@ -28,7 +23,7 @@ const Attendance = () => {
   const [loading, setLoading] = useState(false);
   const [isVerify, setIsVerify] = useState("");
   const [showContinueSession, setShowContinueSession] = useState(false);
-  
+
   let [courseOptions, setCourseOptions] = useState([]);
 
   useEffect(() => {
@@ -43,6 +38,8 @@ const Attendance = () => {
     };
     fetchCourses();
   }, []);
+
+  const { departments, isLoading: deptsLoading } = useDepartments();
 
   async function triggerCheckIn() {
     try {
@@ -154,8 +151,11 @@ const Attendance = () => {
 
       <div className="flex justify-start w-full overflow-x-hidden">
         {/* --- Sidebar --- */}
-      <LecturerSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
-        
+        <LecturerSideBar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+
         {/* Overlay for mobile */}
         {/* {sidebarOpen && (
           <div
@@ -202,19 +202,11 @@ const Attendance = () => {
                         onChange={(e) => {}}
                       >
                         <option value="">Select Department</option>
-                        <option value="Computer Science">
-                          Computer Science
-                        </option>
-                        <option value="Electrical Engineering">
-                          Electrical Engineering
-                        </option>
-                        <option value="Mechanical Engineering">
-                          Mechanical Engineering
-                        </option>
-                        <option value="Mass Communication">
-                          Mass Communication
-                        </option>
-                        <option value="Cybersecurity">Cybersecurity</option>
+                        {departments.map((d) => (
+                          <option key={d._id || d.title} value={d.title}>
+                            {d.title}
+                          </option>
+                        ))}
                       </select>
 
                       <label className="block text-sm text-gray-600">

@@ -1,6 +1,7 @@
 ﻿import React, { useState } from "react";
 import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useAttendance } from "../hooks/useAttendance";
+import { useDepartments } from "../hooks/useDepartments";
 import Navbar from "./Layouts/Navbar";
 import { useNavigate } from "react-router-dom";
 import { is } from "zod/v4/locales";
@@ -28,8 +29,10 @@ const StudentsAttendance = () => {
     studentId,
   });
 
+  const { departments, isLoading: deptsLoading } = useDepartments();
+
   // if (isLoading)
-    // return <p className="text-center mt-10">Loading attendance...</p>;
+  // return <p className="text-center mt-10">Loading attendance...</p>;
   if (error)
     return (
       <p className="text-center mt-10 text-red-500">
@@ -98,10 +101,11 @@ const StudentsAttendance = () => {
             }}
           >
             <option value="">All Departments</option>
-            <option value="Computer Science">Computer Science</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Physics">Physics</option>
+            {departments.map((d) => (
+              <option key={d._id || d.title} value={d.title}>
+                {d.title}
+              </option>
+            ))}
           </select>
           <select
             className="border rounded-lg px-3 py-2 text-sm w-full sm:w-auto"

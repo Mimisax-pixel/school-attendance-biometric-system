@@ -5,11 +5,13 @@ import LecturerModal from "./LecturerModal";
 import { useLecturers } from "../hooks/useLecturers";
 import { useDeleteLecturer } from "../hooks/useDeleteLecturer";
 import { useAddLecturer } from "../hooks/useAddLecturer";
+import { useEditLecturer } from "../hooks/useEditLecturer";
 import toast from "react-hot-toast";
 
 const LecturerAttendance = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [selectedLecturer, setSelectedLecturer] = useState(null);
 
   const {
     data: lecturers,
@@ -19,6 +21,7 @@ const LecturerAttendance = () => {
   } = useLecturers(searchQuery);
   const deleteLecturerMutation = useDeleteLecturer();
   const { addLecturer, isAdding } = useAddLecturer();
+  const { editLecturer, isLoading: isEditing } = useEditLecturer();
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this lecturer?"))
@@ -31,7 +34,28 @@ const LecturerAttendance = () => {
     }
   };
 
-  const handleAddLecturer = (formData) => {
+  const handleSubmitLecturer = (formData) => {
+    if (selectedLecturer) {
+      // edit flow
+      editLecturer(
+        { id: selectedLecturer._id, updatedData: formData },
+        {
+          onSuccess: () => {
+            toast.success("Lecturer updated successfully!");
+            setSelectedLecturer(null);
+            setShowModal(false);
+          },
+          onError: (err) => {
+            toast.error(
+              err?.response?.data?.message || "Failed to update lecturer"
+            );
+          },
+        }
+      );
+      return;
+    }
+
+    // add flow
     addLecturer(formData, {
       onSuccess: () => {
         toast.success("Lecturer added successfully!");
@@ -52,9 +76,13 @@ const LecturerAttendance = () => {
 
       {showModal && (
         <LecturerModal
-          onClose={() => setShowModal(false)}
-          onSubmit={handleAddLecturer}
-          isAdding={isAdding} 
+          lecturer={selectedLecturer}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedLecturer(null);
+          }}
+          onSubmit={handleSubmitLecturer}
+          isAdding={isAdding || isEditing}
         />
       )}
 
@@ -85,7 +113,13 @@ const LecturerAttendance = () => {
               </p>
 
               <div className="flex justify-start md:justify-end gap-2">
-                <button className="text-blue-600 font-semibold hover:underline text-sm md:text-base">
+                <button
+                  className="text-blue-600 font-semibold hover:underline text-sm md:text-base"
+                  onClick={() => {
+                    setSelectedLecturer(lect);
+                    setShowModal(true);
+                  }}
+                >
                   Edit
                 </button>
                 <button
