@@ -8,4 +8,6 @@ export const courseSchema = z.object({
     .number({ invalid_type_error: "Credit units must be a number" })
     .int("Credit units must be an integer")
     .positive("Credit units must be positive"),
+  semester: z.string().min(1).optional(),
+  level: z.number().int().min(100).max(500).optional(),
 });

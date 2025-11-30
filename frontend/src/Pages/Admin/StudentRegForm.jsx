@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import api from "../../api/axiosInstance.js";
 import toast from "react-hot-toast";
+import { useDepartments } from "../../hooks/useDepartments.js";
 
 const StudentRegForm = () => {
   const [formData, setFormData] = useState({
@@ -19,14 +20,14 @@ const StudentRegForm = () => {
   const [status, setStatus] = useState("Ready");
   const [fingerprintImage, setFingerprintImage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const { departments, isLoading: deptLoading } = useDepartments();
   const requestFingerprint = (e) => {
     e.preventDefault();
     if (window.chrome?.webview) {
       setStatus("Starting fingerprint capture...");
       window.chrome.webview.postMessage("start_capture");
     } else {
-      toast.error("Not running inside WebView2");
+      toast.error("Use BiometricApp");
     }
   };
 
@@ -36,7 +37,7 @@ const StudentRegForm = () => {
       toast.error("Passwords do not match");
       return;
     }
-    if (!formData.biometricData) { 
+    if (!formData.biometricData) {
       toast.error("Biometric data is required");
       return;
     }
@@ -174,7 +175,6 @@ const StudentRegForm = () => {
               }
               required
             />
-            
           </div>
 
           {/* Department */}
@@ -182,16 +182,21 @@ const StudentRegForm = () => {
             <label htmlFor="department" className="font-medium text-gray-700">
               Department
             </label>
-            <input
-              type="text"
-              id="department"
-              className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none p-3 mt-1"
+            <select
+              className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
+              name="department"
               value={formData.department}
               onChange={(e) =>
                 setFormData({ ...formData, department: e.target.value })
               }
-              required
-            />
+            >
+              <option value="">--Select--</option>
+              {departments.map((dept) => (
+                <option key={dept._id || dept.title} value={dept.title}>
+                  {dept.title}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Level */}
@@ -199,16 +204,22 @@ const StudentRegForm = () => {
             <label htmlFor="level" className="font-medium text-gray-700">
               Level
             </label>
-            <input
+            <select
               type="text"
               id="level"
-              className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none p-3 mt-1"
+              className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
               value={formData.level}
               onChange={(e) =>
                 setFormData({ ...formData, level: e.target.value })
               }
               required
-            />
+            >
+              <option value="100">100</option>
+              <option value="200">200</option>
+              <option value="300">300</option>
+              <option value="400">400</option>
+              <option value="500">500</option>
+            </select>
           </div>
 
           {/* password */}
@@ -230,16 +241,14 @@ const StudentRegForm = () => {
 
           <div className="w-full sm:w-[48%]">
             <label htmlFor="level" className="font-medium text-gray-700">
-             Confirm Passowrd
+              Confirm Passowrd
             </label>
             <input
               type="password"
               id="confirmPassword"
               className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none p-3 mt-1"
               value={confirmPassword}
-              onChange={(e) =>
-                setConfirmPassword(e.target.value)
-              }
+              onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
           </div>

@@ -4,9 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./CustomInput";
 import { courseSchema } from "../Schema/courseSchema";
 import useAddCourse from "../hooks/useAddCourse";
+import { useDepartments } from "../hooks/useDepartments.js";
 
 const AddCourseModal = ({ onClose }) => {
   const { addCourse, isLoading } = useAddCourse();
+  const { departments, isLoading: deptLoading } = useDepartments();
 
   const {
     register,
@@ -19,7 +21,7 @@ const AddCourseModal = ({ onClose }) => {
       courseTitle: "",
       department: "",
       creditunits: 0,
-      semester: 1,
+      semester: "",
       level: 100,
     },
   });
@@ -50,13 +52,21 @@ const AddCourseModal = ({ onClose }) => {
             register={register}
             error={errors.courseTitle}
           />
-          <CustomInput
-            label="Department / Session"
-            type="text"
+          <select
+            className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
             name="department"
-            register={register}
-            error={errors.department}
-          />
+            {...register("department")}
+            // onChange={(e) =>
+            //   setFormData({ ...formData, department: e.target.value })
+            // }
+            aria-placeholder="select department"
+          >
+            {departments.map((dept) => (
+              <option key={dept._id || dept.title} value={dept.title}>
+                {dept.title}
+              </option>
+            ))}
+          </select>
 
           <CustomInput
             label="Credit Units"
@@ -65,20 +75,34 @@ const AddCourseModal = ({ onClose }) => {
             register={register}
             error={errors.creditunits}
           />
-          <CustomInput
-            label="Semester"
-            type="number"
+          <select
+            className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
             name="semester"
-            register={register}
-            error={errors.semester}
-          />
-          <CustomInput
-            label="Level"
-            type="number"
+            {...register("semester")}
+
+            // onChange={(e) =>
+            //   setFormData({ ...formData, department: e.target.value })
+            // }
+          >
+            <option value="first">First semester</option>
+            <option value="second">Second semester</option>
+          </select>
+
+          <select
+            className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
             name="level"
-            register={register}
-            error={errors.level}
-          />
+            {...register("level", { valueAsNumber: true })}
+
+            // onChange={(e) =>
+            //   setFormData({ ...formData, department: e.target.value })
+            // }
+          >
+            <option value={100}>100</option>
+            <option value={200}>200</option>
+            <option value={300}>300</option>
+            <option value={400}>400</option>
+            <option value={500}>500</option>
+          </select>
 
           <div className="flex justify-end gap-3 mt-4">
             <button

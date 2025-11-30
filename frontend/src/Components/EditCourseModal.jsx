@@ -4,11 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./CustomInput";
 import { courseSchema } from "../Schema/courseSchema";
 import { useEditCourse } from "../hooks/useEditCourse"; // import your hook
+import { useDepartments } from "../hooks/useDepartments.js";
 
 const EditCourseModal = ({ course, onClose }) => {
-
   const { updateCourse, isLoading, isError, error } = useEditCourse();
-
+  const { departments, isLoading: deptLoading } = useDepartments();
 
   const {
     register,
@@ -22,31 +22,30 @@ const EditCourseModal = ({ course, onClose }) => {
       courseTitle: "",
       department: "",
       creditunits: 0,
-      semester: 1, 
+      semester: 1,
       level: 100,
     },
   });
-
 
   useEffect(() => {
     if (course) {
       reset({
         courseCode: course.courseCode,
         courseTitle: course.courseTitle,
-        department: course.department, 
-        creditunits: course.creditunits, 
+        department: course.department,
+        creditunits: course.creditunits,
         semester: Number(course.semester) || 1,
         level: Number(course.level) || 100,
       });
     }
   }, [course, reset]);
 
-
   const onSubmit = (data) => {
     if (!course) return;
 
     updateCourse({
-      ...data,id:course._id
+      ...data,
+      id: course._id,
     });
 
     onClose(); // close modal after saving
@@ -74,13 +73,21 @@ const EditCourseModal = ({ course, onClose }) => {
             error={errors.courseTitle}
           />
 
-          <CustomInput
-            label="Department / Session"
-            type="text"
+          <select
+            className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
             name="department"
-            register={register}
-            error={errors.department}
-          />
+            {...register("department")}
+            // onChange={(e) =>
+            //   setFormData({ ...formData, department: e.target.value })
+            // }
+          >
+            <option value="Select">--Select--</option>
+            {departments.map((dept) => (
+              <option key={dept._id || dept.title} value={dept.title}>
+                {dept.title}
+              </option>
+            ))}
+          </select>
 
           <CustomInput
             label="Credit Units"
