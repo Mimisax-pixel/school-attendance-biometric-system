@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import AlertsPage from "./Pages/Admin/AlertsPage";
 import Attendance from "./Pages/Admin/Attendance";
+import Report from "./Pages/Admin/Report";
 import StudentsGrades from "./Pages/Students/StudentsGrades";
 import AdminDashboard from "./Pages/AdminDashboard";
 import BiometricAttendance from "./Pages/BiometricAttendance";
@@ -48,6 +49,15 @@ function App() {
             />
             <Route path="/admin/dashboard/lecturers" element={<Lecturers />} />
             <Route
+              path="/admin/dashboard/reports"
+              element={
+                <div className="flex">
+                  <Sidebar />
+                  <Report />
+                </div>
+              }
+            />
+            <Route
               path="/admin/dashboard/departments"
               element={
                 <div className="flex">
@@ -85,6 +95,17 @@ function App() {
                 </div>
               }
             ></Route>
+            <Route
+              path="/lecturer/dashboard/reports"
+              element={
+                <>
+                  <div className="flex">
+                    <LecturerSideBar />
+                    <Report />
+                  </div>
+                </>
+              }
+            />
           </Route>
           <Route path="/student/dashboard">
             <Route index element={<StudentsGrades />} />

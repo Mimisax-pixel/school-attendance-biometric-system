@@ -14,9 +14,8 @@ import Lecturer from "./routes/admin/lecturers.js";
 import LecturerLogin from "./routes/lecturers/login.js";
 import lecturerCourses from "./routes/lecturers/courses.js";
 import AttendanceSessions from "./routes/lecturers/session.js";
-import { startAttendanceRateJob } from "./jobs/computeAttendanceRates.js";
+// jobs/computeAttendanceRates removed: no automatic job startup
 import Department from "./routes/admin/departments.js";
-
 
 dotenv.config();
 mongoose
@@ -24,8 +23,7 @@ mongoose
   .then(() => {
     console.log("Connected to MongoDB");
     console.log(process.env.NODE_ENV);
-    // Start background job for computing attendance rates (every 1 hour)
-    startAttendanceRateJob(60 * 60 * 1000);
+    // Background attendance job disabled (moved to incremental updates on check-in)
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB", err);
@@ -68,7 +66,7 @@ app.use(apiVersion, Lecturer);
 app.use(apiVersion, LecturerLogin);
 app.use(apiVersion, lecturerCourses);
 app.use(apiVersion, AttendanceSessions);
-app.use(apiVersion, Department)
+app.use(apiVersion, Department);
 
 // Basic route to check server status
 

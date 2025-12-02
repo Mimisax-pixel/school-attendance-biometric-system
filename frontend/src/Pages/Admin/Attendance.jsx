@@ -43,8 +43,9 @@ const Attendance = () => {
 
   async function triggerCheckIn() {
     try {
+      console.log(student._id, session.sessionId);
       const response = await api.post("/session/checkin", {
-        studentId: student.studentId,
+        studentId: student._id,
         classId: session._id || session.sessionId,
       });
       setIsVerify("verified");
@@ -95,7 +96,9 @@ const Attendance = () => {
       });
       setLoading(false);
       toast.success("Student details fetched successfully");
+      console.log(response.data.data);
       setStudent(response.data.data);
+      console.log(session);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to fetch student details"
@@ -116,8 +119,12 @@ const Attendance = () => {
       });
       setLoading(false);
 
+      setSession({...response.data.data});
+      console.log(session);
+      console.log(response.data.data)
+      console.log(session);
+      
       toast.success("Attendance session started successfully");
-      setSession(response.data.data);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to start session");
       setLoading(false);
@@ -353,7 +360,7 @@ const Attendance = () => {
                       </div>
                     </div>
                     <span className="text-green-600 font-semibold text-sm">
-                      âœ” Verified
+                      Verified
                     </span>
                   </div>
 
@@ -368,7 +375,7 @@ const Attendance = () => {
                       </div>
                     </div>
                     <span className="text-red-600 font-semibold text-sm">
-                      âœ– Failed
+                      Failed
                     </span>
                   </div>
                 </div>
@@ -376,7 +383,8 @@ const Attendance = () => {
                 {student !== null && (
                   <button
                     className="text-xs sm:text-sm underline text-white bg-blue-600 "
-                    onClick={verifyFingerprint}
+                    // onClick={verifyFingerprint}
+                    onClick={triggerCheckIn}
                   >
                     Check-in
                   </button>

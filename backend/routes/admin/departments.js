@@ -10,7 +10,7 @@ import isAuthenticated from "../../middleware/authenticate.js";
 
 const router = express.Router();
 
-router.get("/department", isAuthenticated, isRole(["lecturer","adimin"]), getDepartment);
+router.get("/department", isAuthenticated, isRole(["lecturer","admin"]), getDepartment);
 router.get(
   "/department/:course_code",
   isAuthenticated,

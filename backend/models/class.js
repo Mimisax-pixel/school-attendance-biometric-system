@@ -11,7 +11,7 @@ let classSchema = new mongoose.Schema({
   courseTitle: {
     type: String,
     required: [true, "Class name is required"],
-  },//
+  },
   courseCode: {
     type: String,
     required: [true, "course code is required"],
@@ -20,6 +20,11 @@ let classSchema = new mongoose.Schema({
   numberOfStudentPresent: {
     type: Number,
     required: [true, "Expected number of students is required"],
+    default: 0,
+  },
+  attendanceRatio: {
+    type: Number,
+    required: [true, "Attendance ration is required"],
     default: 0,
   },
   createdAt: { type: Date, default: Date.now },

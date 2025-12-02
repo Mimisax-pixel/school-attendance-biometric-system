@@ -26,5 +26,10 @@ router.post(
   isRole("lecturer"),
   fetchStudentDetails
 );
-router.post("/session/checkin", isAuthenticated, isRole("lecturer"), checkIn);
+router.post(
+  "/session/checkin",
+  isAuthenticated,
+  isRole(["lecturer", "student"]),
+  checkIn
+);
 export default router;

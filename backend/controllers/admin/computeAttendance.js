@@ -1,23 +1,8 @@
-import { computeAttendanceRates } from "../../jobs/computeAttendanceRates.js";
-
-/**
- * Admin endpoint to manually trigger attendance rate computation
- * POST /api/v1/admin/compute-attendance-rates
- */
+// jobs/computeAttendanceRates removed. Keep endpoint but return informational message.
 export const computeAttendanceRatesEndpoint = async (req, res) => {
-  try {
-    console.log("[Admin] Manual attendance rate computation triggered");
-    await computeAttendanceRates();
-    return res.json({
-      status: "success",
-      message: "Attendance rates computed and stored successfully",
-    });
-  } catch (error) {
-    console.error("[Admin] Error during computation:", error.message);
-    return res.status(500).json({
-      status: "failed",
-      message: "Error computing attendance rates",
-      error: error.message,
-    });
-  }
+  return res.json({
+    status: "unavailable",
+    message:
+      "Background attendance job has been removed. Student rates are updated incrementally on check-in.",
+  });
 };

@@ -5,6 +5,7 @@ import Course from "../../models/courses.js";
 import Student, { attendance } from "../../models/students.js";
 import students from "../../models/students.js";
 import mongoose from "mongoose";
+import { processCheckIn } from "../../services/checkinService.js";
 
 export async function createSession(req, res) {
   console.log(req.body);
@@ -85,29 +86,36 @@ export async function fetchStudentDetails(req, res) {
 
 export async function checkIn(req, res) {
   try {
-    let { studentId, classId } = req.body;
-    if (!studentId || !classId) {
-      return res
-        .status(400)
-        .json({ status: "failed", message: "All fields are required" });
-    }
-    let attendanceRecord = attendance({
-      studentId: studentId,
-      classId: classId,
-    });
+    const { studentId, classId } = req.body;
 
-    await attendanceRecord.save();
-    await Classes.updateOne(
-      { _id: classId },
-      { $inc: { numberOfStudentPresent: 1 } }
-    );
+    // Validate required fields
+    if (!studentId || !classId) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Student ID and Class ID are required",
+      });
+    }
+
+    // Use the service to process check-in (handles authorization, attendance ratio, etc.)
+    const result = await processCheckIn(studentId, classId);
+
+    if (!result.success) {
+      return res.status(400).json({
+        status: "failed",
+        message: result.message,
+      });
+    }
 
     return res.status(201).json({
       status: "success",
-      message: "Check-in successful",
-      data: attendanceRecord,
+      message: result.message,
+      data: result.data,
     });
   } catch (error) {
-    res.status(500).json({ status: "failed", message: error.message });
+    res.status(500).json({
+      status: "failed",
+      message: "An unexpected error occurred",
+      error: error.message,
+    });
   }
 }

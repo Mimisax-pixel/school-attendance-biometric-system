@@ -19,7 +19,7 @@ const LecturerSideBar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/lecturer/dashboard/attendance",
       icon: Fingerprint,
     },
-    { name: "Reports", path: "/lecturer/dashboard/", icon: BarChart3 },
+    { name: "Reports", path: "/lecturer/dashboard/reports", icon: BarChart3 },
     { name: "Settings", path: "/lecturer/dashboard", icon: Settings },
   ];
   return (
