@@ -14,8 +14,8 @@ import Lecturer from "./routes/admin/lecturers.js";
 import LecturerLogin from "./routes/lecturers/login.js";
 import lecturerCourses from "./routes/lecturers/courses.js";
 import AttendanceSessions from "./routes/lecturers/session.js";
-// jobs/computeAttendanceRates removed: no automatic job startup
 import Department from "./routes/admin/departments.js";
+import AlertsRoutes from "./routes/admin/alerts.js";
 
 dotenv.config();
 mongoose
@@ -67,6 +67,7 @@ app.use(apiVersion, LecturerLogin);
 app.use(apiVersion, lecturerCourses);
 app.use(apiVersion, AttendanceSessions);
 app.use(apiVersion, Department);
+app.use(apiVersion, AlertsRoutes);
 
 // Basic route to check server status
 

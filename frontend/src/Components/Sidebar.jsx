@@ -11,8 +11,8 @@ import {
   Menu,
   X,
   Bell,
+  HelpCircle,
 } from "lucide-react";
-
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,6 +37,7 @@ const Sidebar = () => {
     },
     { to: "/admin/dashboard/reports", icon: BarChart2, label: "Reports" },
     { to: "/admin/dashboard/alerts", icon: Bell, label: "alerts" },
+    { to: "/admin/dashboard/help", icon: HelpCircle, label: "Help" },
   ];
 
   return (

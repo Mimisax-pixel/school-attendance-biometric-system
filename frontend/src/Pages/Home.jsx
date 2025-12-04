@@ -243,20 +243,35 @@ const App = () => {
                     handleUserInput(Email);
                   }}
                   value={Email.current.value}
-                  className="w-full mb-3 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  disabled={submit}
+                  className={`w-full mb-4 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400${
+                    submit
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : ""
+                  }`}
                 />
                 <input
                   type="password"
                   placeholder="Password"
-                  className="w-full mb-4 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className={`w-full mb-4 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400${
+                    submit
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : ""
+                  }`}
                   id="password"
+                  disabled={submit}
                   ref={password}
                   onChange={() => {
                     handleUserInput(password);
                   }}
                 />
                 <button
-                  className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 transition"
+                  className={`w-full text-white font-medium py-2 rounded-md
+                    ${
+                      submit
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700"
+                    }`}
                   onClick={loginStudent}
                   disabled={submit}
                 >

@@ -6,11 +6,6 @@ const Report = () => {
   const [selectedLevel, setSelectedLevel] = useState(100);
   const [selectedDept, setSelectedDept] = useState("");
   const reportRef = useRef(null);
-
-  if (isLoading) return <p className="p-6">Loading report data...</p>;
-  if (isError)
-    return <p className="p-6 text-red-500">Failed to load report data</p>;
-
   const levels = data?.totalCoursesAttendanceAverage?.levelAverages?.map(
     (l) => l.level
   ) || [100, 200, 300, 400, 500];
@@ -42,6 +37,11 @@ const Report = () => {
     return rows;
   }, [departmentsForLevel, selectedDept]);
 
+  // Show loading / error UIs after all hooks run to preserve hook order
+  if (isLoading) return <p className="p-6">Loading report data...</p>;
+  if (isError)
+    return <p className="p-6 text-red-500">Failed to load report data</p>;
+
   const printReport = () => {
     if (!reportRef.current) return;
     const printWindow = window.open("", "_blank", "width=900,height=700");
@@ -67,7 +67,7 @@ const Report = () => {
   };
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-6 mt-20 bg-gray-50 min-h-screen">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold">Attendance Report</h2>
         <div className="flex gap-2">

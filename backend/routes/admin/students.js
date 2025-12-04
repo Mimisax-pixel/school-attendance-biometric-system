@@ -8,7 +8,7 @@ let router = express.Router();
 router.get(
   "/attendance-records",
   isAuthenticated,
-  isRole("admin"),
+  isRole(["admin", "lecturer"]),
   studentRecords
 );
 

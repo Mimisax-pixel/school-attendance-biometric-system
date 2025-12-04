@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useDepartments } from "../../hooks/useDepartments";
 import ContinueSession from "../../Components/ContinueSession.jsx";
 import LecturerSideBar from "../../Components/LecturerSideBar.jsx";
+import AttendanceLogModal from "../../Components/AttendanceLogModal.jsx";
 
 const Void = () => {
   return (
@@ -23,6 +24,7 @@ const Attendance = () => {
   const [loading, setLoading] = useState(false);
   const [isVerify, setIsVerify] = useState("");
   const [showContinueSession, setShowContinueSession] = useState(false);
+  const [showAttendanceModal, setShowAttendanceModal] = useState(false);
 
   let [courseOptions, setCourseOptions] = useState([]);
 
@@ -119,11 +121,11 @@ const Attendance = () => {
       });
       setLoading(false);
 
-      setSession({...response.data.data});
+      setSession({ ...response.data.data });
       console.log(session);
-      console.log(response.data.data)
+      console.log(response.data.data);
       console.log(session);
-      
+
       toast.success("Attendance session started successfully");
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to start session");
@@ -382,24 +384,38 @@ const Attendance = () => {
                 {/*verify button*/}
                 {student !== null && (
                   <button
-                    className="text-xs sm:text-sm underline text-white bg-blue-600 "
-                    // onClick={verifyFingerprint}
-                    onClick={triggerCheckIn}
+                    className="text-xs sm:text-sm p-4 rounded-xl font-bold text-white bg-blue-600 "
+                    onClick={verifyFingerprint}
+                    // onClick={triggerCheckIn}
                   >
                     Check-in
                   </button>
                 )}
                 {/* Action */}
                 <div className="w-full mt-4 text-center">
-                  <button className="text-xs sm:text-sm underline text-blue-600">
-                    View full attendance log
-                  </button>
+                  {session !== null && (
+                    <button
+                      onClick={() => setShowAttendanceModal(true)}
+                      className="text-xs sm:text-sm underline text-blue-600 hover:text-blue-800 transition"
+                    >
+                      View full attendance log
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </main>
       </div>
+
+      {/* Attendance Log Modal */}
+      {showAttendanceModal && session && (
+        <AttendanceLogModal
+          sessionId={session._id}
+          sessionData={session}
+          onClose={() => setShowAttendanceModal(false)}
+        />
+      )}
     </div>
   );
 };

@@ -90,9 +90,9 @@ const Department = () => {
 
                             <button
                               className="p-1"
-                                      onClick={async () => {
-                                 console.log(department._id);
-                                  
+                              onClick={async () => {
+                                console.log(department._id);
+
                                 const confirmDelete = window.confirm(
                                   `Are you sure you want to delete ${department.title}?`
                                 );
@@ -114,6 +114,55 @@ const Department = () => {
                     </>
                   )}
                 </div>
+              </div>
+            </div>
+
+            {/* Mobile list */}
+            <div className="block sm:hidden mt-4">
+              <div className="bg-white rounded-xl shadow-md border border-gray-100 divide-y divide-gray-200">
+                {filteredDepartment.map((department, index) => (
+                  <div key={department._id} className="p-4 flex flex-col gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div className="font-medium text-gray-800 truncate">
+                          {department.title}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          #{index + 1}
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-500 mt-1 truncate">
+                        {department.school}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 self-end mt-1">
+                      <button
+                        className="p-1"
+                        onClick={() => setSelectedCourse(department)}
+                        aria-label={`edit ${department.title}`}
+                      >
+                        <Edit2 className="text-blue-600 w-5 h-5 hover:text-blue-800" />
+                      </button>
+
+                      <button
+                        className="p-1"
+                        onClick={async () => {
+                          const confirmDelete = window.confirm(
+                            `Are you sure you want to delete ${department.title}?`
+                          );
+                          if (confirmDelete) {
+                            deleteDepartment(department._id).then(() => {
+                              toast.success("Department deleted successfully");
+                            });
+                          }
+                        }}
+                      >
+                        <Trash2 className="text-red-500 w-5 h-5 hover:text-red-700" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </section>

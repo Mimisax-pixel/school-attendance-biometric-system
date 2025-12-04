@@ -2,8 +2,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import AlertsPage from "./Pages/Admin/AlertsPage";
+import LecturerAlertsPage from "./Pages/Lecturer/AlertsPage";
 import Attendance from "./Pages/Admin/Attendance";
 import Report from "./Pages/Admin/Report";
+import AdminHelp from "./Pages/Admin/Help";
+import LecturerHelp from "./Pages/Lecturer/Help";
 import StudentsGrades from "./Pages/Students/StudentsGrades";
 import AdminDashboard from "./Pages/AdminDashboard";
 import BiometricAttendance from "./Pages/BiometricAttendance";
@@ -66,6 +69,7 @@ function App() {
                 </div>
               }
             ></Route>
+            <Route path="/admin/dashboard/help" element={<AdminHelp />} />
           </Route>
 
           {/* THIS IS SECTION IS FOR THE LECTURER ROUTES */}
@@ -96,6 +100,10 @@ function App() {
               }
             ></Route>
             <Route
+              path="/lecturer/dashboard/alerts"
+              element={<LecturerAlertsPage />}
+            />
+            <Route
               path="/lecturer/dashboard/reports"
               element={
                 <>
@@ -106,14 +114,16 @@ function App() {
                 </>
               }
             />
+            <Route path="/lecturer/dashboard/help" element={<LecturerHelp />} />
           </Route>
           <Route path="/student/dashboard">
             <Route index element={<StudentsGrades />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
-
-        {/* <Route path="/lecturers" element={<Lecturers />} /> */}
+        {/* <Route path="/help" element={<AdminHelp></AdminHelp>}></Route> */}
+        {/* <Route path="/help" element={<LecturerHelp/>}></Route>
+        <Route path="/lecturers" element={<Lecturers />} /> */}
       </Routes>
     </Router>
   );

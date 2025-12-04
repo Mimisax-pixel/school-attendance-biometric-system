@@ -119,3 +119,77 @@ export async function checkIn(req, res) {
     });
   }
 }
+
+export async function getSessionAttendanceLog(req, res) {
+  try {
+    const { classId } = req.params;
+
+    // Validate classId
+    if (!classId) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Class ID is required",
+      });
+    }
+
+    // Verify the class exists and belongs to the current lecturer
+    const classSession = await Classes.findById(classId);
+    if (!classSession) {
+      return res.status(404).json({
+        status: "failed",
+        message: "Class session not found",
+      });
+    }
+
+    // Check if the current user is the instructor of this class
+    if (classSession.instructorId !== req.user.id) {
+      return res.status(403).json({
+        status: "failed",
+        message: "You do not have permission to view this class attendance log",
+      });
+    }
+
+    // Fetch all attendance records for this class
+    const attendanceRecords = await attendance
+      .find({ classId: classId })
+      .lean()
+      .exec();
+
+    // Populate student details for each attendance record
+    const attendanceWithDetails = await Promise.all(
+      attendanceRecords.map(async (record) => {
+        const student = await Student.findById(record.studentId)
+          .select("fullname matricNumber email phone department")
+          .lean()
+          .exec();
+        return {
+          ...record,
+          studentDetails: student || {},
+        };
+      })
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: "Attendance log retrieved successfully",
+      data: {
+        classSession: {
+          _id: classSession._id,
+          courseTitle: classSession.courseTitle,
+          courseCode: classSession.courseCode,
+          department: classSession.department,
+          level: classSession.level,
+          createdAt: classSession.createdAt,
+        },
+        attendance: attendanceWithDetails,
+        totalPresent: attendanceRecords.length,
+      },
+    });
+  } catch (error) {
+    console.error("Get session attendance log error:", error);
+    res.status(500).json({
+      status: "failed",
+      message: error.message || "Failed to fetch attendance log",
+    });
+  }
+}

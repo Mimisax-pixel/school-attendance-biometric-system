@@ -15,7 +15,7 @@ const studentRecords = async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 20; // default page size
 
     const query = Student.find(filter).select(
-      "fullname matricNumber department rateOfClassesAttended"
+      "fullname email phone matricNumber department rateOfClassesAttended"
     );
 
     const total = await Student.countDocuments(filter);

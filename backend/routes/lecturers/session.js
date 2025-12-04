@@ -6,6 +6,7 @@ import {
   getSessions,
   fetchStudentDetails,
   checkIn,
+  getSessionAttendanceLog,
 } from "../../controllers/lecturer/session.js";
 
 const router = express.Router();
@@ -31,5 +32,12 @@ router.post(
   isAuthenticated,
   isRole(["lecturer", "student"]),
   checkIn
+);
+// Get attendance log for a specific session
+router.get(
+  "/session/:classId/attendance-log",
+  isAuthenticated,
+  isRole("lecturer"),
+  getSessionAttendanceLog
 );
 export default router;

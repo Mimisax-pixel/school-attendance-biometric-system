@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2c0308e-eb83-4378-969f-558b1f7db2f6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/src/Components/EditCourseModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Components/EditCourseModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Pages/Admin/StudentRegForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Pages/Admin/StudentRegForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/controllers/admin/students.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/admin/students.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Components/LecturerSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Components/LecturerSideBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Components/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Components/Sidebar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Pages/Admin/AlertsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Pages/Admin/AlertsPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Pages/Admin/Report.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Pages/Admin/Report.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Pages/Department.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Pages/Department.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +69,7 @@
       <workItem from="1764226045207" duration="1224000" />
       <workItem from="1764378017329" duration="37000" />
       <workItem from="1764490435489" duration="2529000" />
+      <workItem from="1764833878812" duration="36000" />
     </task>
     <servers />
   </component>
@@ -72,7 +81,6 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/frontend/src/Components/EditCourseModal.jsx</url>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

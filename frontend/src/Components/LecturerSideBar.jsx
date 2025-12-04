@@ -7,6 +7,8 @@ import {
   Users,
   BarChart3,
   X,
+  HelpCircle,
+  Mail,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -20,6 +22,8 @@ const LecturerSideBar = ({ sidebarOpen, setSidebarOpen }) => {
       icon: Fingerprint,
     },
     { name: "Reports", path: "/lecturer/dashboard/reports", icon: BarChart3 },
+    { name: "Alerts", path: "/lecturer/dashboard/alerts", icon: Mail },
+    { name: "Help", path: "/lecturer/dashboard/help", icon: HelpCircle },
     { name: "Settings", path: "/lecturer/dashboard", icon: Settings },
   ];
   return (
