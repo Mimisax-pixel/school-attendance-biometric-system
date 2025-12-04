@@ -248,7 +248,7 @@ export default function AlertsPage() {
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="all">All Students in Department</option>
-                    <option value="selected">Selected Students</option>
+                    <option value="selected" disabled className="cursor-not-allowed ">Select Students {"(coming soon)" }</option>
                   </select>
                 </div>
               </div>
