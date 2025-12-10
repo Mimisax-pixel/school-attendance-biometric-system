@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import LecturerSideBar from "../../Components/LecturerSideBar";
 import toast from "react-hot-toast";
-import {
-  Mail,
-  MessageCircle,
-  Send,
-  Users,
-  User,
-} from "lucide-react";
+import { Mail, MessageCircle, Send, Users, User } from "lucide-react";
 import { useDepartments } from "../../hooks/useDepartments";
 import api from "../../api/axiosInstance";
 
@@ -285,8 +279,9 @@ export default function LecturerAlertsPage() {
                     <strong>Recipients:</strong>{" "}
                     {sendTo === "all"
                       ? `All students in ${
-                          departments?.find((d) => d.title === selectedDepartment)
-                            ?.title || "selected department"
+                          departments?.find(
+                            (d) => d.title === selectedDepartment
+                          )?.title || "selected department"
                         }`
                       : `${selectedStudents.length} selected student(s)`}
                   </p>

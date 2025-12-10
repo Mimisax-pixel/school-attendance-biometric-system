@@ -27,6 +27,10 @@ let classSchema = new mongoose.Schema({
     required: [true, "Attendance ration is required"],
     default: 0,
   },
+  session: {
+    type: String,
+    required: [true,"pls provided the session"]
+  },
   createdAt: { type: Date, default: Date.now },
 });
 
