@@ -6,10 +6,12 @@ import Student, { attendance } from "../../models/students.js";
 import students from "../../models/students.js";
 import mongoose from "mongoose";
 import { processCheckIn } from "../../services/checkinService.js";
+import getCurrentSession from "../../services/getCurrentSession.js";
 
 export async function createSession(req, res) {
   console.log(req.body);
   try {
+    let currentSession = getCurrentSession()
     let instructor = await lecturer.findById(req.user.id);
     let courseProps = await Course.findOne({
       courseCode: req.body.courseCode,
@@ -31,13 +33,14 @@ export async function createSession(req, res) {
       courseTitle: courseProps.courseTitle,
       instructorId: req.user.id,
       courseCode: req.body.courseCode,
+      session: currentSession
     });
     await Class.save();
-    let course = await Course.findOne({ courseCode: req.body.courseCode });
-    if (course) {
-      course.numberOfClassesHeld += 1;
-      await course.save();
-    }
+    // let course = await Course.findOne({ courseCode: req.body.courseCode });
+    // if (course) {
+    //   course.numberOfClassesHeld += 1;
+    //   await course.save();
+    // }
     console.log(Class);
     console.log(instructor);
     // let classSession = Class.toObject();

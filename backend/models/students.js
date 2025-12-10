@@ -3,12 +3,13 @@ import mongoose, { mongo } from "mongoose";
 let attendanceSchema = new mongoose.Schema({
   classId: String,
   studentId: String,
+  session: String,
   timestamp: { type: Date, default: Date.now },
 });
 
 let gradesSchema = new mongoose.Schema({
   courseCode: String,
-  courseTitle: String, //
+  courseTitle: String,
   grade: String,
   semester: String,
   year: String,

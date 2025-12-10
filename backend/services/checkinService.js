@@ -1,6 +1,7 @@
 import Classes from "../models/class.js";
 import Student from "../models/students.js";
 import { attendance } from "../models/students.js";
+import getCurrentSession from "./getCurrentSession.js";
 
 /**
  * Process student check-in for a class session
@@ -14,6 +15,7 @@ import { attendance } from "../models/students.js";
  */
 export async function processCheckIn(studentId, classId) {
   try {
+    let currentSession = await getCurrentSession();
     // Step 1: Fetch class session
     const classSession = await Classes.findById(classId);
     if (!classSession) {
@@ -57,6 +59,7 @@ export async function processCheckIn(studentId, classId) {
     const attendanceRecord = new attendance({
       studentId: studentId,
       classId: classId,
+      session: currentSession
     });
     await attendanceRecord.save();
 
@@ -122,6 +125,7 @@ export async function processCheckIn(studentId, classId) {
 
         const studentAttendanceRate =
           (studentAttendanceCount / totalDeptLevelClasses) * 100;
+        console.log("student attendace count:",studentAttendanceCount)
 
         await Student.updateOne(
           { _id: student._id },

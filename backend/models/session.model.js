@@ -2,7 +2,9 @@ import mongoose, { model } from "mongoose";
 
 let academicSessionSchema = new mongoose.Schema({
     academicSession: {
-        type: String
+        type: String,
+        unique: true,
+        required: [true, "Academic session is required"]
     },
     current: Boolean
 })

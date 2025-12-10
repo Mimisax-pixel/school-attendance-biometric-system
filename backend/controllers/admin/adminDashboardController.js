@@ -2,20 +2,24 @@ import Student from "../../models/students.js";
 import Course from "../../models/courses.js";
 import Lecturer from "../../models/lecturers.js";
 import Classes from "../../models/class.js";
+import getCurrentSession from "../../services/getCurrentSession.js";
 
 const adminDashboardController = async (req, res) => {
   try {
     // Count totals
+    const currentSession = await getCurrentSession();
     const totalStudents = await Student.countDocuments();
     const totalLecturers = await Lecturer.countDocuments();
     const totalCourses = await Course.countDocuments();
+
+console.log("Current Session:", currentSession);
 
     // NOTE: student-based precomputed attendance averages were removed
     // in favor of the Classes.attendanceRatio-based computation below.
 
     // Total classes held (count of class sessions stored in `Classes` collection)
     const totalClassesHeld = async () => {
-      return await Classes.countDocuments();
+      return await Classes.countDocuments({session: currentSession});
     };
 
     // Average attendance ratio by level (uses Classes.attendanceRatio)
@@ -24,7 +28,7 @@ const adminDashboardController = async (req, res) => {
       const levelAverages = [];
 
       for (const level of levels) {
-        const classesByLevel = await Classes.find({ level: level.toString() })
+        const classesByLevel = await Classes.find({ level: level.toString(),session: currentSession })
           .select("attendanceRatio")
           .lean();
 
@@ -45,7 +49,9 @@ const adminDashboardController = async (req, res) => {
       }
 
       // overall average across all classes
-      const allClasses = await Classes.find().select("attendanceRatio").lean();
+      const allClasses = await Classes.find({ session: currentSession })
+        .select("attendanceRatio")
+        .lean();
       const totalClasses = allClasses.length;
       const totalSum = allClasses.reduce(
         (s, c) =>
@@ -66,7 +72,7 @@ const adminDashboardController = async (req, res) => {
       const levelDepartmentMap = {};
 
       // Get all classes with level, department, and attendanceRatio
-      const allClasses = await Classes.find()
+      const allClasses = await Classes.find({ session: currentSession })
         .select("level department attendanceRatio")
         .lean();
 
