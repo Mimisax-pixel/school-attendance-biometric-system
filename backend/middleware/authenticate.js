@@ -1,15 +1,14 @@
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { unauthorizedResponse } from "../utils/response.js";
+import { logger } from "../utils/logger.js";
 
 const isAuthenticated = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({
-      status: "failed",
-      message: "No token provided, authorization denied",
-      authenticated: false,
-    });
+    logger.warn("No token provided", { path: req.path });
+    return unauthorizedResponse(res, "No token provided, authorization denied");
   }
 
   try {
@@ -17,11 +16,8 @@ const isAuthenticated = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({
-      status: "failed",
-      message: "Token is not valid",
-      authenticated: false,
-    });
+    logger.warn("Invalid token", { error: err.message });
+    return unauthorizedResponse(res, "Token is not valid");
   }
 };
 

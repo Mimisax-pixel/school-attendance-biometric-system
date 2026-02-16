@@ -1,4 +1,5 @@
 import Student from "../../models/students.js";
+import attendanceService from "../../services/attendanceService.js";
 
 const studentRecords = async (req, res) => {
   const studentId = req.query.studentId;
@@ -15,7 +16,7 @@ const studentRecords = async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 20; // default page size
 
     const query = Student.find(filter).select(
-      "fullname email phone matricNumber department rateOfClassesAttended"
+      "fullname email phone matricNumber department",
     );
 
     const total = await Student.countDocuments(filter);
@@ -24,9 +25,27 @@ const studentRecords = async (req, res) => {
       .limit(limit)
       .lean();
 
-    return res
-      .status(200)
-      .json({ status: "success", total, page, limit, results });
+    // Compute realtime attendance rate for each student
+    const resultsWithRate = await Promise.all(
+      results.map(async (stu) => {
+        try {
+          const rate = await attendanceService.computeStudentAttendanceRate(
+            stu._id,
+          );
+          return { ...stu, rateOfClassesAttended: rate };
+        } catch (err) {
+          return { ...stu, rateOfClassesAttended: 0 };
+        }
+      }),
+    );
+
+    return res.status(200).json({
+      status: "success",
+      total,
+      page,
+      limit,
+      results: resultsWithRate,
+    });
   } catch (error) {
     console.error("studentRecords error:", error);
     return res

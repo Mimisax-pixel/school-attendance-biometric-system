@@ -74,7 +74,7 @@ const EditCourseModal = ({ course, onClose }) => {
           />
 
           <select
-            className="w-full bg-slate-100 h-[40px] rounded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
+            className="w-full bg-slate-100 h-[40px] nded border-2 border-gray-300 focus:border-blue-500 focus:outline-none pl-3 mt-1"
             name="department"
             {...register("department")}
             // onChange={(e) =>

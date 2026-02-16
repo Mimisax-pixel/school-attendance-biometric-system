@@ -1,6 +1,9 @@
 ﻿import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
+import LandingPage from "./Pages/LandingPage";
+import StudentLogin from "./Pages/StudentLogin";
+import StaffLogin from "./Pages/StaffLogin";
+import AdminLogin from "./Pages/AdminLogin";
 import AlertsPage from "./Pages/Admin/AlertsPage";
 import LecturerAlertsPage from "./Pages/Lecturer/AlertsPage";
 import Attendance from "./Pages/Admin/Attendance";
@@ -26,7 +29,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* Public Routes */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/student/login" element={<StudentLogin />} />
+        <Route path="/staff/login" element={<StaffLogin />} />
+        <Route path="/admin-access" element={<AdminLogin />} />
+
+        {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           {/* THIS IS SECTION IS FOR THE ADMIN ROUTES  */}
 

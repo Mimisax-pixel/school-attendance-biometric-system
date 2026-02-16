@@ -1,8 +1,70 @@
 ﻿import React, { useState } from "react";
-import { BookOpen, LayoutDashboard, User, CheckCircle, Menu, X } from "lucide-react";
+import {
+  BookOpen,
+  LayoutDashboard,
+  User,
+  CheckCircle,
+  Menu,
+  X,
+  AlertCircle,
+  RefreshCw,
+} from "lucide-react";
+import {
+  useStudentGrades,
+  useStudentAttendance,
+  useStudentCourses,
+  useStudentPerformance,
+} from "../../hooks/useStudentData";
+import toast from "react-hot-toast";
 
 const Grades = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [studentName, setStudentName] = useState("Student");
+
+  // Fetch student data
+  const {
+    grades,
+    isLoading: gradesLoading,
+    isError: gradesError,
+    error: gradesErrorMsg,
+    refetch: refetchGrades,
+  } = useStudentGrades();
+
+  const {
+    attendance,
+    isLoading: attendanceLoading,
+    isError: attendanceError,
+    error: attendanceErrorMsg,
+    refetch: refetchAttendance,
+  } = useStudentAttendance();
+
+  const {
+    courses,
+    isLoading: coursesLoading,
+    isError: coursesError,
+    error: coursesErrorMsg,
+    refetch: refetchCourses,
+  } = useStudentCourses();
+
+  const {
+    performance,
+    isLoading: performanceLoading,
+    isError: performanceError,
+    error: performanceErrorMsg,
+    refetch: refetchPerformance,
+  } = useStudentPerformance();
+
+  const isLoading =
+    gradesLoading || attendanceLoading || coursesLoading || performanceLoading;
+
+  // Handle refetch all
+  const handleRefreshAll = () => {
+    refetchGrades();
+    refetchAttendance();
+    refetchCourses();
+    refetchPerformance();
+    toast.success("Data refreshed successfully");
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50 flex-col md:flex-row">
@@ -22,7 +84,7 @@ const Grades = () => {
               />
               <div>
                 <h2 className="text-gray-900 font-semibold text-base md:text-lg">
-                  Sarah
+                  {studentName}
                 </h2>
                 <p className="text-xs md:text-sm text-gray-500">Student</p>
               </div>
@@ -74,71 +136,150 @@ const Grades = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-4 sm:p-6 md:p-8 mt-14 md:mt-0">
-        <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-          Academic Performance
-        </h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">
+            Academic Performance
+          </h1>
+          <button
+            onClick={handleRefreshAll}
+            disabled={isLoading}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition"
+          >
+            <RefreshCw
+              className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`}
+            />
+            Refresh
+          </button>
+        </div>
+
+        {/* Error Alert */}
+        {(gradesError ||
+          attendanceError ||
+          coursesError ||
+          performanceError) && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-semibold text-red-800 mb-1">
+                Error Loading Data
+              </h3>
+              <p className="text-sm text-red-700">
+                {gradesErrorMsg?.message ||
+                  attendanceErrorMsg?.message ||
+                  coursesErrorMsg?.message ||
+                  performanceErrorMsg?.message ||
+                  "Failed to load some data. Please try again."}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* GPA Card */}
         <div className="bg-white shadow-sm rounded-xl p-6 text-center mb-8 w-full sm:w-56">
-          <p className="text-gray-600 font-medium">Overall GPA</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mt-2">
-            3.8
-          </h2>
+          {performanceLoading ? (
+            <div className="h-20 bg-gray-100 rounded animate-pulse" />
+          ) : (
+            <>
+              <p className="text-gray-600 font-medium">Overall GPA</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mt-2">
+                {performance.gpa || "N/A"}
+              </h2>
+              <p className="text-xs text-gray-500 mt-2">
+                ({performance.totalCourses || 0} courses)
+              </p>
+            </>
+          )}
         </div>
 
         {/* Course History */}
         <Section title="Course History">
-          <ResponsiveTable
-            headers={["Course Code", "Course Title", "Credits", "Grade", "Semester"]}
-            rows={[
-              ["CSC101", "Introduction to Programming", 3, "A", "Fall 2023"],
-              ["MAT101", "Calculus I", 4, "B", "Fall 2023"],
-              ["ENG101", "English Composition", 3, "A", "Fall 2023"],
-              ["PHY101", "Physics I", 4, "C", "Spring 2024"],
-              ["CSC201", "Data Structures", 3, "A", "Spring 2024"],
-            ]}
-          />
+          {gradesLoading ? (
+            <LoadingTable rows={5} cols={5} />
+          ) : gradesError ? (
+            <ErrorMessage
+              message="Failed to load grades"
+              onRetry={refetchGrades}
+            />
+          ) : grades.length === 0 ? (
+            <EmptyState message="No grades available yet" />
+          ) : (
+            <ResponsiveTable
+              headers={[
+                "Course Code",
+                "Course Title",
+                "Grade",
+                "Semester",
+                "Year",
+              ]}
+              rows={grades.map((grade) => [
+                grade.courseCode || "N/A",
+                grade.courseTitle || "N/A",
+                grade.grade || "N/A",
+                grade.semester || "N/A",
+                grade.year || "N/A",
+              ])}
+            />
+          )}
         </Section>
 
         {/* Attendance Records */}
         <Section title="Attendance Records">
-          <ResponsiveTable
-            headers={[
-              "Course Code",
-              "Course Title",
-              "Total Classes",
-              "Classes Attended",
-              "Attendance Rate",
-            ]}
-            rows={[
-              ["CSC101", "Introduction to Programming", 30, 28, "93%"],
-              ["MAT101", "Calculus I", 40, 35, "88%"],
-              ["ENG101", "English Composition", 30, 29, "97%"],
-              ["PHY101", "Physics I", 40, 32, "80%"],
-              ["CSC201", "Data Structures", 30, 27, "90%"],
-            ]}
-          />
+          {attendanceLoading ? (
+            <LoadingTable rows={5} cols={5} />
+          ) : attendanceError ? (
+            <ErrorMessage
+              message="Failed to load attendance"
+              onRetry={refetchAttendance}
+            />
+          ) : attendance.length === 0 ? (
+            <EmptyState message="No attendance records available" />
+          ) : (
+            <ResponsiveTable
+              headers={[
+                "Course Code",
+                "Course Title",
+                "Total Classes",
+                "Classes Attended",
+                "Attendance Rate",
+              ]}
+              rows={attendance.map((att) => [
+                att.courseCode || "N/A",
+                att.courseTitle || "N/A",
+                att.totalClasses || 0,
+                att.classesAttended || 0,
+                att.attendanceRate || "0%",
+              ])}
+            />
+          )}
         </Section>
 
         {/* Registered Courses */}
         <Section title="Registered Courses">
-          <ResponsiveTable
-            headers={["Course Code", "Course Title", "Credits", "Instructor"]}
-            rows={[
-              ["CSC202", "Algorithms", 3, "Dr. Smith"],
-              ["MAT201", "Calculus II", 4, "Dr. Johnson"],
-              ["ENG201", "Technical Writing", 3, "Prof. Williams"],
-              ["PHY201", "Physics II", 4, "Dr. Brown"],
-              ["CSC301", "Operating Systems", 3, "Dr. Davis"],
-            ]}
-          />
+          {coursesLoading ? (
+            <LoadingTable rows={5} cols={4} />
+          ) : coursesError ? (
+            <ErrorMessage
+              message="Failed to load courses"
+              onRetry={refetchCourses}
+            />
+          ) : courses.length === 0 ? (
+            <EmptyState message="Not registered in any courses" />
+          ) : (
+            <ResponsiveTable
+              headers={["Course Code", "Course Title", "Credits", "Semester"]}
+              rows={courses.map((course) => [
+                course.courseCode || "N/A",
+                course.courseTitle || "N/A",
+                course.creditunits || 0,
+                course.semester || "N/A",
+              ])}
+            />
+          )}
         </Section>
       </main>
     </div>
   );
 };
-
-
 
 const Section = ({ title, children }) => (
   <section className="mb-10">
@@ -173,6 +314,49 @@ const ResponsiveTable = ({ headers, rows }) => (
         ))}
       </tbody>
     </table>
+  </div>
+);
+
+const LoadingTable = ({ rows = 5, cols = 5 }) => (
+  <div className="bg-white rounded-xl shadow-sm p-6 space-y-3">
+    {Array(rows)
+      .fill(0)
+      .map((_, i) => (
+        <div key={i} className="flex gap-4">
+          {Array(cols)
+            .fill(0)
+            .map((_, j) => (
+              <div
+                key={j}
+                className="flex-1 h-6 bg-gray-100 rounded animate-pulse"
+              />
+            ))}
+        </div>
+      ))}
+  </div>
+);
+
+const ErrorMessage = ({ message, onRetry }) => (
+  <div className="bg-white rounded-xl shadow-sm p-6 text-center">
+    <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-3" />
+    <h3 className="font-semibold text-gray-800 mb-2">{message}</h3>
+    <button
+      onClick={onRetry}
+      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+    >
+      Retry
+    </button>
+  </div>
+);
+
+const EmptyState = ({ message }) => (
+  <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+    <div className="flex justify-center mb-4">
+      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+        <BookOpen className="w-8 h-8 text-gray-400" />
+      </div>
+    </div>
+    <p className="text-gray-600 font-medium">{message}</p>
   </div>
 );
 

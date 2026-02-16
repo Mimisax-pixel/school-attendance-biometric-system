@@ -2,6 +2,7 @@ import Classes from "../models/class.js";
 import Student from "../models/students.js";
 import { attendance } from "../models/students.js";
 import getCurrentSession from "./getCurrentSession.js";
+import attendanceService from "./attendanceService.js";
 
 /**
  * Process student check-in for a class session
@@ -59,86 +60,19 @@ export async function processCheckIn(studentId, classId) {
     const attendanceRecord = new attendance({
       studentId: studentId,
       classId: classId,
-      session: currentSession
+      session: currentSession,
     });
     await attendanceRecord.save();
 
-    // Step 6: Update class session - increment student present
-    await Classes.updateOne(
-      { _id: classId },
-      { $inc: { numberOfStudentPresent: 1 } }
-    );
-
-    // Step 7: Calculate attendance ratio
-    // Get all students in the same department and level
-    const totalStudentsInDeptAndLevel = await Student.countDocuments({
-      department: classSession.department,
-      level: classSession.level,
-    });
-
-    if (totalStudentsInDeptAndLevel === 0) {
-      return {
-        success: false,
-        message: "No students found in department and level",
-      };
-    }
-
-    // Get updated class (with new numberOfStudentPresent)
-    const updatedClass = await Classes.findById(classId);
+    // Step 6: Compute realtime metrics (do not persist computed fields)
+    const numberPresent =
+      await attendanceService.countAttendanceForClass(classId);
     const attendanceRatio =
-      (updatedClass.numberOfStudentPresent / totalStudentsInDeptAndLevel) * 100;
+      await attendanceService.computeAttendanceRatioForClass(classId);
 
-    // Step 8: Update attendance ratio in class session
-    await Classes.updateOne(
-      { _id: classId },
-      { attendanceRatio: parseFloat(attendanceRatio.toFixed(2)) }
-    );
-
-    // Step 9: Recalculate and update this student's overall attendance rate
-    // based on classes in the same department and level as the class session.
-    // This keeps student rates up-to-date without a heavy cron job.
-    try {
-      const dept = classSession.department;
-      const level = classSession.level;
-
-      // Find all class IDs for this department+level
-      const deptLevelClasses = await Classes.find({
-        department: dept,
-        level: level,
-      })
-        .select("_id")
-        .lean();
-      const deptLevelClassIds = deptLevelClasses.map((c) => c._id.toString());
-
-      const totalDeptLevelClasses = deptLevelClassIds.length;
-
-      if (totalDeptLevelClasses > 0) {
-        // attendance records may store studentId as matricNumber or _id depending on usage.
-        const possibleStudentIds = [];
-        if (student.matricNumber) possibleStudentIds.push(student.matricNumber);
-        if (student._id) possibleStudentIds.push(student._id.toString());
-
-        const studentAttendanceCount = await attendance.countDocuments({
-          studentId: { $in: possibleStudentIds },
-          classId: { $in: deptLevelClassIds },
-        });
-
-        const studentAttendanceRate =
-          (studentAttendanceCount / totalDeptLevelClasses) * 100;
-        console.log("student attendace count:",studentAttendanceCount)
-
-        await Student.updateOne(
-          { _id: student._id },
-          {
-            rateOfClassesAttended:
-              Math.round(studentAttendanceRate * 100) / 100,
-          }
-        );
-      }
-    } catch (err) {
-      // Non-fatal: if student rate update fails, log and continue — checkin already succeeded
-      console.error("Failed to update student attendance rate:", err.message);
-    }
+    // Compute student's overall attendance rate in realtime (do not persist)
+    const studentAttendanceRate =
+      await attendanceService.computeStudentAttendanceRate(student._id);
 
     return {
       success: true,
@@ -146,10 +80,11 @@ export async function processCheckIn(studentId, classId) {
       data: {
         attendanceRecord,
         updatedClass: {
-          ...updatedClass._doc,
-          numberOfStudentPresent: updatedClass.numberOfStudentPresent + 1,
-          attendanceRatio: parseFloat(attendanceRatio.toFixed(2)),
+          ...classSession._doc,
+          numberOfStudentPresent: numberPresent,
+          attendanceRatio,
         },
+        studentAttendanceRate,
       },
     };
   } catch (error) {

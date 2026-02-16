@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Student from "./routes/students/register.js";
 import loginStudent from "./routes/students/login.js";
+import studentDataRoutes from "./routes/students/data.js";
 import cookieParser from "cookie-parser";
 import dashboardRoutes from "./routes/students/dashboard.js";
 import adminRoutes from "./routes/admin/register.js";
@@ -17,17 +18,25 @@ import AttendanceSessions from "./routes/lecturers/session.js";
 import Department from "./routes/admin/departments.js";
 import AlertsRoutes from "./routes/admin/alerts.js";
 import AcademicSession from "./routes/admin/academicSession.js";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { requestLogger } from "./middleware/requestLogger.js";
+import { logger } from "./utils/logger.js";
+import { successResponse } from "./utils/response.js";
+import swaggerConfig from "./config/swagger.js";
 
 dotenv.config();
 mongoose
   .connect(process.env.DB_CONNECTION_STRING)
   .then(() => {
-    console.log("Connected to MongoDB");
-    console.log(process.env.NODE_ENV);
-    // Background attendance job disabled (moved to incremental updates on check-in)
+    logger.info("Connected to MongoDB", {
+      database: "school-attendance-biometric",
+    });
   })
   .catch((err) => {
-    console.error("Error connecting to MongoDB", err);
+    logger.error("Error connecting to MongoDB", err);
+    process.exit(1);
   });
 
 const app = express();
@@ -43,7 +52,7 @@ const corsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true); // Allow
     } else {
-      console.warn(`Origin ${origin} not allowed by CORS`);
+      logger.warn(`Origin ${origin} not allowed by CORS`, { origin });
       callback(new Error("Not allowed by CORS"));
     }
   },
@@ -56,9 +65,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
+app.use(requestLogger);
 app.use(apiVersion, Student);
 app.use(apiVersion, loginStudent);
 app.use(apiVersion, dashboardRoutes);
+app.use(apiVersion, studentDataRoutes);
 app.use(apiVersion, adminRoutes);
 app.use(apiVersion, admindashboard);
 app.use(apiVersion, courseRouter);
@@ -71,12 +82,49 @@ app.use(apiVersion, Department);
 app.use(apiVersion, AlertsRoutes);
 app.use(apiVersion, AcademicSession);
 
-// Basic route to check server status
+// Swagger Documentation
+const specs = swaggerJsdoc(swaggerConfig);
+app.use("/api-docs", swaggerUi.serve);
+app.get("/api-docs", swaggerUi.setup(specs));
 
-app.get("/", (req, res) => {
-  res.send("Welcome to the School Attendance Biometric System API");
+// Health check endpoint
+app.get("/health", (req, res) => {
+  successResponse(
+    res,
+    { status: "healthy", timestamp: new Date() },
+    "Server is healthy",
+  );
 });
 
+// Basic route to check server status
+app.get("/", (req, res) => {
+  successResponse(
+    res,
+    {
+      message: "Welcome to the School Attendance Biometric System API",
+      documentation: "/api-docs",
+    },
+    "API is running",
+  );
+});
+
+// 404 handler - must come before error handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    status: "not_found",
+    message: `Route ${req.method} ${req.path} not found`,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Error handling middleware - must be last
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  logger.info(`Server is running on port ${PORT}`, {
+    port: PORT,
+    environment: process.env.NODE_ENV || "development",
+    apiVersion,
+  });
 });

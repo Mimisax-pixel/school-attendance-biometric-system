@@ -11,7 +11,15 @@ import getCurrentSession from "../../services/getCurrentSession.js";
 export async function createSession(req, res) {
   console.log(req.body);
   try {
-    let currentSession = getCurrentSession()
+    let currentSession = await getCurrentSession();
+    if (!currentSession) {
+      return res
+        .status(500)
+        .json({
+          status: "failed",
+          message: "No active academic session configured",
+        });
+    }
     let instructor = await lecturer.findById(req.user.id);
     let courseProps = await Course.findOne({
       courseCode: req.body.courseCode,
@@ -33,7 +41,7 @@ export async function createSession(req, res) {
       courseTitle: courseProps.courseTitle,
       instructorId: req.user.id,
       courseCode: req.body.courseCode,
-      session: currentSession
+      session: currentSession,
     });
     await Class.save();
     // let course = await Course.findOne({ courseCode: req.body.courseCode });
@@ -169,7 +177,7 @@ export async function getSessionAttendanceLog(req, res) {
           ...record,
           studentDetails: student || {},
         };
-      })
+      }),
     );
 
     return res.status(200).json({

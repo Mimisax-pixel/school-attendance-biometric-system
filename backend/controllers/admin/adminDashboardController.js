@@ -3,6 +3,7 @@ import Course from "../../models/courses.js";
 import Lecturer from "../../models/lecturers.js";
 import Classes from "../../models/class.js";
 import getCurrentSession from "../../services/getCurrentSession.js";
+import attendanceService from "../../services/attendanceService.js";
 
 const adminDashboardController = async (req, res) => {
   try {
@@ -12,51 +13,61 @@ const adminDashboardController = async (req, res) => {
     const totalLecturers = await Lecturer.countDocuments();
     const totalCourses = await Course.countDocuments();
 
-console.log("Current Session:", currentSession);
+    console.log("Current Session:", currentSession);
 
     // NOTE: student-based precomputed attendance averages were removed
     // in favor of the Classes.attendanceRatio-based computation below.
 
     // Total classes held (count of class sessions stored in `Classes` collection)
     const totalClassesHeld = async () => {
-      return await Classes.countDocuments({session: currentSession});
+      return await Classes.countDocuments({ session: currentSession });
     };
 
-    // Average attendance ratio by level (uses Classes.attendanceRatio)
+    // Average attendance ratio by level (computed in realtime)
     const totalCoursesAttendanceAverage = async () => {
       const levels = [100, 200, 300, 400, 500];
       const levelAverages = [];
 
       for (const level of levels) {
-        const classesByLevel = await Classes.find({ level: level.toString(),session: currentSession })
-          .select("attendanceRatio")
+        const classesByLevel = await Classes.find({
+          level: level.toString(),
+          session: currentSession,
+        })
+          .select("_id")
           .lean();
-
         const count = classesByLevel.length;
         if (count === 0) {
           levelAverages.push({ level, average: 0, totalClasses: 0 });
           continue;
         }
 
-        let sumRatio = 0;
-        for (const cls of classesByLevel) {
-          sumRatio +=
-            typeof cls.attendanceRatio === "number" ? cls.attendanceRatio : 0;
-        }
-
+        // compute ratios for each class
+        const ratios = await Promise.all(
+          classesByLevel.map((c) =>
+            attendanceService.computeAttendanceRatioForClass(c._id),
+          ),
+        );
+        const sumRatio = ratios.reduce(
+          (s, r) => s + (typeof r === "number" ? r : 0),
+          0,
+        );
         const avg = Math.round((sumRatio / count) * 100) / 100;
         levelAverages.push({ level, average: avg, totalClasses: count });
       }
 
       // overall average across all classes
       const allClasses = await Classes.find({ session: currentSession })
-        .select("attendanceRatio")
+        .select("_id")
         .lean();
       const totalClasses = allClasses.length;
-      const totalSum = allClasses.reduce(
-        (s, c) =>
-          s + (typeof c.attendanceRatio === "number" ? c.attendanceRatio : 0),
-        0
+      const ratios = await Promise.all(
+        allClasses.map((c) =>
+          attendanceService.computeAttendanceRatioForClass(c._id),
+        ),
+      );
+      const totalSum = ratios.reduce(
+        (s, r) => s + (typeof r === "number" ? r : 0),
+        0,
       );
       const overallAverage =
         totalClasses > 0
@@ -71,9 +82,8 @@ console.log("Current Session:", currentSession);
       const levels = [100, 200, 300, 400, 500];
       const levelDepartmentMap = {};
 
-      // Get all classes with level, department, and attendanceRatio
       const allClasses = await Classes.find({ session: currentSession })
-        .select("level department attendanceRatio")
+        .select("level department _id")
         .lean();
 
       // Helper function to generate abbreviation from department name
@@ -85,20 +95,23 @@ console.log("Current Session:", currentSession);
       };
 
       // Group by level and then by department
-      for (const cls of allClasses) {
-        const level = cls.level;
-        const dept = cls.department;
+      // compute attendanceRatio per class and aggregate
+      const ratioPromises = allClasses.map(async (cls) => {
+        const ratio = await attendanceService.computeAttendanceRatioForClass(
+          cls._id,
+        );
+        return { level: cls.level, department: cls.department, ratio };
+      });
+      const classRatios = await Promise.all(ratioPromises);
 
-        if (!levelDepartmentMap[level]) {
-          levelDepartmentMap[level] = {};
-        }
-
-        if (!levelDepartmentMap[level][dept]) {
+      for (const cr of classRatios) {
+        const level = cr.level;
+        const dept = cr.department;
+        if (!levelDepartmentMap[level]) levelDepartmentMap[level] = {};
+        if (!levelDepartmentMap[level][dept])
           levelDepartmentMap[level][dept] = { sumRatio: 0, count: 0 };
-        }
-
         levelDepartmentMap[level][dept].sumRatio +=
-          typeof cls.attendanceRatio === "number" ? cls.attendanceRatio : 0;
+          typeof cr.ratio === "number" ? cr.ratio : 0;
         levelDepartmentMap[level][dept].count += 1;
       }
 
@@ -139,7 +152,7 @@ console.log("Current Session:", currentSession);
       totalCourses,
       classesHeld,
       coursesAttendance,
-      departmentAttendance
+      departmentAttendance,
     );
 
     // ✅ Send only plain JSON data
